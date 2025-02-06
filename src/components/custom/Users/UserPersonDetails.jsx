@@ -1,30 +1,39 @@
 import { ArrowLeft, Eye, EyeOff, Loader2 } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import { Link } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { useSalesPersonSchema } from "../../hooks/Sales/useSalesPersonSchema";
+import { useSalesPerson } from "../../../hooks/Sales/useSalesPerson";
 
-const SalesPersonDetails = () => {
+const UserPersonDetails = () => {
   const [isVisible, setIsVisible] = useState(false);
-
   const toggleVisibility = () => setIsVisible((prevState) => !prevState);
+  const { state } = useLocation();
+  const { detailTitle, role } = state;
+  const navigate = useNavigate();
 
   // Custom Hook for Handling Form
   const { register, handleSubmit, onSubmit, errors, isLoading } =
-    useSalesPersonSchema();
+    useSalesPerson(role);
 
   return (
     <section className="bg-white h-full max-h-screen w-full p-3 rounded-lg">
       {/* Header */}
       <div className="mb-4">
-        <Link className="flex items-center gap-4" to={"/app/sales-person"}>
+        {/* <Link className="flex items-center gap-4" onClick={() => navigate(-1)}>
           <ArrowLeft size="2rem" color="#5B5959" />
           <span className="text-2xl font-semibold text-[#707070]">
-            Add Sales
+            {detailTitle}
           </span>
-        </Link>
+        </Link> */}
+
+        <Button onClick={() => navigate(-1)} className="shadow-none">
+          <ArrowLeft size={5} color="#5B5959" />
+          <span className="text-2xl font-semibold text-[#707070]">
+            {detailTitle}
+          </span>
+        </Button>
       </div>
 
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -46,13 +55,13 @@ const SalesPersonDetails = () => {
 
           {/* Mobile Number  */}
           <div>
-            <Label htmlFor="mobileNumber">Mobile Number</Label>
+            <Label htmlFor="mobile">Mobile Number</Label>
             <Input
               type="text"
               placeholder="Enter Mobile Number"
-              id="mobileNumber"
+              id="mobile"
               className="w-full border-2 focus-visible:ring-0 shadow-none py-5 mt-1"
-              {...register("mobileNumber")}
+              {...register("mobile")}
             />
             {errors.mobileNumber && (
               <p className="text-red-500 text-sm">
@@ -111,6 +120,7 @@ const SalesPersonDetails = () => {
           <Button
             type="submit"
             className="bg-[#C99227] shadow-none w-full max-w-[31.8rem]"
+            disabled={isLoading}
           >
             {isLoading ? <Loader2 className="animate-spin" size={24} /> : "Add"}
           </Button>
@@ -120,4 +130,4 @@ const SalesPersonDetails = () => {
   );
 };
 
-export default SalesPersonDetails;
+export default UserPersonDetails;

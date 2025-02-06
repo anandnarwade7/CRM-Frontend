@@ -6,5 +6,8 @@ import Dashboard from "./Dashboard/Dashboard";
 
 // Sales Person
 import SalesPerson from "./Sales/SalesPerson";
-import SalesPersonDetails from "./Sales/SalesPersonDetails";
-export { Login, Dashboard, SalesPerson, SalesPersonDetails };
+
+// CR Manager
+import CRManager from "./CR Manager/CRManager";
+
+export { Login, Dashboard, SalesPerson, CRManager };

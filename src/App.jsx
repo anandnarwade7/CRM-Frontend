@@ -1,9 +1,10 @@
-import { Dashboard, Login, SalesPerson, SalesPersonDetails } from "./pages";
+import { CRManager, Dashboard, Login, SalesPerson } from "./pages";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import "./App.css";
 import { createBrowserRouter, RouterProvider } from "react-router";
 import MainLayout from "./pages/Layout/MainLayout";
+import UserPersonDetails from "./components/custom/Users/UserPersonDetails";
 
 const queryClient = new QueryClient();
 
@@ -25,8 +26,12 @@ const router = createBrowserRouter([
         element: <SalesPerson />,
       },
       {
-        path: "/app/sales-person/details",
-        element: <SalesPersonDetails />,
+        path: "/app/userDetails",
+        element: <UserPersonDetails />,
+      },
+      {
+        path: "/app/cr-manager",
+        element: <CRManager />,
       },
     ],
   },

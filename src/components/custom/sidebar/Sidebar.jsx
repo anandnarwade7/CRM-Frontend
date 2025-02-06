@@ -41,7 +41,7 @@ const Sidebar = () => {
     },
     {
       name: "CR Manager",
-      path: "/cr-manager",
+      path: "/app/cr-manager",
       img: Account,
       activeImg: AccountBg,
     },
