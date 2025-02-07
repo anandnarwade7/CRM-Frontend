@@ -33,7 +33,7 @@ export const useSalesPerson = (role) => {
         duration: 2000,
       });
       reset();
-      queryClient.invalidateQueries({ queryKey: ["salesPersons"] });
+      queryClient.invalidateQueries({ queryKey: ["users"] });
     },
     onError: () => {
       toast({
