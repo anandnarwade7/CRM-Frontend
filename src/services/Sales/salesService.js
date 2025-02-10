@@ -33,3 +33,36 @@ export const fetchUserPageCount = async (role) => {
 
   return response?.data;
 };
+
+// Service for updating the User Status (Block and unBlock)
+export const userActionStatus = async (id, status) => {
+  try {
+    const response = await axios.put(
+      `${BASE_URL}/user/updateUser/${id}/${status}`,
+      {},
+      { withCredentials: true }
+    );
+    console.log("User Action Status Updated:", response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Error updating user action status:", error);
+    throw error;
+  }
+};
+
+// Service for Update the User Details
+export const updateUserDetails = async (id, formData) => {
+  try {
+    const response = await axios.put(
+      `${BASE_URL}/user/addDetails/${id}`,
+      formData,
+      { withCredentials: "true" }
+    );
+
+    console.log("Update the User Details", response?.data);
+    return response?.data;
+  } catch (error) {
+    console.error("Error updating user Details", error);
+    throw error;
+  }
+};

@@ -20,8 +20,6 @@ export const useGetUsers = (role) => {
     queryFn: () => fetchUserPageCount(role),
   });
 
-  console.log("Feched Users Data", data, error);
-
   return {
     isLoading,
     isError,

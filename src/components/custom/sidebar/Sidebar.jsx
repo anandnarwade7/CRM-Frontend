@@ -47,7 +47,7 @@ const Sidebar = () => {
     },
     {
       name: "Leads",
-      path: "/leads",
+      path: "/app/leads",
       img: List,
       activeImg: ListBg,
     },

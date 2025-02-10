@@ -10,4 +10,7 @@ import SalesPerson from "./Sales/SalesPerson";
 // CR Manager
 import CRManager from "./CR Manager/CRManager";
 
-export { Login, Dashboard, SalesPerson, CRManager };
+// Leads
+import Leads from "./Leads/Leads";
+
+export { Login, Dashboard, SalesPerson, CRManager, Leads };

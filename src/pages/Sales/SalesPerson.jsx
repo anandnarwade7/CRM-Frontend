@@ -1,5 +1,5 @@
 import UserHeader from "../../components/custom/Users/UserHeader";
-import SalesPersonTable from "./SalesPersonTable";
+import UserPersonTable from "./UserPersonTable";
 
 const SalesPerson = () => {
   return (
@@ -8,7 +8,7 @@ const SalesPerson = () => {
         title="Sales Persons Details"
         btnText="Add new Sales Person"
       />
-      <SalesPersonTable />
+      <UserPersonTable />
     </section>
   );
 };

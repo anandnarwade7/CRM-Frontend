@@ -63,10 +63,8 @@ const UserPersonDetails = () => {
               className="w-full border-2 focus-visible:ring-0 shadow-none py-5 mt-1"
               {...register("mobile")}
             />
-            {errors.mobileNumber && (
-              <p className="text-red-500 text-sm">
-                {errors.mobileNumber.message}
-              </p>
+            {errors.mobile && (
+              <p className="text-red-500 text-sm">{errors.mobile.message}</p>
             )}
           </div>
 
