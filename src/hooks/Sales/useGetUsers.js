@@ -3,11 +3,11 @@ import {
   fetchUserPageCount,
   fetchUsers,
 } from "../../services/Sales/salesService";
-export const useGetUsers = (role) => {
+export const useGetUsers = (role, page) => {
   // Query for fetching users data
   const { isError, data, error, isLoading } = useQuery({
     queryKey: ["users", role],
-    queryFn: () => fetchUsers(role),
+    queryFn: () => fetchUsers(role, page),
   });
 
   //   Query for fetching page counts

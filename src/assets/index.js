@@ -21,6 +21,12 @@ import Support from "./Icons/support.svg";
 import SupportBg from "./Icons/supportBg.svg";
 import Logout from "./Icons/logout.svg";
 
+// Global
+import Notification from "./Icons/notification.svg";
+
+// Leads
+import Back from "./Icons/back.svg";
+
 export {
   LoginImage,
   ProfilePic,
@@ -41,4 +47,6 @@ export {
   Support,
   SupportBg,
   Logout,
+  Notification,
+  Back,
 };

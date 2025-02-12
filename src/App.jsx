@@ -1,4 +1,11 @@
-import { CRManager, Dashboard, Leads, Login, SalesPerson } from "./pages";
+import {
+  AssignLead,
+  CRManager,
+  Dashboard,
+  Leads,
+  Login,
+  SalesPerson,
+} from "./pages";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import "./App.css";
@@ -36,6 +43,10 @@ const router = createBrowserRouter([
       {
         path: "/app/leads",
         element: <Leads />,
+      },
+      {
+        path: "/app/assign-leads",
+        element: <AssignLead />,
       },
     ],
   },

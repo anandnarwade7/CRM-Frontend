@@ -28,7 +28,7 @@ const UserPersonTable = () => {
     totalCount,
     isCountLoading,
     isCountError,
-  } = useGetUsers(user);
+  } = useGetUsers(user, page);
 
   // Calculating total number of pages
   const totalPages = totalCount ? Math.ceil(totalCount / pageSize) : 0;

@@ -1,9 +1,9 @@
-import React from "react";
+import LeadsHeader from "../../components/custom/Leads/LeadsHeader";
 
 const Leads = () => {
   return (
-    <div>
-      <h1>Leads</h1>
+    <div className="w-full rounded-xl bg-white h-full px-6 py-3">
+      <LeadsHeader />
     </div>
   );
 };
