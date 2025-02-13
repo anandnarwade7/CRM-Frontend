@@ -1,85 +1,26 @@
 import { Link } from "react-router";
 import { Back } from "../../assets";
-import { useEffect, useState } from "react";
 import { RadioGroup } from "../../components/ui/radio-group";
 import { Button } from "../../components/ui/button";
 import SpecificLead from "../../components/custom/Leads/SpecificLead";
 import EquallyLead from "../../components/custom/Leads/EquallyLead";
-import { useGetSales } from "../../hooks/Leads/useGetSales";
+import { useSpecificAssignLeads } from "../../hooks/Leads/useSpecificAssignLeads";
+import { Loader2 } from "lucide-react";
 
 const AssignLead = () => {
-  const [distribution, setDistribution] = useState("Specific");
-  const [file, setFile] = useState(null);
-  const [selectedSalesPersons, setSelectedSalesPersons] = useState([]);
-  const [errors, setErrors] = useState({
-    salesPerson: "",
-    file: "",
-  });
-
-  // Custom hook for getting sales person data
-  const { data: salesPersons, error, isLoading } = useGetSales();
-
-  // Function For Handling File
-  const handleFileChange = (e) => {
-    const selectedFile = e.target.files[0];
-    setErrors((prev) => ({ ...prev, file: "" }));
-
-    if (selectedFile) {
-      const fileType = selectedFile.name.split(".").pop();
-      if (fileType === "xlsx" || fileType === "xls") {
-        setFile(selectedFile);
-      } else {
-        alert("Please select an Excel file (.xlsx or .xls)");
-        setFile(null);
-        e.target.value = "";
-      }
-    }
-  };
-
-  // Handle checkbox change (select/unselect salesperson)
-  const handleCheckboxChange = (id) => {
-    setErrors((prev) => ({ ...prev, salesPerson: "" }));
-
-    setSelectedSalesPersons((prevState) => {
-      if (prevState.includes(id)) {
-        // If the ID is already selected, unselect it
-        return prevState.filter((salesPersonId) => salesPersonId !== id);
-      } else {
-        // If the ID is not selected, add it
-        return [...prevState, id];
-      }
-    });
-  };
-
-  const validateForm = () => {
-    let isValid = true;
-    const newErrors = {
-      salesPerson: "",
-      file: "",
-    };
-
-    if (selectedSalesPersons.length === 0) {
-      newErrors.salesPerson = "Please select at least one sales person";
-      isValid = false;
-    }
-    if (!file) {
-      newErrors.file = "Please upload an Excel file";
-      isValid = false;
-    }
-
-    setErrors(newErrors);
-    return isValid;
-  };
-
-  const handleSubmit = () => {
-    if (validateForm()) {
-      console.log("form is Valid");
-    } else {
-      console.log("Form validation failed");
-    }
-  };
-
-  console.log("Selected Person", selectedSalesPersons);
+  const {
+    distribution,
+    setDistribution,
+    handleFileChange,
+    selectedSalesPersons,
+    handleCheckboxChange,
+    salesPersons,
+    isLoading,
+    error,
+    errors,
+    handleSubmit,
+    isSubmitting,
+  } = useSpecificAssignLeads();
 
   return (
     <section className="bg-white w-full p-3 rounded-lg h-full">
@@ -159,16 +100,24 @@ const AssignLead = () => {
             />
           </>
         ) : (
-          <EquallyLead />
+          <EquallyLead
+            salesPersons={salesPersons}
+            handleFileChange={handleFileChange}
+            errors={errors}
+          />
         )}
       </div>
       <div className="flex justify-end my-4">
         <Button
-          type="button"
           onClick={handleSubmit}
+          disabled={isSubmitting}
           className="bg-[#C99227] shadow-none text-white w-[49%]"
         >
-          Assign
+          {isSubmitting ? (
+            <Loader2 className="animate-spin" size={24} />
+          ) : (
+            "Assign"
+          )}
         </Button>
       </div>
     </section>

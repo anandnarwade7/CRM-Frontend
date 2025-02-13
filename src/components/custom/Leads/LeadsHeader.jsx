@@ -2,6 +2,13 @@ import { Button } from "../../ui/button";
 import { Notification } from "../../../assets";
 import { Plus } from "lucide-react";
 import { useNavigate } from "react-router";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../../ui/select";
 
 const LeadsHeader = () => {
   const navigate = useNavigate();
@@ -15,7 +22,18 @@ const LeadsHeader = () => {
         </Button>
       </div>
       {/* Lower Header */}
-      <div className="flex justify-end my-3">
+      <div className="flex justify-between my-3">
+        <div>
+          <Select>
+            <SelectTrigger className="w-[180px] shadow-none border-0 focus:ring-0 bg-[#FFD073] text-[#FFFFFF]">
+              <SelectValue placeholder="Select Status" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="Assigned">Assigned</SelectItem>
+              <SelectItem value="Completed">Completed</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
         <Button
           onClick={() => navigate("/app/assign-leads")}
           className="bg-[#C99227] shadow-none"
