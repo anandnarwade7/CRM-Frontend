@@ -12,6 +12,8 @@ import "./App.css";
 import { createBrowserRouter, RouterProvider } from "react-router";
 import MainLayout from "./pages/Layout/MainLayout";
 import UserPersonDetails from "./components/custom/Users/UserPersonDetails";
+import { Provider } from "react-redux";
+import { store } from "./Store/store";
 
 const queryClient = new QueryClient();
 
@@ -54,10 +56,12 @@ const router = createBrowserRouter([
 function App() {
   return (
     <>
-      <QueryClientProvider client={queryClient}>
-        <RouterProvider router={router} />
-        <Toaster />
-      </QueryClientProvider>
+      <Provider store={store}>
+        <QueryClientProvider client={queryClient}>
+          <RouterProvider router={router} />
+          <Toaster />
+        </QueryClientProvider>
+      </Provider>
     </>
   );
 }

@@ -26,6 +26,7 @@ import Notification from "./Icons/notification.svg";
 
 // Leads
 import Back from "./Icons/back.svg";
+import Link from "./Icons/link.svg";
 
 export {
   LoginImage,
@@ -49,4 +50,5 @@ export {
   Logout,
   Notification,
   Back,
+  Link,
 };

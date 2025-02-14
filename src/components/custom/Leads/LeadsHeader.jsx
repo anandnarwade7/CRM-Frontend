@@ -9,9 +9,17 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../../ui/select";
+import { useDispatch } from "react-redux";
+import { setStatus } from "../../../Store/Slices/Leads/leadsSlice";
 
 const LeadsHeader = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const handleStatusChange = (value) => {
+    dispatch(setStatus(value));
+  };
+
   return (
     <section>
       {/* Upper Header */}
@@ -24,13 +32,13 @@ const LeadsHeader = () => {
       {/* Lower Header */}
       <div className="flex justify-between my-3">
         <div>
-          <Select>
+          <Select onValueChange={handleStatusChange}>
             <SelectTrigger className="w-[180px] shadow-none border-0 focus:ring-0 bg-[#FFD073] text-[#FFFFFF]">
               <SelectValue placeholder="Select Status" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="Assigned">Assigned</SelectItem>
-              <SelectItem value="Completed">Completed</SelectItem>
+              <SelectItem value="assigned">Assigned</SelectItem>
+              <SelectItem value="completed">Completed</SelectItem>
             </SelectContent>
           </Select>
         </div>

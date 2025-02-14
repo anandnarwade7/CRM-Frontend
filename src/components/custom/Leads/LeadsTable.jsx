@@ -1,88 +1,72 @@
-import {
-  flexRender,
-  getCoreRowModel,
-  useReactTable,
-} from "@tanstack/react-table";
-import React from "react";
+import React, { useState } from "react";
+import { useGetLeads } from "../../../hooks/Leads/useGetLeads";
+import { useSelector } from "react-redux";
+import { Link } from "../../../assets";
+import { Button } from "../../ui/button";
 
 const LeadsTable = () => {
-  const data = [
-    {
-      id: 1,
-      leadName: "Kumar Properties",
-      phone: "9487758778",
-      email: "abc@gmail.com",
-      salesPerson: "Sam",
-      status: "Assigned",
-    },
-    {
-      id: 2,
-      leadName: "XYZ Corp",
-      phone: "9876543210",
-      email: "xyz@gmail.com",
-      salesPerson: "John",
-      status: "Completed",
-    },
-    {
-      id: 3,
-      leadName: "ABC Ltd",
-      phone: "8796541230",
-      email: "abc@gmail.com",
-      salesPerson: "Emma",
-      status: "Completed",
-    },
-  ];
+  const [selectedLead, setSelectedLead] = useState(null);
+  const status = useSelector((state) => state.leads.status);
+  const { leadsData, totalPages, isLoading, error } = useGetLeads(1, status);
 
-  const baseColumns = [
-    { header: "Id", accessorKey: "id" },
-    { header: "Lead Name", accessorKey: "leadName" },
-    { header: "Phone Number", accessorKey: "phone" },
-    { header: "Email", accessorKey: "email" },
-    { header: "Sales Person", accessorKey: "salesPerson" },
-    { header: "Status", accessorKey: "status" },
-  ];
+  if (leadsData?.length === 0) {
+    return <p>No Data Available</p>;
+  }
 
-  // Condition for Hiding the Status Column if the Completed
+  console.log("Selected Lead", selectedLead);
 
-  const columns = "Complected"
-    ? baseColumns
-    : [...baseColumns, { header: "Action", accessorKey: "action" }];
-
-  const table = useReactTable({
-    data,
-    columns,
-    getCoreRowModel: getCoreRowModel(),
-  });
   return (
-    <div>
-      <table className="min-w-full rounded-md">
-        <thead className="bg-gray-100">
-          {table?.getHeaderGroups().map((headerGroup) => (
-            <tr key={headerGroup?.id}>
-              {headerGroup?.headers?.map((header) => (
-                <th key={header?.id} className="p-2 text-left">
-                  {flexRender(
-                    header.column.columnDef.header,
-                    header.getContext()
-                  )}
-                </th>
-              ))}
+    <>
+      <div className="overflow-x-auto">
+        <table className="min-w-full bg-white shadow-md rounded-lg text-sm">
+          <thead className="bg-gray-100">
+            <tr>
+              <th className="p-2 text-left font-medium">Id</th>
+              <th className="p-2 text-left font-medium">Lead Name</th>
+              <th className="p-2 text-left font-medium">Phone Number</th>
+              <th className="p-2 text-left font-medium">Email</th>
+              <th className="p-2 text-left font-medium">Sales Person</th>
+              <th className="p-2 text-left font-medium">Status</th>
+              {status === "assigned" && (
+                <th className="p-2 text-left font-medium">Action</th>
+              )}
             </tr>
-          ))}
-        </thead>
-        <tbody>
-          {table.getRowModel().rows.map((row) => (
-            <tr key={row.id}>
-              {row.getVisibleCells().map((cell) => (
-                <td key={cell.id} className="border-y-2 px-3 py-4">
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
+          </thead>
+          <tbody>
+            {leadsData.map((lead, index) => (
+              <tr key={lead.id} className="border-b text-[#757575]">
+                <td className="p-3">{index + 1}</td>
+                <td className="p-3">{lead?.name}</td>
+                <td className="p-3">{lead?.mobileNumber}</td>
+                <td className="p-3">{lead?.email}</td>
+                <td className="p-3">{lead?.salesPerson}</td>
+                <td className="p-3 text-[#D0AF6E]">
+                  {lead?.status === "ASSIGNED"
+                    ? "Assigned"
+                    : lead?.status === "COMPLETED"
+                    ? "Completed"
+                    : lead?.status}
                 </td>
-              ))}
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+                {status === "assigned" && (
+                  <td className="p-3">
+                    <Button
+                      size="icon"
+                      className="bg-[#C99227] rounded-xl shadow-none"
+                      onClick={() => {
+                        setDialogOpen(true);
+                        setSelectedLead(lead);
+                      }}
+                    >
+                      <img src={Link} alt="link" />
+                    </Button>
+                  </td>
+                )}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </>
   );
 };
 
