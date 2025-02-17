@@ -3,6 +3,7 @@ import {
   CRManager,
   Dashboard,
   Leads,
+  LeadsDetails,
   Login,
   SalesPerson,
 } from "./pages";
@@ -49,6 +50,10 @@ const router = createBrowserRouter([
       {
         path: "/app/assign-leads",
         element: <AssignLead />,
+      },
+      {
+        path: "/app/leads-details/:leadId",
+        element: <LeadsDetails />,
       },
     ],
   },

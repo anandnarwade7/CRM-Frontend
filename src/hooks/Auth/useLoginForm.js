@@ -30,6 +30,7 @@ export const useLoginForm = () => {
           duration: 2000,
         });
         sessionStorage.setItem("userId", data?.id);
+        sessionStorage.setItem("role", data?.role);
         navigate("/app/dashboard");
       }
     },

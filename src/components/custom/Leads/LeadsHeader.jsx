@@ -11,10 +11,13 @@ import {
 } from "../../ui/select";
 import { useDispatch } from "react-redux";
 import { setStatus } from "../../../Store/Slices/Leads/leadsSlice";
+import { useUserRole } from "../../../hooks/use-userrole";
 
 const LeadsHeader = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const userRole = useUserRole();
+  console.log("Userole", userRole);
 
   const handleStatusChange = (value) => {
     dispatch(setStatus(value));
@@ -30,26 +33,28 @@ const LeadsHeader = () => {
         </Button>
       </div>
       {/* Lower Header */}
-      <div className="flex justify-between my-3">
-        <div>
-          <Select onValueChange={handleStatusChange}>
-            <SelectTrigger className="w-[180px] shadow-none border-0 focus:ring-0 bg-[#FFD073] text-[#FFFFFF]">
-              <SelectValue placeholder="Select Status" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="assigned">Assigned</SelectItem>
-              <SelectItem value="completed">Completed</SelectItem>
-            </SelectContent>
-          </Select>
+      {userRole === "ADMIN" && (
+        <div className="flex justify-between my-3">
+          <div>
+            <Select onValueChange={handleStatusChange}>
+              <SelectTrigger className="w-[180px] shadow-none border-0 focus:ring-0 bg-[#FFD073] text-[#FFFFFF]">
+                <SelectValue placeholder="Select Status" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="assigned">Assigned</SelectItem>
+                <SelectItem value="completed">Completed</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <Button
+            onClick={() => navigate("/app/assign-leads")}
+            className="bg-[#C99227] shadow-none"
+          >
+            <Plus size={18} />
+            Assign Leads
+          </Button>
         </div>
-        <Button
-          onClick={() => navigate("/app/assign-leads")}
-          className="bg-[#C99227] shadow-none"
-        >
-          <Plus size={18} />
-          Assign Leads
-        </Button>
-      </div>
+      )}
     </section>
   );
 };

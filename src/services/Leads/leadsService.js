@@ -1,6 +1,5 @@
 import axios from "axios";
 import { BASE_URL } from "../../utils/constant";
-import { data } from "autoprefixer";
 
 // Service for fetching only sales person
 export const getSales = async () => {
@@ -28,5 +27,34 @@ export const getLeads = async (page, status) => {
     return response?.data;
   } catch (error) {
     console.log("Error fetching Leads Table Data", error);
+  }
+};
+
+// Service for getting leads by Id
+export const getLeadsById = async (id) => {
+  try {
+    const response = await axios.get(`${BASE_URL}/import/getLeadsById/${id}`, {
+      withCredentials: true,
+    });
+
+    return response?.data;
+  } catch (error) {
+    console.log("Error fetching Leads Id", error);
+  }
+};
+
+// Service for getting sales person leads data
+export const getSalesLeads = async (userId, page) => {
+  try {
+    const response = await axios.get(`${BASE_URL}/import/leads`, {
+      params: {
+        userId: userId,
+        page: page,
+      },
+      withCredentials: true,
+    });
+    return response?.data;
+  } catch (error) {
+    console.log("Error fetching Sales Leads", error);
   }
 };

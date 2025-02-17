@@ -21,9 +21,12 @@ import {
   SupportBg,
   Logout,
 } from "../../../assets/index";
+import { useEffect, useState } from "react";
+import { useUserRole } from "../../../hooks/use-userrole";
 
 const Sidebar = () => {
   const location = useLocation();
+  const userRole = useUserRole();
 
   // Navigation Links
   const menuItems = [
@@ -32,50 +35,71 @@ const Sidebar = () => {
       path: "/app/dashboard",
       img: Dashboard,
       activeImg: DashboardBg,
+      roles: ["ADMIN", "SALES", "CRM"],
     },
     {
       name: "Sales Person",
       path: "/app/sales-person",
       img: Sales,
       activeImg: SalesBg,
+      roles: ["ADMIN"],
     },
     {
       name: "CR Manager",
       path: "/app/cr-manager",
       img: Account,
       activeImg: AccountBg,
+      roles: ["ADMIN"],
     },
     {
       name: "Leads",
       path: "/app/leads",
       img: List,
       activeImg: ListBg,
+      roles: ["ADMIN", "SALES"],
     },
     {
       name: "Client",
       path: "/client",
       img: Client,
       activeImg: ClientBg,
+      roles: ["ADMIN", "CRM"],
     },
     {
       name: "Projects",
       path: "/projects",
       img: Project,
       activeImg: ProjectBg,
+      roles: ["ADMIN"],
     },
     {
       name: "Transactions",
       path: "/transactions",
       img: Money,
       activeImg: MoneyBg,
+      roles: ["ADMIN", "CRM"],
     },
     {
       name: "Support",
       path: "/support",
       img: Support,
       activeImg: SupportBg,
+      roles: ["ADMIN", "SALES", "CRM"],
     },
   ];
+
+  // Filtering out the Sidebar based on the role
+  const filteredMenuItem = menuItems?.filter((item) =>
+    item?.roles.includes(userRole)
+  );
+
+  // To show whom user logged in like user is admin or sales-person
+  const user =
+    userRole === "ADMIN"
+      ? "Admin"
+      : userRole === "SALES"
+      ? "Sales Person"
+      : "CRM";
 
   return (
     <>
@@ -87,13 +111,13 @@ const Sidebar = () => {
 
         <div className="mx-4">
           <Badge className="bg-[#FFF7E7] text-[#343434] px-4 py-2 text-base rounded-md shadow-none hover:bg-[#FFF7E7]">
-            Admin
+            {user}
           </Badge>
         </div>
 
         {/* Navigation Menu */}
         <nav className="flex flex-col space-y-2 p-4">
-          {menuItems.map((item) => {
+          {filteredMenuItem?.map((item) => {
             const isActive = location.pathname === item.path;
 
             return (

@@ -3,11 +3,21 @@ import { useGetLeads } from "../../../hooks/Leads/useGetLeads";
 import { useSelector } from "react-redux";
 import { Link } from "../../../assets";
 import { Button } from "../../ui/button";
+import { useNavigate } from "react-router";
+import { useUserRole } from "../../../hooks/use-userrole";
+import { useGetSalesLeads } from "../../../hooks/Leads/useGetSalesLeads";
+import { useUserId } from "../../../hooks/use-user-id";
 
 const LeadsTable = () => {
   const [selectedLead, setSelectedLead] = useState(null);
   const status = useSelector((state) => state.leads.status);
-  const { leadsData, totalPages, isLoading, error } = useGetLeads(1, status);
+  const userRole = useUserRole();
+  const navigate = useNavigate();
+  const userId = useUserId();
+  const { leadsData, totalPages, isLoading, error } =
+    userRole === "ADMIN" ? useGetLeads(1, status) : useGetSalesLeads(userId, 1);
+
+  console.log("Sales Leads Data", leadsData);
 
   if (leadsData?.length === 0) {
     return <p>No Data Available</p>;
@@ -18,7 +28,7 @@ const LeadsTable = () => {
   return (
     <>
       <div className="overflow-x-auto">
-        <table className="min-w-full bg-white shadow-md rounded-lg text-sm">
+        <table className="min-w-full bg-white shadow-md rounded-lg text-sm my-4">
           <thead className="bg-gray-100">
             <tr>
               <th className="p-2 text-left font-medium">Id</th>
@@ -53,8 +63,8 @@ const LeadsTable = () => {
                       size="icon"
                       className="bg-[#C99227] rounded-xl shadow-none"
                       onClick={() => {
-                        setDialogOpen(true);
                         setSelectedLead(lead);
+                        navigate(`/app/leads-details/${lead?.id}`);
                       }}
                     >
                       <img src={Link} alt="link" />
