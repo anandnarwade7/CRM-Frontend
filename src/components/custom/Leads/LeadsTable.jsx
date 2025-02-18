@@ -63,8 +63,12 @@ const LeadsTable = () => {
                       size="icon"
                       className="bg-[#C99227] rounded-xl shadow-none"
                       onClick={() => {
-                        setSelectedLead(lead);
-                        navigate(`/app/leads-details/${lead?.id}`);
+                        // setSelectedLead(lead);
+                        if (userRole === "ADMIN") {
+                          navigate(`/app/leads-details/${lead?.id}`);
+                        } else {
+                          navigate(`/app/leads-details-sales/${lead?.id}`);
+                        }
                       }}
                     >
                       <img src={Link} alt="link" />

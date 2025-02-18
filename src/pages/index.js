@@ -14,6 +14,7 @@ import CRManager from "./CR Manager/CRManager";
 import Leads from "./Leads/Leads";
 import AssignLead from "./Leads/AssignLead";
 import LeadsDetails from "./Leads/LeadsDetails";
+import SalesLeadsDetails from "./Leads/SalesLeadsDetails";
 
 export {
   Login,
@@ -23,4 +24,5 @@ export {
   Leads,
   AssignLead,
   LeadsDetails,
+  SalesLeadsDetails,
 };

@@ -10,7 +10,7 @@ const LeadsDetails = () => {
   const { data, isLoading, error } = useGetLeadsById(leadId);
 
   return (
-    <div>
+    <div className="w-full rounded-xl bg-white h-full px-6 py-3">
       <div className="flex items-center gap-4 mb-8">
         <Link to={"/app/leads"}>
           <img src={Back} alt="back" />

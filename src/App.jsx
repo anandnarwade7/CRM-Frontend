@@ -5,6 +5,7 @@ import {
   Leads,
   LeadsDetails,
   Login,
+  SalesLeadsDetails,
   SalesPerson,
 } from "./pages";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -54,6 +55,10 @@ const router = createBrowserRouter([
       {
         path: "/app/leads-details/:leadId",
         element: <LeadsDetails />,
+      },
+      {
+        path: "/app/leads-details-sales/:leadId",
+        element: <SalesLeadsDetails />,
       },
     ],
   },
