@@ -7,17 +7,21 @@ import { useNavigate } from "react-router";
 import { useUserRole } from "../../../hooks/use-userrole";
 import { useGetSalesLeads } from "../../../hooks/Leads/useGetSalesLeads";
 import { useUserId } from "../../../hooks/use-user-id";
+import TablePagination from "../TablePagination/TablePagination";
 
 const LeadsTable = () => {
   const [selectedLead, setSelectedLead] = useState(null);
+  const [page, setPage] = useState(1);
   const status = useSelector((state) => state.leads.status);
   const userRole = useUserRole();
   const navigate = useNavigate();
   const userId = useUserId();
   const { leadsData, totalPages, isLoading, error } =
-    userRole === "ADMIN" ? useGetLeads(1, status) : useGetSalesLeads(userId, 1);
+    userRole === "ADMIN"
+      ? useGetLeads(page, status)
+      : useGetSalesLeads(userId, 1);
 
-  console.log("Sales Leads Data", leadsData);
+  console.log("Total Pages in the Leads", totalPages);
 
   if (leadsData?.length === 0) {
     return <p>No Data Available</p>;
@@ -80,6 +84,7 @@ const LeadsTable = () => {
           </tbody>
         </table>
       </div>
+      <TablePagination totalPages={totalPages} page={page} setPage={setPage} />
     </>
   );
 };

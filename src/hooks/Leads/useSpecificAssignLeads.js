@@ -118,6 +118,12 @@ export const useSpecificAssignLeads = () => {
           title: "Assign the Leads Successfully",
           duration: 2000,
         });
+        setSelectedSalesPersons([]);
+        setFile(null);
+        setErrors({
+          salesPerson: "",
+          file: "",
+        });
       }
     },
     onError: (error) => {
@@ -131,6 +137,12 @@ export const useSpecificAssignLeads = () => {
           title: "Error assigning leads",
           description: error.response?.data || error.message,
           duration: 2000,
+        });
+        setSelectedSalesPersons([]);
+        setFile(null);
+        setErrors({
+          salesPerson: "",
+          file: "",
         });
       }
     },

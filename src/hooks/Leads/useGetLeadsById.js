@@ -3,7 +3,7 @@ import { getLeadsById } from "../../services/Leads/leadsService";
 
 export const useGetLeadsById = (id) => {
   const { data, isLoading, error } = useQuery({
-    queryKey: ["leadById"],
+    queryKey: ["leadById", id],
     queryFn: () => getLeadsById(id),
   });
 

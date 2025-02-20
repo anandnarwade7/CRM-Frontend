@@ -3,9 +3,11 @@ import { useFieldArray, useForm } from "react-hook-form";
 import { salesLeadsSchema } from "../../schemas/Leads/leads";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
+import { useToast } from "@/hooks/use-toast";
 import { BASE_URL } from "../../utils/constant";
 
 export const usePostSalesLeads = (leadId) => {
+  // Form Handling using React Hook Form for dynamic fields we use useFieldsArray
   const {
     register,
     handleSubmit,
@@ -23,10 +25,13 @@ export const usePostSalesLeads = (leadId) => {
     },
   });
 
+  // For Dynamic Custom Fields
   const { fields, append, remove } = useFieldArray({
     control,
     name: "customFields",
   });
+
+  const { toast } = useToast();
 
   const postLead = async (formData) => {
     const response = await axios.post(
@@ -48,6 +53,7 @@ export const usePostSalesLeads = (leadId) => {
   });
 
   const onSubmit = (data) => {
+    // Before Submitting the Data we process the data and then send via formData.
     const key = data?.customFields?.map((item) => item?.label) || [];
     const value = data?.customFields?.map((item) => item?.value) || [];
     const comment = data?.note;
@@ -62,10 +68,19 @@ export const usePostSalesLeads = (leadId) => {
     mutation.mutate(formData, {
       onSuccess: (response) => {
         console.log("POST SALES LEADS", response);
-        reset();
+        // reset();
+        toast({
+          title: "Convert Lead Successfully",
+          duration: 2000,
+        });
       },
       onError: (error) => {
         console.log("API ERROR", error);
+        toast({
+          variant: "destructive",
+          title: "Not Converted Leads",
+          duration: 2000,
+        });
       },
     });
   };

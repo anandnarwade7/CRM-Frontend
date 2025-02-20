@@ -2,6 +2,11 @@
 import LoginImage from "./Img/login.jpg";
 
 // Dashboard
+import DashboardSales from "./Icons/dashboard-sales.svg";
+import DashboardTime from "./Icons/dashboard-time.svg";
+import DashboardList from "./Icons/dashboard-list.svg";
+
+// Sidebar
 import ProfilePic from "./Img/ProfilePic.png";
 import Dashboard from "./Icons/dashboard.svg";
 import DashboardBg from "./Icons/dashboardBg.svg";
@@ -51,4 +56,7 @@ export {
   Notification,
   Back,
   Link,
+  DashboardSales,
+  DashboardTime,
+  DashboardList,
 };

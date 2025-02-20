@@ -60,7 +60,7 @@ const Sidebar = () => {
     },
     {
       name: "Client",
-      path: "/client",
+      path: "/app/client",
       img: Client,
       activeImg: ClientBg,
       roles: ["ADMIN", "CRM"],

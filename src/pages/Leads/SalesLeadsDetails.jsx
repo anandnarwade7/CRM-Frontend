@@ -20,10 +20,13 @@ import { Controller } from "react-hook-form";
 import { useGetLeadsById } from "../../hooks/Leads/useGetLeadsById";
 
 const SalesLeadsDetails = () => {
+  // Geting the ID from the URL
   const { leadId } = useParams();
 
+  // Fetching Data as per Id
   const { data, isLoading, error } = useGetLeadsById(leadId);
 
+  // Custom Hook for Handling Form and Form Submission
   const {
     register,
     handleSubmit,
@@ -37,33 +40,36 @@ const SalesLeadsDetails = () => {
     remove,
   } = usePostSalesLeads(leadId);
 
+  // Fetching the Data and set the values in the form
   useEffect(() => {
     if (data) {
       setValue("status", data?.leadStatus || "COLD");
-      setValue(
-        "note",
-        data?.conversationLogs?.map((log) => log.comment).join("\n") || ""
-      );
 
-      //   if (data?.dynamicFields) {
-      //     const dynamicFieldsArray = Object.entries(data?.dynamicFields).map(
-      //       ([label, value]) => ({ label, value })
-      //     );
-      //     dynamicFieldsArray.forEach((field) => append(field));
-      //   }
+      const lastComment =
+        data?.conversationLogs?.length > 0
+          ? data?.conversationLogs[data?.conversationLogs?.length - 1]?.comment
+          : "";
 
-      if (data.dynamicFields && Object.keys(data.dynamicFields).length > 0) {
-        const existingFields = getValues("customFields") || [];
+      setValue("note", lastComment);
+      setValue("customFields", []);
 
-        // Avoid duplicating existing fields
-        if (existingFields.length === 0) {
-          Object.entries(data.dynamicFields).forEach(([label, value]) => {
-            append({ label, value });
-          });
-        }
+      // setValue(
+      //   "note",
+      //   data?.conversationLogs?.map((log) => log.comment).join("\n") || ""
+      // );
+
+      if (data?.dynamicFields?.length > 0) {
+        // Convert dynamic fields into key-value array format
+        const formattedFields = data.dynamicFields
+          .flatMap((field) =>
+            Object.entries(field).map(([label, value]) => ({ label, value }))
+          )
+          .slice(0, 3); // Ensure max 3 fields
+
+        setValue("customFields", formattedFields);
       }
     }
-  }, [data, setValue, append, getValues]);
+  }, [data, setValue, append, leadId]);
 
   return (
     <div className="w-full rounded-xl bg-white h-full px-6 py-3">
@@ -173,6 +179,7 @@ const SalesLeadsDetails = () => {
               </div>
               <Button
                 variant="outline"
+                type="button"
                 size="icon"
                 className="text-red-500 border-red-500 hover:bg-red-100"
                 onClick={() => remove(index)}

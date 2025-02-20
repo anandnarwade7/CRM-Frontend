@@ -16,6 +16,9 @@ import AssignLead from "./Leads/AssignLead";
 import LeadsDetails from "./Leads/LeadsDetails";
 import SalesLeadsDetails from "./Leads/SalesLeadsDetails";
 
+// Client
+import Client from "./Client/Client";
+
 export {
   Login,
   Dashboard,
@@ -25,4 +28,5 @@ export {
   AssignLead,
   LeadsDetails,
   SalesLeadsDetails,
+  Client,
 };

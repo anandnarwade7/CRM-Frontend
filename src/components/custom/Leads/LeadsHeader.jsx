@@ -17,7 +17,6 @@ const LeadsHeader = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const userRole = useUserRole();
-  console.log("Userole", userRole);
 
   const handleStatusChange = (value) => {
     dispatch(setStatus(value));
