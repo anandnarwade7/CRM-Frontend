@@ -20,7 +20,6 @@ export const useSalesPerson = (role) => {
 
   // Calling Custom hook for getting userId
   const userId = useUserId();
-  console.log("User ID", userId);
 
   // Mutation for Adding Sales Person
   const mutation = useMutation({

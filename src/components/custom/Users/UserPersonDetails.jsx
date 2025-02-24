@@ -5,6 +5,7 @@ import { Link, useLocation, useNavigate } from "react-router";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useSalesPerson } from "../../../hooks/Sales/useSalesPerson";
+import { Back } from "../../../assets";
 
 const UserPersonDetails = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -28,12 +29,14 @@ const UserPersonDetails = () => {
           </span>
         </Link> */}
 
-        <Button onClick={() => navigate(-1)} className="shadow-none">
-          <ArrowLeft size={5} color="#5B5959" />
+        <div className="flex items-center">
+          <Button onClick={() => navigate(-1)} className="shadow-none">
+            <img src={Back} alt="back" />
+          </Button>
           <span className="text-2xl font-semibold text-[#707070]">
             {detailTitle}
           </span>
-        </Button>
+        </div>
       </div>
 
       <form onSubmit={handleSubmit(onSubmit)}>
