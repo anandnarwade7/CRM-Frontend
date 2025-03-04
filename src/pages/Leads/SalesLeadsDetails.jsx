@@ -20,6 +20,7 @@ import { Controller } from "react-hook-form";
 import { useGetLeadsById } from "../../hooks/Leads/useGetLeadsById";
 
 const SalesLeadsDetails = () => {
+  const [isStatusOpen, setIsStatusOpen] = useState(false);
   // Geting the ID from the URL
   const { leadId } = useParams();
 
@@ -38,12 +39,12 @@ const SalesLeadsDetails = () => {
     fields,
     append,
     remove,
-  } = usePostSalesLeads(leadId);
+  } = usePostSalesLeads(leadId, data, isStatusOpen);
 
   // Fetching the Data and set the values in the form
   useEffect(() => {
     if (data) {
-      setValue("status", data?.leadStatus || "COLD");
+      setValue("status", data?.status || "COLD");
 
       const lastComment =
         data?.conversationLogs?.length > 0
@@ -60,11 +61,9 @@ const SalesLeadsDetails = () => {
 
       if (data?.dynamicFields?.length > 0) {
         // Convert dynamic fields into key-value array format
-        const formattedFields = data.dynamicFields
-          .flatMap((field) =>
-            Object.entries(field).map(([label, value]) => ({ label, value }))
-          )
-          .slice(0, 3); // Ensure max 3 fields
+        const formattedFields = data.dynamicFields.flatMap((field) =>
+          Object.entries(field).map(([label, value]) => ({ label, value }))
+        );
 
         setValue("customFields", formattedFields);
       }
@@ -84,10 +83,11 @@ const SalesLeadsDetails = () => {
           </div>
           <Button
             className="shadow-none bg-[#C99227] p-5 text-sm"
-            type="submit"
+            type="button"
+            onClick={() => setIsStatusOpen(true)}
           >
             <Plus />
-            Convert Lead
+            Lead Closer
           </Button>
         </div>
         {/* Main Content */}
@@ -96,36 +96,44 @@ const SalesLeadsDetails = () => {
           <LeadsDetailsInput label="Lead Name" data={data?.name} />
           <LeadsDetailsInput label="Mobile Number" data={data?.mobileNumber} />
           <LeadsDetailsInput label="Email" data={data?.email} />
-          <div>
-            <Label
-              htmlFor="status"
-              className="text-[#233A48] text-sm font-normal"
-            >
-              Status
-            </Label>
-            <Controller
-              name="status"
-              control={control}
-              render={({ field }) => (
-                <Select onValueChange={field.onChange} value={field.value}>
-                  <SelectTrigger
-                    className="focus-visible:ring-0 shadow-none border-[1px] border-[#B0A7A7] text-[#757575]"
-                    id="status"
+          {(data?.status !== "ASSIGNED" || isStatusOpen) && (
+            <div>
+              <Label
+                htmlFor="status"
+                className="text-[#233A48] text-sm font-normal"
+              >
+                Lead Disposal
+              </Label>
+              <Controller
+                name="status"
+                control={control}
+                render={({ field }) => (
+                  <Select
+                    onValueChange={(value) => {
+                      field.onChange(value);
+                    }}
+                    value={field.value}
                   >
-                    <SelectValue placeholder="Select Status" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="COLD">Cold</SelectItem>
-                    <SelectItem value="WARM">Warm</SelectItem>
-                    <SelectItem value="HOT">Hot</SelectItem>
-                  </SelectContent>
-                </Select>
+                    <SelectTrigger
+                      className="focus-visible:ring-0 shadow-none border-[1px] border-[#B0A7A7] text-[#757575]"
+                      id="status"
+                    >
+                      <SelectValue placeholder="Select Lead Disposal" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="COLD">Cold</SelectItem>
+                      <SelectItem value="HOT">Hot</SelectItem>
+                      <SelectItem value="CONVERTED">Sales Completed</SelectItem>
+                      <SelectItem value="REJECTED">Rejected</SelectItem>
+                    </SelectContent>
+                  </Select>
+                )}
+              />
+              {errors.status && (
+                <p className="text-red-500 text-sm">{errors.status.message}</p>
               )}
-            />
-            {errors.status && (
-              <p className="text-red-500 text-sm">{errors.status.message}</p>
-            )}
-          </div>
+            </div>
+          )}
         </div>
         <div className="my-7">
           <Label htmlFor="note" className="text-[#233A48] text-sm font-normal">
@@ -145,14 +153,14 @@ const SalesLeadsDetails = () => {
 
         <div className="my-4">
           {fields?.map((field, index) => (
-            <div key={index} className="flex justify-between gap-4 mb-6">
+            <div key={index} className="flex justify-between gap-4 mb-4">
               <div className="w-full mb-3 flex flex-col gap-2">
                 <div>
                   <Input
                     type="text"
                     placeholder="label"
                     {...register(`customFields.${index}.label`)}
-                    className="border border-gray-300 p-2 rounded shadow-none"
+                    className="border border-gray-300 p-2 rounded shadow-none focus-visible:ring-0"
                     maxLength={30}
                   />
 
@@ -167,7 +175,7 @@ const SalesLeadsDetails = () => {
                   type="text"
                   placeholder="Value"
                   {...register(`customFields.${index}.value`)}
-                  className="border border-gray-300 p-2 rounded shadow-none"
+                  className="border border-gray-300 p-2 rounded shadow-none focus-visible:ring-0"
                   maxLength={30}
                 />
 
@@ -195,18 +203,24 @@ const SalesLeadsDetails = () => {
           )}
         </div>
 
-        {fields?.length < 3 && (
-          <div>
-            <Button
-              className="text-[#C99227] bg-transparent shadow-none"
-              type="button"
-              onClick={() => append({ label: "", value: "" })}
-            >
-              <Plus />
-              Add Custom Field
-            </Button>
-          </div>
-        )}
+        <div>
+          <Button
+            className="text-[#C99227] bg-transparent shadow-none"
+            type="button"
+            onClick={() => append({ label: "", value: "" })}
+          >
+            <Plus />
+            Add Custom Field
+          </Button>
+        </div>
+        <div>
+          <Button
+            className="shadow-none bg-[#C99227] p-5 text-sm w-full max-w-[10rem] mt-10"
+            type="submit"
+          >
+            Update
+          </Button>
+        </div>
       </form>
     </div>
   );

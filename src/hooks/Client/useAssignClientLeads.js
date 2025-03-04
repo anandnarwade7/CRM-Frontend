@@ -1,34 +1,34 @@
 import { useEffect, useState } from "react";
-import { useGetSales } from "./useGetSales";
 import axios from "axios";
 import { BASE_URL } from "../../utils/constant";
-import { useUserId } from "../../hooks/use-user-id";
+import { useUserId } from "../use-user-id";
 import { useMutation } from "@tanstack/react-query";
-import { useToast } from "../../hooks/use-toast";
+import { useToast } from "../use-toast";
+import { useGetCRM } from "../Client/useGetCRM";
 
-export const useSpecificAssignLeads = () => {
+export const useAssignClientLeads = () => {
   const [distribution, setDistribution] = useState("Specific");
   const [file, setFile] = useState(null);
-  const [selectedSalesPersons, setSelectedSalesPersons] = useState([]);
+  const [selectedCRManagers, setSelectedCRManagers] = useState([]);
   const [errors, setErrors] = useState({
-    salesPerson: "",
+    crManager: "",
     file: "",
   });
 
   // Reset the file, selectedPerson array and errors
   useEffect(() => {
     if (distribution) {
-      setSelectedSalesPersons([]);
+      setSelectedCRManagers([]);
       setFile(null);
       setErrors({
-        salesPerson: "",
+        selectedCRManagers: "",
         file: "",
       });
     }
   }, [distribution]);
 
   // Custom hook for getting sales person data
-  const { data: salesPersons, error, isLoading } = useGetSales("SALES");
+  const { data: crm, error, isLoading } = useGetCRM("CRM");
   const userId = useUserId();
   const { toast } = useToast();
 
@@ -51,12 +51,12 @@ export const useSpecificAssignLeads = () => {
 
   // Handle checkbox change (select/unselect salesperson)
   const handleCheckboxChange = (id) => {
-    setErrors((prev) => ({ ...prev, salesPerson: "" }));
+    setErrors((prev) => ({ ...prev, crManager: "" }));
 
-    setSelectedSalesPersons((prevState) => {
+    setSelectedCRManagers((prevState) => {
       if (prevState.includes(id)) {
         // If the ID is already selected, unselect it
-        return prevState.filter((salesPersonId) => salesPersonId !== id);
+        return prevState.filter((crManagerId) => crManagerId !== id);
       } else {
         // If the ID is not selected, add it
         return [...prevState, id];
@@ -68,13 +68,13 @@ export const useSpecificAssignLeads = () => {
   const validateForm = () => {
     let isValid = true;
     const newErrors = {
-      salesPerson: "",
+      crManager: "",
       file: "",
     };
 
     if (distribution === "Specific") {
-      if (selectedSalesPersons.length === 0) {
-        newErrors.salesPerson = "Please select at least one sales person";
+      if (selectedCRManagers.length === 0) {
+        newErrors.crManager = "Please select at least one sales person";
         isValid = false;
       }
     }
@@ -96,11 +96,11 @@ export const useSpecificAssignLeads = () => {
       formData.append("file", file);
 
       if (distribution === "Specific") {
-        formData.append("assignedTo", selectedSalesPersons);
+        formData.append("assignedTo", selectedCRManagers);
       }
 
       const response = await axios.post(
-        `${BASE_URL}/import/upload-template`,
+        `${BASE_URL}/clients/upload`,
         formData,
         {
           withCredentials: true,
@@ -118,10 +118,10 @@ export const useSpecificAssignLeads = () => {
           title: "Assign the Leads Successfully",
           duration: 2000,
         });
-        setSelectedSalesPersons([]);
+        setSelectedCRManagers([]);
         setFile(null);
         setErrors({
-          salesPerson: "",
+          crManager: "",
           file: "",
         });
       }
@@ -138,10 +138,10 @@ export const useSpecificAssignLeads = () => {
           description: error.response?.data || error.message,
           duration: 2000,
         });
-        setSelectedSalesPersons([]);
+        selectedCRManagers([]);
         setFile(null);
         setErrors({
-          salesPerson: "",
+          crManager: "",
           file: "",
         });
       }
@@ -160,9 +160,9 @@ export const useSpecificAssignLeads = () => {
     setDistribution,
     file,
     handleFileChange,
-    selectedSalesPersons,
+    selectedCRManagers,
     handleCheckboxChange,
-    salesPersons,
+    crm,
     isLoading,
     error,
     errors,

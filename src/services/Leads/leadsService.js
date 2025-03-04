@@ -2,9 +2,9 @@ import axios from "axios";
 import { BASE_URL } from "../../utils/constant";
 
 // Service for fetching only sales person
-export const getSales = async () => {
+export const getSales = async (role) => {
   try {
-    const response = await axios.get(`${BASE_URL}/user/getSales`, {
+    const response = await axios.get(`${BASE_URL}/user/getSales/${role}`, {
       withCredentials: true,
     });
     console.log("Getting sales", response);
@@ -52,6 +52,18 @@ export const getSalesLeads = async (userId, page) => {
         page: page,
       },
       withCredentials: true,
+    });
+    return response?.data;
+  } catch (error) {
+    console.log("Error fetching Sales Leads", error);
+  }
+};
+
+// Service for Downloading the template while assigning the leads
+export const getDownloadTemplate = async () => {
+  try {
+    const response = await axios.get(`${BASE_URL}/import/download-template`, {
+      responseType: "blob",
     });
     return response?.data;
   } catch (error) {

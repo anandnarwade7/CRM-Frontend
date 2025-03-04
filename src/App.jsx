@@ -1,6 +1,8 @@
 import {
+  AssignClientLead,
   AssignLead,
   Client,
+  ClientsDetails,
   CRManager,
   Dashboard,
   Leads,
@@ -64,6 +66,14 @@ const router = createBrowserRouter([
       {
         path: "/app/client",
         element: <Client />,
+      },
+      {
+        path: "/app/client-leads",
+        element: <AssignClientLead />,
+      },
+      {
+        path: "/app/client-details",
+        element: <ClientsDetails />,
       },
     ],
   },

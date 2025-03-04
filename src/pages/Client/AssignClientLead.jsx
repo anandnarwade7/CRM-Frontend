@@ -1,37 +1,37 @@
 import { Link } from "react-router";
-import { Back } from "../../assets";
-import { RadioGroup } from "../../components/ui/radio-group";
 import { Button } from "../../components/ui/button";
+import { RadioGroup } from "../../components/ui/radio-group";
 import SpecificLead from "../../components/custom/Leads/SpecificLead";
 import EquallyLead from "../../components/custom/Leads/EquallyLead";
-import { useSpecificAssignLeads } from "../../hooks/Leads/useSpecificAssignLeads";
-import { Loader2 } from "lucide-react";
-import { useDownloadTemplate } from "../../hooks/Leads/useDownloadTemplate";
+import { Back } from "../../assets";
+import { useAssignClientLeads } from "../../hooks/Client/useAssignClientLeads";
 import { useState } from "react";
+import { useExportClientLeads } from "../../hooks/Client/useExportClientLeads";
+import { Loader2 } from "lucide-react";
 
-const AssignLead = () => {
+const AssignClientLead = () => {
   const {
     distribution,
     setDistribution,
     handleFileChange,
-    selectedSalesPersons,
+    selectedCRManagers,
     handleCheckboxChange,
-    salesPersons,
+    crm,
     isLoading,
     error,
     errors,
     handleSubmit,
     isSubmitting,
-  } = useSpecificAssignLeads();
+  } = useAssignClientLeads();
 
   const [isDownloading, setIsDownloading] = useState(false);
-  const { mutate: downloadTemplate } = useDownloadTemplate(setIsDownloading);
+  const { mutate: downloadTemplate } = useExportClientLeads(setIsDownloading);
 
   return (
     <section className="bg-white w-full p-3 rounded-lg h-full">
       {/* Header */}
       <div>
-        <Link className="flex items-center gap-6" to="/app/leads">
+        <Link className="flex items-center gap-6" to="/app/client">
           <img src={Back} alt="backicon" />
           <span className="font-medium text-[#707070] text-2xl">Add Leads</span>
         </Link>
@@ -98,7 +98,7 @@ const AssignLead = () => {
           {isDownloading ? (
             <Loader2 className="animate-spin" size={24} />
           ) : (
-            "Download Template"
+            "Export Leads"
           )}
         </Button>
       </div>
@@ -106,25 +106,25 @@ const AssignLead = () => {
         {distribution === "Specific" ? (
           <>
             <SpecificLead
-              salesPersons={salesPersons}
+              salesPersons={crm}
               isLoading={isLoading}
               error={error}
-              selectedSalesPersons={selectedSalesPersons}
+              selectedSalesPersons={selectedCRManagers}
               handleCheckboxChange={handleCheckboxChange}
               handleFileChange={handleFileChange}
               errors={errors}
-              selectLabel={"Select Sales Person"}
-              selectPlaceholder={"Select Sales Person"}
-              fileInputLabel={"Lead Files"}
+              selectLabel={"Select Client Manager"}
+              selectPlaceholder={"Select"}
+              fileInputLabel={"Clients Files"}
             />
           </>
         ) : (
           <EquallyLead
-            salesPersons={salesPersons}
+            salesPersons={crm}
             handleFileChange={handleFileChange}
             errors={errors}
-            selectLabel={"Total No. of Sales Person"}
-            fileInputLabel={"Lead Files"}
+            selectLabel={"Total No. of CR Manager"}
+            fileInputLabel={"Clients Files"}
           />
         )}
       </div>
@@ -145,4 +145,4 @@ const AssignLead = () => {
   );
 };
 
-export default AssignLead;
+export default AssignClientLead;

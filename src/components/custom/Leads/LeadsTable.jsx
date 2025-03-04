@@ -21,7 +21,7 @@ const LeadsTable = () => {
       ? useGetLeads(page, status)
       : useGetSalesLeads(userId, 1);
 
-  console.log("Total Pages in the Leads", totalPages);
+  console.log("STatus in the Redux", status);
 
   if (leadsData?.length === 0) {
     return <p>No Data Available</p>;
@@ -41,7 +41,7 @@ const LeadsTable = () => {
               <th className="p-2 text-left font-medium">Email</th>
               <th className="p-2 text-left font-medium">Sales Person</th>
               <th className="p-2 text-left font-medium">Status</th>
-              {status === "assigned" && (
+              {status !== "COMPLETED" && (
                 <th className="p-2 text-left font-medium">Action</th>
               )}
             </tr>
@@ -61,7 +61,7 @@ const LeadsTable = () => {
                     ? "Completed"
                     : lead?.status}
                 </td>
-                {status === "assigned" && (
+                {status !== "COMPLETED" && (
                   <td className="p-3">
                     <Button
                       size="icon"

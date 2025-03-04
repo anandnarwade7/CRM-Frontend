@@ -6,7 +6,8 @@ import axios from "axios";
 import { useToast } from "@/hooks/use-toast";
 import { BASE_URL } from "../../utils/constant";
 
-export const usePostSalesLeads = (leadId) => {
+export const usePostSalesLeads = (leadId, data, isStatusOpen) => {
+  const schema = salesLeadsSchema(data?.status, isStatusOpen);
   // Form Handling using React Hook Form for dynamic fields we use useFieldsArray
   const {
     register,
@@ -17,7 +18,7 @@ export const usePostSalesLeads = (leadId) => {
     formState: { errors },
     reset,
   } = useForm({
-    resolver: zodResolver(salesLeadsSchema),
+    resolver: zodResolver(schema),
     defaultValues: {
       status: "",
       note: "",

@@ -5,66 +5,40 @@ import {
   getCoreRowModel,
   useReactTable,
 } from "@tanstack/react-table";
+import { Link } from "../../../assets";
+import { useGetClients } from "../../../hooks/Client/useGetClients";
+import { useNavigate } from "react-router";
 
 const ClientTable = () => {
-  const data = [
-    {
-      id: 1,
-      leadName: "Kumar Properties",
-      mobileNumber: "9487758778",
-      email: "abc@gmail.com",
-      status: "Converted",
-      note: "Abc..",
-    },
-    // Repeat for demo purposes
-    {
-      id: 2,
-      leadName: "Kumar Properties",
-      mobileNumber: "9487758778",
-      email: "abc@gmail.com",
-      status: "Converted",
-      note: "Abc..",
-    },
-    {
-      id: 3,
-      leadName: "Kumar Properties",
-      mobileNumber: "9487758778",
-      email: "abc@gmail.com",
-      status: "Converted",
-      note: "Abc..",
-    },
-    {
-      id: 4,
-      leadName: "Kumar Properties",
-      mobileNumber: "9487758778",
-      email: "abc@gmail.com",
-      status: "Converted",
-      note: "Abc..",
-    },
-  ];
-
+  const navigate = useNavigate();
   const columns = [
     { header: "Id", accessorKey: "id" },
     { header: "Lead Name", accessorKey: "leadName" },
     {
       header: "Mobile Number",
-      accessorKey: "mobileNumber",
+      accessorKey: "leadmobile",
     },
-    { header: "Email", accessorKey: "email" },
+    { header: "Email", accessorKey: "leadEmail" },
     { header: "Status", accessorKey: "status" },
-    { header: "Note", accessorKey: "note" },
+    { header: "Note", accessorKey: "massagesJsonData" },
     {
       header: "Action",
       cell: () => (
-        <Button variant="ghost">
-          <Pencil className="text-yellow-500" size={20} />
+        <Button
+          size="icon"
+          className="bg-[#C99227] rounded-xl shadow-none"
+          onClick={() => navigate(`/app/client-details`)}
+        >
+          <img src={Link} alt="Link" />
         </Button>
       ),
     },
   ];
 
+  const { clientsData, totalPages, isLoading, error } = useGetClients();
+
   const table = useReactTable({
-    data: data || [],
+    data: clientsData || [],
     columns,
     getCoreRowModel: getCoreRowModel(),
   });
@@ -88,7 +62,7 @@ const ClientTable = () => {
         </thead>
         <tbody>
           {table.getRowModel().rows.map((row) => (
-            <tr key={row.id} className="">
+            <tr key={row.id}>
               {row.getVisibleCells().map((cell) => (
                 <td
                   key={cell.id}

@@ -16,6 +16,9 @@ const SpecificLead = ({
   handleCheckboxChange,
   handleFileChange,
   errors,
+  selectLabel,
+  selectPlaceholder,
+  fileInputLabel,
 }) => {
   const fileInputRef = useRef(null);
 
@@ -23,11 +26,11 @@ const SpecificLead = ({
     <div>
       <div className="grid grid-cols-2 gap-4">
         <div className="w-full">
-          <Label htmlFor="salesPerson">Select Sales Person</Label>
+          <Label htmlFor="salesPerson">{selectLabel}</Label>
           <div>
             <Select>
               <SelectTrigger className="shadow-none focus:ring-0">
-                <SelectValue placeholder="Select Sales Person" />
+                <SelectValue placeholder={selectPlaceholder} />
               </SelectTrigger>
               <SelectContent>
                 {salesPersons?.map((person) => (
@@ -60,7 +63,7 @@ const SpecificLead = ({
         </div>
 
         <div className="w-full">
-          <Label htmlFor="leadFiles">Lead Files</Label>
+          <Label htmlFor="leadFiles">{fileInputLabel}</Label>
           <div className="flex rounded-lg shadow-none">
             <Input
               type="file"

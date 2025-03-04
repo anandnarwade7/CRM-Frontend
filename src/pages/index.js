@@ -18,6 +18,8 @@ import SalesLeadsDetails from "./Leads/SalesLeadsDetails";
 
 // Client
 import Client from "./Client/Client";
+import AssignClientLead from "./Client/AssignClientLead";
+import ClientsDetails from "./Client/ClientsDetails";
 
 export {
   Login,
@@ -29,4 +31,6 @@ export {
   LeadsDetails,
   SalesLeadsDetails,
   Client,
+  AssignClientLead,
+  ClientsDetails,
 };

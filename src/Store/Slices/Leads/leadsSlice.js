@@ -4,7 +4,7 @@ import { createSlice } from "@reduxjs/toolkit";
 export const leadsSlice = createSlice({
   name: "leads",
   initialState: {
-    status: "assigned", // Initial status
+    status: "ASSIGNED", // Initial status
   },
   reducers: {
     // Reducer function to update the status

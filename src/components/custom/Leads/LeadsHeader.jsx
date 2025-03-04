@@ -35,13 +35,16 @@ const LeadsHeader = () => {
       {userRole === "ADMIN" && (
         <div className="flex justify-between my-3">
           <div>
-            <Select onValueChange={handleStatusChange}>
+            <Select defaultValue="ASSIGNED" onValueChange={handleStatusChange}>
               <SelectTrigger className="w-[180px] shadow-none border-0 focus:ring-0 bg-[#FFD073] text-[#FFFFFF]">
                 <SelectValue placeholder="Select Status" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="assigned">Assigned</SelectItem>
-                <SelectItem value="completed">Completed</SelectItem>
+                <SelectItem value="COLD">Cold</SelectItem>
+                <SelectItem value="HOT">Hot</SelectItem>
+                <SelectItem value="ASSIGNED">Assigned</SelectItem>
+                <SelectItem value="COMPLETED">Completed</SelectItem>
+                <SelectItem value="REJECTED">Rejected</SelectItem>
               </SelectContent>
             </Select>
           </div>

@@ -2,17 +2,23 @@ import { useRef } from "react";
 import { Input } from "../../ui/input";
 import { Label } from "../../ui/label";
 
-const EquallyLead = ({ salesPersons, handleFileChange, errors }) => {
+const EquallyLead = ({
+  salesPersons,
+  handleFileChange,
+  errors,
+  selectLabel,
+  fileInputLabel,
+}) => {
   const fileInputRef = useRef(null);
   return (
     <div>
       <div className="flex">
         <div className="flex flex-col gap-3 text-[#707070] text-xl w-full md:w-1/2 ">
-          <p>Total No. of Sales Person</p>
+          <p>{selectLabel}</p>
           <p>{salesPersons?.length || "0"}</p>
         </div>
         <div className="w-full md:w-1/2 ">
-          <Label htmlFor="leadFiles">Lead Files</Label>
+          <Label htmlFor="leadFiles">{fileInputLabel}</Label>
           <div className="flex rounded-lg shadow-none">
             <Input
               type="file"
