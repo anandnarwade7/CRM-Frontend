@@ -3,7 +3,7 @@ import { getClients } from "../../services/Client/clientService";
 
 export const useGetClients = (page) => {
   const { data, isLoading, error } = useQuery({
-    queryKey: ["clients", page],
+    queryKey: ["clients"],
     queryFn: () => getClients(page, "CONVERTED"),
     keepPreviousData: true,
   });

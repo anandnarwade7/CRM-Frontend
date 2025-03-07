@@ -1,4 +1,3 @@
-import { Pencil } from "lucide-react";
 import { Button } from "../../ui/button";
 import {
   flexRender,
@@ -8,9 +7,17 @@ import {
 import { Link } from "../../../assets";
 import { useGetClients } from "../../../hooks/Client/useGetClients";
 import { useNavigate } from "react-router";
+import { useState } from "react";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "../../ui/tooltip";
 
 const ClientTable = () => {
   const navigate = useNavigate();
+  const [page, setPage] = useState(1);
   const columns = [
     { header: "Id", accessorKey: "id" },
     { header: "Lead Name", accessorKey: "leadName" },
@@ -20,14 +27,38 @@ const ClientTable = () => {
     },
     { header: "Email", accessorKey: "leadEmail" },
     { header: "Status", accessorKey: "status" },
-    { header: "Note", accessorKey: "massagesJsonData" },
+    {
+      header: "Note",
+      accessorKey: "conversationLogs",
+      cell: ({ row }) => {
+        const logs = row?.original?.conversationLogs || [];
+        const lastComment = logs[logs?.length - 1]?.comment || "No Comment";
+        const preview = lastComment.substring(0, 6);
+
+        return (
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger>
+                <p>
+                  {preview}
+                  {lastComment.length > 6 ? "..." : ""}
+                </p>
+              </TooltipTrigger>
+              <TooltipContent className="bg-gray-400 text-black">
+                <p>{lastComment}</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        );
+      },
+    },
     {
       header: "Action",
-      cell: () => (
+      cell: ({ row }) => (
         <Button
           size="icon"
           className="bg-[#C99227] rounded-xl shadow-none"
-          onClick={() => navigate(`/app/client-details`)}
+          onClick={() => navigate(`/app/client-details/${row?.original?.id}`)}
         >
           <img src={Link} alt="Link" />
         </Button>
@@ -35,7 +66,7 @@ const ClientTable = () => {
     },
   ];
 
-  const { clientsData, totalPages, isLoading, error } = useGetClients();
+  const { clientsData, totalPages, isLoading, error } = useGetClients(page);
 
   const table = useReactTable({
     data: clientsData || [],

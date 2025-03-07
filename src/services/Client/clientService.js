@@ -26,7 +26,7 @@ export const getExportClientLead = async () => {
 };
 
 // Service for Getting Clients Table Data
-export const getClients = async (page = 1, status = "CONVERTED") => {
+export const getClients = async (page, status = "CONVERTED") => {
   try {
     const response = await axios.get(`${BASE_URL}/clients/listbystatus`, {
       params: {
@@ -38,5 +38,18 @@ export const getClients = async (page = 1, status = "CONVERTED") => {
     return response?.data;
   } catch (error) {
     console.log("Error Getting Data", error);
+  }
+};
+
+// Service for getting Clients by Id
+export const getClientLeadById = async (id) => {
+  try {
+    const response = await axios.get(`${BASE_URL}/clients/getById/${id}`, {
+      withCredentials: true,
+    });
+
+    return response?.data;
+  } catch (error) {
+    console.log("Error fetching Leads Id", error);
   }
 };

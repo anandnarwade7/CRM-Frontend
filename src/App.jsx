@@ -72,7 +72,7 @@ const router = createBrowserRouter([
         element: <AssignClientLead />,
       },
       {
-        path: "/app/client-details",
+        path: "/app/client-details/:clientId",
         element: <ClientsDetails />,
       },
     ],

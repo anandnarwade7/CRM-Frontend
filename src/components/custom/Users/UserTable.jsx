@@ -18,9 +18,9 @@ const UserTable = ({ columns, isLoading, error, data }) => {
     <div className="my-4">
       <table className="min-w-full border-separate border-spacing-y-4">
         <thead>
-          {table?.getHeaderGroups().map((headerGroup) => (
+          {table?.getHeaderGroups()?.map((headerGroup) => (
             <tr key={headerGroup?.id} className="bg-gray-200 text-left">
-              {headerGroup.headers.map((header) => (
+              {headerGroup.headers?.map((header) => (
                 <th key={header.id} className="px-4 py-2 text-gray-600">
                   {flexRender(
                     header.column.columnDef.header,
