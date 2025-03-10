@@ -62,7 +62,11 @@ export const usePostSalesLeads = (leadId, data, isStatusOpen) => {
 
     const formData = new FormData();
     formData?.append("comment", comment);
-    formData?.append("status", status);
+
+    if (status) {
+      formData?.append("status", status);
+    }
+
     formData?.append("key", key);
     formData?.append("value", value);
 

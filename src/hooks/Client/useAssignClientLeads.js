@@ -21,7 +21,7 @@ export const useAssignClientLeads = () => {
       setSelectedCRManagers([]);
       setFile(null);
       setErrors({
-        selectedCRManagers: "",
+        crManager: "",
         file: "",
       });
     }

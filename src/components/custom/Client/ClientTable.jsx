@@ -19,7 +19,7 @@ const ClientTable = () => {
   const navigate = useNavigate();
   const [page, setPage] = useState(1);
   const columns = [
-    { header: "Id", accessorKey: "id" },
+    { header: "Id", cell: ({ row }) => row.index + 1 },
     { header: "Lead Name", accessorKey: "leadName" },
     {
       header: "Mobile Number",
@@ -73,6 +73,14 @@ const ClientTable = () => {
     columns,
     getCoreRowModel: getCoreRowModel(),
   });
+
+  if (isLoading) {
+    return <p>Loading....</p>;
+  }
+
+  if (clientsData?.length == 0) {
+    return <p>No Data Available</p>;
+  }
 
   return (
     <div className="my-2">

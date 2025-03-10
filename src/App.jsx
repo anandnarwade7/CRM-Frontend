@@ -19,6 +19,7 @@ import MainLayout from "./pages/Layout/MainLayout";
 import UserPersonDetails from "./components/custom/Users/UserPersonDetails";
 import { Provider } from "react-redux";
 import { store } from "./Store/store";
+import ProtectedRoute from "./ProtectedRoute";
 
 const queryClient = new QueryClient();
 
@@ -29,51 +30,57 @@ const router = createBrowserRouter([
   },
   {
     path: "/app",
-    element: <MainLayout />,
+    element: <ProtectedRoute />,
     children: [
       {
-        path: "/app/dashboard",
-        element: <Dashboard />,
-      },
-      {
-        path: "/app/sales-person",
-        element: <SalesPerson />,
-      },
-      {
-        path: "/app/userDetails",
-        element: <UserPersonDetails />,
-      },
-      {
-        path: "/app/cr-manager",
-        element: <CRManager />,
-      },
-      {
-        path: "/app/leads",
-        element: <Leads />,
-      },
-      {
-        path: "/app/assign-leads",
-        element: <AssignLead />,
-      },
-      {
-        path: "/app/leads-details/:leadId",
-        element: <LeadsDetails />,
-      },
-      {
-        path: "/app/leads-details-sales/:leadId",
-        element: <SalesLeadsDetails />,
-      },
-      {
-        path: "/app/client",
-        element: <Client />,
-      },
-      {
-        path: "/app/client-leads",
-        element: <AssignClientLead />,
-      },
-      {
-        path: "/app/client-details/:clientId",
-        element: <ClientsDetails />,
+        path: "/app",
+        element: <MainLayout />,
+        children: [
+          {
+            path: "/app/dashboard",
+            element: <Dashboard />,
+          },
+          {
+            path: "/app/sales-person",
+            element: <SalesPerson />,
+          },
+          {
+            path: "/app/userDetails",
+            element: <UserPersonDetails />,
+          },
+          {
+            path: "/app/cr-manager",
+            element: <CRManager />,
+          },
+          {
+            path: "/app/leads",
+            element: <Leads />,
+          },
+          {
+            path: "/app/assign-leads",
+            element: <AssignLead />,
+          },
+          {
+            path: "/app/leads-details/:leadId",
+            element: <LeadsDetails />,
+          },
+          {
+            path: "/app/leads-details-sales/:leadId",
+            element: <SalesLeadsDetails />,
+          },
+          {
+            path: "/app/client",
+            element: <Client />,
+          },
+          {
+            path: "/app/client-leads",
+            element: <AssignClientLead />,
+          },
+          {
+            path: "/app/client-details/:clientId",
+            element: <ClientsDetails />,
+          },
+        ],
       },
     ],
   },

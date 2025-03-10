@@ -13,6 +13,8 @@ import { Eye, EyeOff, Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
 
 const UserUpdateDialog = ({ open, onClose, selectedData }) => {
+  console.log(selectedData);
+
   // Logic for handling the password toggle visibility
   const [isVisible, setIsVisible] = useState(false);
   const toggleVisibility = () => setIsVisible((prevState) => !prevState);
@@ -35,6 +37,7 @@ const UserUpdateDialog = ({ open, onClose, selectedData }) => {
       setValue("name", selectedData?.name || "");
       setValue("mobile", selectedData?.mobile || "");
       setValue("email", selectedData?.email || "");
+      setValue("password", selectedData?.password || "");
     }
   }, [open]);
 

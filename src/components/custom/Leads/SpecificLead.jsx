@@ -30,7 +30,13 @@ const SpecificLead = ({
           <div>
             <Select>
               <SelectTrigger className="shadow-none focus:ring-0">
-                <SelectValue placeholder={selectPlaceholder} />
+                <SelectValue
+                  placeholder={
+                    selectedSalesPersons?.length > 0
+                      ? selectedSalesPersons?.length + " Selected "
+                      : selectPlaceholder
+                  }
+                />
               </SelectTrigger>
               <SelectContent>
                 {salesPersons?.map((person) => (
@@ -57,8 +63,8 @@ const SpecificLead = ({
               </SelectContent>
             </Select>
           </div>
-          {errors.salesPerson && (
-            <p className="text-red-500 mt-2">{errors.salesPerson}</p>
+          {errors.crManager && (
+            <p className="text-red-500 mt-2">{errors.crManager}</p>
           )}
         </div>
 

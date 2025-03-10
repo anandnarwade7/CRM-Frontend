@@ -43,7 +43,7 @@ const LeadsHeader = () => {
                 <SelectItem value="COLD">Cold</SelectItem>
                 <SelectItem value="HOT">Hot</SelectItem>
                 <SelectItem value="ASSIGNED">Assigned</SelectItem>
-                <SelectItem value="COMPLETED">Completed</SelectItem>
+                <SelectItem value="CONVERTED">Completed</SelectItem>
                 <SelectItem value="REJECTED">Rejected</SelectItem>
               </SelectContent>
             </Select>
