@@ -4,10 +4,13 @@ import {
   Client,
   ClientsDetails,
   CRManager,
+  CRMClientDetails,
   Dashboard,
+  InventoryDetails,
   Leads,
   LeadsDetails,
   Login,
+  Projects,
   SalesLeadsDetails,
   SalesPerson,
 } from "./pages";
@@ -79,6 +82,18 @@ const router = createBrowserRouter([
           {
             path: "/app/client-details/:clientId",
             element: <ClientsDetails />,
+          },
+          {
+            path: "/app/client-details-crm/:clientId",
+            element: <CRMClientDetails />,
+          },
+          {
+            path: "/app/projects",
+            element: <Projects />,
+          },
+          {
+            path: "/app/inventory-details",
+            element: <InventoryDetails />,
           },
         ],
       },

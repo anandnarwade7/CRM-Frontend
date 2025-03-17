@@ -2,9 +2,11 @@ import { useNavigate } from "react-router";
 import { Notification } from "../../../assets";
 import { Button } from "../../ui/button";
 import { Plus } from "lucide-react";
+import { useUserRole } from "../../../hooks/use-userrole";
 
 const ClientHeader = () => {
   const navigate = useNavigate();
+  const userRole = useUserRole();
   return (
     <>
       {/* Upper Header */}
@@ -15,15 +17,17 @@ const ClientHeader = () => {
         </Button>
       </div>
       {/* Lower Header */}
-      <div className="flex justify-end my-4">
-        <Button
-          onClick={() => navigate("/app/client-leads")}
-          className="bg-[#C99227] shadow-none"
-        >
-          <Plus size={18} />
-          Assign Leads
-        </Button>
-      </div>
+      {userRole === "ADMIN" && (
+        <div className="flex justify-end my-4">
+          <Button
+            onClick={() => navigate("/app/client-leads")}
+            className="bg-[#C99227] shadow-none"
+          >
+            <Plus size={18} />
+            Assign Leads
+          </Button>
+        </div>
+      )}
     </>
   );
 };

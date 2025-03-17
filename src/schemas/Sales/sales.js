@@ -7,6 +7,6 @@ export const userPersonSchema = z.object({
     .length(10, "Mobile number must be exactly 10 digits")
     .regex(/^\d+$/, "Only numbers are allowed"),
 
-  password: z.string().min(6, "Password must be at least 6 characters"),
+  password: z.string().min(8, "Password must be at least 8 characters"),
   email: z.string().email("Invalid email address"),
 });

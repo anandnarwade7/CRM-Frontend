@@ -20,6 +20,11 @@ import SalesLeadsDetails from "./Leads/SalesLeadsDetails";
 import Client from "./Client/Client";
 import AssignClientLead from "./Client/AssignClientLead";
 import ClientsDetails from "./Client/ClientsDetails";
+import CRMClientDetails from "./Client/CRMClientDetails";
+
+// Projects
+import Projects from "./Projects/Projects";
+import InventoryDetails from "./Projects/InventoryDetails";
 
 export {
   Login,
@@ -33,4 +38,7 @@ export {
   Client,
   AssignClientLead,
   ClientsDetails,
+  CRMClientDetails,
+  Projects,
+  InventoryDetails,
 };

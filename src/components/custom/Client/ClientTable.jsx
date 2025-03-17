@@ -14,9 +14,11 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "../../ui/tooltip";
+import { useUserRole } from "../../../hooks/use-userrole";
 
 const ClientTable = () => {
   const navigate = useNavigate();
+  const userRole = useUserRole();
   const [page, setPage] = useState(1);
   const columns = [
     { header: "Id", cell: ({ row }) => row.index + 1 },
@@ -58,7 +60,13 @@ const ClientTable = () => {
         <Button
           size="icon"
           className="bg-[#C99227] rounded-xl shadow-none"
-          onClick={() => navigate(`/app/client-details/${row?.original?.id}`)}
+          onClick={() => {
+            if (userRole === "ADMIN") {
+              navigate(`/app/client-details/${row?.original?.id}`);
+            } else {
+              navigate(`/app/client-details-crm/${row?.original?.id}`);
+            }
+          }}
         >
           <img src={Link} alt="Link" />
         </Button>
@@ -85,7 +93,7 @@ const ClientTable = () => {
   return (
     <div className="my-2">
       <table className="min-w-full border-separate border-spacing-y-4">
-        <thead>
+        <thead className="bg-[#F6F6F6]">
           {table?.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup?.id} className="bg-gray-200 text-left">
               {headerGroup.headers.map((header) => (

@@ -43,7 +43,7 @@ const SpecificLead = ({
                   <div
                     key={person?.id}
                     className="flex items-center space-x-2 py-2 px-2 cursor-pointer hover:bg-gray-100"
-                    onClick={() => handleCheckboxChange(person?.id)}
+                    // onClick={() => handleCheckboxChange(person?.id)}
                   >
                     <input
                       type="checkbox"
