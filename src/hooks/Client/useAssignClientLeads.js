@@ -1,10 +1,11 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { BASE_URL } from "../../utils/constant";
 import { useUserId } from "../use-user-id";
 import { useMutation } from "@tanstack/react-query";
 import { useToast } from "../use-toast";
 import { useGetCRM } from "../Client/useGetCRM";
+import { useNavigate } from "react-router";
 
 export const useAssignClientLeads = () => {
   const [distribution, setDistribution] = useState("Specific");
@@ -14,6 +15,8 @@ export const useAssignClientLeads = () => {
     crManager: "",
     file: "",
   });
+  const fileInputRef = useRef(null);
+  const navigate = useNavigate();
 
   // Reset the file, selectedPerson array and errors
   useEffect(() => {
@@ -96,7 +99,16 @@ export const useAssignClientLeads = () => {
       formData.append("file", file);
 
       if (distribution === "Specific") {
-        formData.append("assignedTo", selectedCRManagers);
+        const allCRMIDs = crm?.map((crManager) => crManager?.id);
+
+        const unSelectedCRMs = allCRMIDs?.filter(
+          (id) => !selectedCRManagers?.includes(id)
+        );
+
+        console.log("Unselected CRMs", unSelectedCRMs);
+
+        // formData.append("assignedTo", selectedCRManagers);
+        formData.append("assignedTo", unSelectedCRMs);
       }
 
       const response = await axios.post(
@@ -112,7 +124,6 @@ export const useAssignClientLeads = () => {
       return response.data;
     },
     onSuccess: (data) => {
-      console.log("Assign Leads Success:", data);
       if (data) {
         toast({
           title: "Assign the Leads Successfully",
@@ -124,6 +135,13 @@ export const useAssignClientLeads = () => {
           crManager: "",
           file: "",
         });
+        if (fileInputRef.current) {
+          fileInputRef.current.value = "";
+        }
+
+        setTimeout(() => {
+          navigate("/app/client");
+        }, 2000);
       }
     },
     onError: (error) => {
@@ -168,5 +186,6 @@ export const useAssignClientLeads = () => {
     errors,
     handleSubmit,
     isSubmitting: mutation.isLoading,
+    fileInputRef,
   };
 };

@@ -1,4 +1,6 @@
 import {
+  Admin,
+  AdminDetails,
   AssignClientLead,
   AssignLead,
   Client,
@@ -42,6 +44,14 @@ const router = createBrowserRouter([
           {
             path: "/app/dashboard",
             element: <Dashboard />,
+          },
+          {
+            path: "/app/admin",
+            element: <Admin />,
+          },
+          {
+            path: "/app/admin-details",
+            element: <AdminDetails />,
           },
           {
             path: "/app/sales-person",

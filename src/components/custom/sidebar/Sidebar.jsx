@@ -5,6 +5,7 @@ import Profile from "../Profile/Profile";
 import {
   Dashboard,
   DashboardBg,
+  AdminBg,
   Sales,
   SalesBg,
   Account,
@@ -35,7 +36,14 @@ const Sidebar = () => {
       path: "/app/dashboard",
       img: Dashboard,
       activeImg: DashboardBg,
-      roles: ["ADMIN", "SALES", "CRM"],
+      roles: ["SUPER ADMIN", "ADMIN", "SALES", "CRM"],
+    },
+    {
+      name: "Admin",
+      path: "/app/admin",
+      img: AdminBg,
+      activeImg: AdminBg,
+      roles: ["SUPER ADMIN"],
     },
     {
       name: "Sales Person",
@@ -77,7 +85,7 @@ const Sidebar = () => {
       path: "/transactions",
       img: Money,
       activeImg: MoneyBg,
-      roles: ["ADMIN", "CRM"],
+      roles: ["SUPER ADMIN", "ADMIN", "CRM"],
     },
     {
       name: "Support",

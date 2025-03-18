@@ -21,7 +21,7 @@ const ProjectTable = ({ data, columns }) => {
               {headerGroup?.headers?.map((header) => (
                 <th
                   key={header?.id}
-                  className="py-4 px-6 text-left text-sm font-medium text-black tracking-wider"
+                  className="py-4 px-6 text-left text-sm font-medium text-black"
                 >
                   {header?.isPlaceholder
                     ? null

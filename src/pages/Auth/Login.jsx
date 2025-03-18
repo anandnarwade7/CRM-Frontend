@@ -50,6 +50,7 @@ const Login = () => {
                       <SelectValue placeholder="Select Role" />
                     </SelectTrigger>
                     <SelectContent>
+                      <SelectItem value="SUPER ADMIN">Super Admin</SelectItem>
                       <SelectItem value="ADMIN">Admin</SelectItem>
                       <SelectItem value="SALES">Sales Person</SelectItem>
                       <SelectItem value="CRM">CR Manager</SelectItem>

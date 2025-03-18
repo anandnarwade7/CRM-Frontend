@@ -22,6 +22,7 @@ const AssignClientLead = () => {
     errors,
     handleSubmit,
     isSubmitting,
+    fileInputRef,
   } = useAssignClientLeads();
 
   const [isDownloading, setIsDownloading] = useState(false);
@@ -113,9 +114,10 @@ const AssignClientLead = () => {
               handleCheckboxChange={handleCheckboxChange}
               handleFileChange={handleFileChange}
               errors={errors}
-              selectLabel={"Select Client Manager"}
+              selectLabel={"Select To Exclude Client Manager"}
               selectPlaceholder={"Select"}
               fileInputLabel={"Clients Files"}
+              fileInputRef={fileInputRef}
             />
           </>
         ) : (

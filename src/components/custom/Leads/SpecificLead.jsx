@@ -6,7 +6,6 @@ import {
 } from "../../ui/select";
 import { Input } from "../../ui/input";
 import { Label } from "../../ui/label";
-import { useRef } from "react";
 
 const SpecificLead = ({
   salesPersons,
@@ -19,8 +18,29 @@ const SpecificLead = ({
   selectLabel,
   selectPlaceholder,
   fileInputLabel,
+  fileInputRef,
 }) => {
-  const fileInputRef = useRef(null);
+  // const fileInputRef = useRef(null);
+
+  // Check if all salesPersons are selected
+  const allSelected =
+    salesPersons?.length > 0 &&
+    selectedSalesPersons?.length === salesPersons?.length;
+
+  // Handle "Select All" click
+  const handleSelectAll = () => {
+    // If all are selected, deselect all
+    if (allSelected) {
+      salesPersons.forEach((person) => handleCheckboxChange(person?.id));
+    } else {
+      // Otherwise, select all
+      salesPersons.forEach((person) => {
+        if (!selectedSalesPersons.includes(person.id)) {
+          handleCheckboxChange(person?.id);
+        }
+      });
+    }
+  };
 
   return (
     <div>
@@ -39,6 +59,18 @@ const SpecificLead = ({
                 />
               </SelectTrigger>
               <SelectContent>
+                <div className="flex items-center space-x-2 py-2 px-2 cursor-pointer hover:bg-gray-100">
+                  <input
+                    id="selectAll"
+                    type="checkbox"
+                    checked={allSelected}
+                    onChange={handleSelectAll}
+                    className="w-4 h-4 text-orange-400 bg-white border-2 border-gray-300 rounded-md  focus:outline-none cursor-pointer transition-all duration-150"
+                  />
+                  <label className="cursor-pointer" htmlFor="selectAll">
+                    Select All
+                  </label>
+                </div>
                 {salesPersons?.map((person) => (
                   <div
                     key={person?.id}

@@ -97,7 +97,7 @@ const ClientTable = () => {
           {table?.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup?.id} className="bg-gray-200 text-left">
               {headerGroup.headers.map((header) => (
-                <th key={header.id} className="px-4 py-2 text-gray-600">
+                <th key={header.id} className="px-4 py-4 font-medium text-sm">
                   {flexRender(
                     header.column.columnDef.header,
                     header.getContext()
@@ -113,7 +113,7 @@ const ClientTable = () => {
               {row.getVisibleCells().map((cell) => (
                 <td
                   key={cell.id}
-                  className="px-4 py-2 border-b border-gray-200"
+                  className="px-4 py-2 border-b border-gray-200 text-[#757575] font-medium text-sm"
                 >
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </td>

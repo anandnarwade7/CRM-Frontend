@@ -26,6 +26,10 @@ import CRMClientDetails from "./Client/CRMClientDetails";
 import Projects from "./Projects/Projects";
 import InventoryDetails from "./Projects/InventoryDetails";
 
+// Super Admin
+import Admin from "./Admin/Admin";
+import AdminDetails from "./Admin/AdminDetails";
+
 export {
   Login,
   Dashboard,
@@ -41,4 +45,6 @@ export {
   CRMClientDetails,
   Projects,
   InventoryDetails,
+  Admin,
+  AdminDetails,
 };

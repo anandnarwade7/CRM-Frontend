@@ -56,9 +56,9 @@ const ProjectTableContainer = () => {
         <Button
           size="icon"
           className="bg-[#C99227] rounded-xl shadow-none"
-          onClick={() => {
-            navigate("/app/inventory-details");
-          }}
+          // onClick={() => {
+          //   navigate("/app/inventory-details");
+          // }}
         >
           <img src={Link} alt="Link" />
         </Button>

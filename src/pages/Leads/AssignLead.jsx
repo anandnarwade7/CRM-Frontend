@@ -22,6 +22,7 @@ const AssignLead = () => {
     errors,
     handleSubmit,
     isSubmitting,
+    fileInputRef,
   } = useSpecificAssignLeads();
 
   const [isDownloading, setIsDownloading] = useState(false);
@@ -116,6 +117,7 @@ const AssignLead = () => {
               selectLabel={"Select Sales Person"}
               selectPlaceholder={"Select Sales Person"}
               fileInputLabel={"Lead Files"}
+              fileInputRef={fileInputRef}
             />
           </>
         ) : (

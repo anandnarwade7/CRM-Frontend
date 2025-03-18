@@ -1,13 +1,15 @@
 import React from "react";
 import { Button } from "../../ui/button";
 import { Plus } from "lucide-react";
+import { useNavigate } from "react-router";
 
 const ProjectHeader = () => {
+  const navigate = useNavigate();
   return (
     <div className="flex items-center justify-between">
       <p className="font-medium text-2xl text-[#707070]">Project Details</p>
       <Button
-        // onClick={() => navigate("/app/assign-leads")}
+        onClick={() => navigate("/app/inventory-details")}
         className="bg-[#C99227] shadow-none"
       >
         <Plus size={18} />

@@ -17,6 +17,9 @@ const TablePagination = ({ totalPages, page, setPage }) => {
             <PaginationPrevious
               onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
               disabled={page === 1}
+              className={`${
+                page === 1 ? "cursor-not-allowed" : "cursor-pointer"
+              }`}
             />
           </PaginationItem>
 
@@ -25,6 +28,7 @@ const TablePagination = ({ totalPages, page, setPage }) => {
               <PaginationLink
                 onClick={() => setPage(i + 1)}
                 isActive={page === i + 1}
+                className="cursor-pointer"
               >
                 {i + 1}
               </PaginationLink>
@@ -41,6 +45,9 @@ const TablePagination = ({ totalPages, page, setPage }) => {
             <PaginationNext
               onClick={() => setPage((prev) => Math.min(prev + 1, totalPages))}
               disabled={page === totalPages}
+              className={`${
+                page === totalPages ? "cursor-not-allowed" : "cursor-pointer"
+              }`}
             />
           </PaginationItem>
         </PaginationContent>

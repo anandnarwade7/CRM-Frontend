@@ -1,10 +1,11 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useGetSales } from "./useGetSales";
 import axios from "axios";
 import { BASE_URL } from "../../utils/constant";
 import { useUserId } from "../../hooks/use-user-id";
 import { useMutation } from "@tanstack/react-query";
 import { useToast } from "../../hooks/use-toast";
+import { useNavigate } from "react-router";
 
 export const useSpecificAssignLeads = () => {
   const [distribution, setDistribution] = useState("Specific");
@@ -14,6 +15,8 @@ export const useSpecificAssignLeads = () => {
     salesPerson: "",
     file: "",
   });
+  const fileInputRef = useRef(null);
+  const navigate = useNavigate();
 
   // Reset the file, selectedPerson array and errors
   useEffect(() => {
@@ -124,6 +127,12 @@ export const useSpecificAssignLeads = () => {
           salesPerson: "",
           file: "",
         });
+        if (fileInputRef.current) {
+          fileInputRef.current.value = "";
+        }
+        setTimeout(() => {
+          navigate("/app/leads");
+        }, 2000);
       }
     },
     onError: (error) => {
@@ -144,6 +153,9 @@ export const useSpecificAssignLeads = () => {
           salesPerson: "",
           file: "",
         });
+        if (fileInputRef.current) {
+          fileInputRef.current.value = "";
+        }
       }
     },
   });
@@ -168,5 +180,6 @@ export const useSpecificAssignLeads = () => {
     errors,
     handleSubmit,
     isSubmitting: mutation.isLoading,
+    fileInputRef,
   };
 };
