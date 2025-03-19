@@ -6,13 +6,18 @@ import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { Button } from "../../components/ui/button";
 import { useAddAdmin } from "../../hooks/Admin/useAddAdmin";
+import DatePicker from "../../components/custom/DatePicker";
+import { Controller } from "react-hook-form";
 
 const AdminDetails = () => {
   const [isVisible, setIsVisible] = useState(false);
+  const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
 
   const toggleVisibility = () => setIsVisible((prevState) => !prevState);
+  const toggleConfirmVisibility = () =>
+    setConfirmPasswordVisible((prevState) => !prevState);
 
-  const { register, setValue, errors, handleSubmit, onSubmit } = useAddAdmin();
+  const { register, errors, handleSubmit, onSubmit, control } = useAddAdmin();
 
   return (
     <section className="bg-white w-full h-full px-6 py-3 rounded-lg">
@@ -24,7 +29,7 @@ const AdminDetails = () => {
         <p className="text-[#707070] font-medium text-2xl">Add Admin</p>
       </div>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="grid grid-cols-2 gap-5 my-10">
+        <div className="grid grid-cols-2 gap-5 my-6">
           <div>
             <Label htmlFor="name" className="text-[#233A48] font-medium">
               Name
@@ -41,39 +46,39 @@ const AdminDetails = () => {
             )}
           </div>
           <div>
-            <Label
-              htmlFor="mobileNumber"
-              className="text-[#233A48] font-medium"
-            >
+            <Label htmlFor="mobile" className="text-[#233A48] font-medium">
               Mobile Number
             </Label>
             <Input
               type="text"
               placeholder="Enter Mobile Number"
-              id="mobileNumber"
-              {...register("mobileNumber")}
+              id="mobile"
+              {...register("mobile")}
               className="w-full focus-visible:ring-0 shadow-none border py-5 mt-1"
             />
-            {errors.mobileNumber && (
+            {errors.mobile && (
               <p className="text-red-500 text-sm mt-1">
-                {errors.mobileNumber.message}
+                {errors.mobile.message}
               </p>
             )}
           </div>
           <div>
-            <Label htmlFor="companyName" className="text-[#233A48] font-medium">
+            <Label
+              htmlFor="propertyName"
+              className="text-[#233A48] font-medium"
+            >
               Company Name
             </Label>
             <Input
               type="text"
               placeholder="Enter Property name"
-              id="companyName"
-              {...register("companyName")}
+              id="propertyName"
+              {...register("propertyName")}
               className="w-full focus-visible:ring-0 shadow-none border py-5 mt-1"
             />
-            {errors.companyName && (
+            {errors.propertyName && (
               <p className="text-red-500 text-sm mt-1">
-                {errors.companyName.message}
+                {errors.propertyName.message}
               </p>
             )}
           </div>
@@ -126,6 +131,93 @@ const AdminDetails = () => {
                 {errors.password.message}
               </p>
             )}
+          </div>
+          <div>
+            <Label
+              htmlFor="confirmPassword"
+              className="text-[#233A48] font-medium"
+            >
+              Confirm Password
+            </Label>
+            <div className="relative">
+              <Input
+                className="w-full focus-visible:ring-0 shadow-none border py-5 pe-8 mt-1"
+                placeholder="Enter Password"
+                id="confirmPassword"
+                {...register("confirmPassword")}
+                type={confirmPasswordVisible ? "text" : "password"}
+              />
+              <button
+                className="absolute inset-y-0 end-0 flex h-full w-9 items-center justify-center rounded-e-lg text-muted-foreground/80 outline-offset-2 transition-colors hover:text-foreground focus:z-10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-ring/70 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50"
+                type="button"
+                onClick={toggleConfirmVisibility}
+                aria-label={
+                  confirmPasswordVisible ? "Hide password" : "Show password"
+                }
+                aria-pressed={confirmPasswordVisible}
+                aria-controls="password"
+              >
+                {confirmPasswordVisible ? (
+                  <EyeOff size={16} strokeWidth={2} aria-hidden="true" />
+                ) : (
+                  <Eye size={16} strokeWidth={2} aria-hidden="true" />
+                )}
+              </button>
+            </div>
+            {errors.confirmPassword && (
+              <p className="text-red-500 text-sm mt-1">
+                {errors.confirmPassword.message}
+              </p>
+            )}
+          </div>
+        </div>
+
+        {/* Date Picker */}
+        <div className="my-10">
+          <p className="text-[#C99227] font-medium">
+            Set your subscription duration
+          </p>
+          <div className="grid grid-cols-2 gap-8">
+            <div className="flex flex-col gap-1">
+              <Label htmlFor="startDate" className="text-[#233A48] font-medium">
+                Start Date
+              </Label>
+              <Controller
+                control={control}
+                name="startDate"
+                render={({ field }) => (
+                  <DatePicker
+                    value={field.value}
+                    onChange={(date) => field.onChange(date)}
+                  />
+                )}
+              />
+              {errors?.startDate && (
+                <p className="text-red-500 text-sm mt-1">
+                  {errors?.startDate?.message}
+                </p>
+              )}
+            </div>
+            <div className="flex flex-col gap-1">
+              <Label htmlFor="startDate" className="text-[#233A48] font-medium">
+                End Date
+              </Label>
+              <Controller
+                control={control}
+                name="endDate"
+                render={({ field }) => (
+                  <DatePicker
+                    value={field.value}
+                    onChange={(date) => field.onChange(date)}
+                  />
+                )}
+              />
+              {errors?.endDate && (
+                <p className="text-red-500 text-sm mt-1">
+                  {errors?.endDate?.message}
+                </p>
+              )}
+            </div>
           </div>
         </div>
         <div className="flex items-center justify-end">

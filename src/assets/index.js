@@ -10,6 +10,7 @@ import DashboardList from "./Icons/dashboard-list.svg";
 import ProfilePic from "./Img/ProfilePic.png";
 import Dashboard from "./Icons/dashboard.svg";
 import DashboardBg from "./Icons/dashboardBg.svg";
+import Admin from "./Icons/admin.svg";
 import AdminBg from "./Icons/adminBg.svg";
 import Sales from "./Icons/sales.svg";
 import SalesBg from "./Icons/salesBg.svg";
@@ -39,6 +40,7 @@ export {
   ProfilePic,
   Dashboard,
   DashboardBg,
+  Admin,
   AdminBg,
   Sales,
   SalesBg,

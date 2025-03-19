@@ -1,3 +1,5 @@
+import { format } from "date-fns";
+
 // Function for Converting Upper Case to Lower Case.
 export const getLowerStatus = (status) => {
   if (!status) {
@@ -17,4 +19,10 @@ export const getLowerStatus = (status) => {
   } else if (status == "CONVERTED") {
     return "Converted";
   }
+};
+
+// Function for Formatting the Date
+export const formatDate = (milliseconds) => {
+  if (!milliseconds) return "N/A"; // Handle missing values
+  return format(new Date(milliseconds), "dd/MM/yyyy");
 };

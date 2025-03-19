@@ -21,6 +21,7 @@ import {
   Support,
   SupportBg,
   Logout,
+  Admin,
 } from "../../../assets/index";
 import { useEffect, useState } from "react";
 import { useUserRole } from "../../../hooks/use-userrole";
@@ -41,7 +42,7 @@ const Sidebar = () => {
     {
       name: "Admin",
       path: "/app/admin",
-      img: AdminBg,
+      img: Admin,
       activeImg: AdminBg,
       roles: ["SUPER ADMIN"],
     },
