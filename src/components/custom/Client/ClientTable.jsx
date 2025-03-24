@@ -20,7 +20,80 @@ const ClientTable = () => {
   const navigate = useNavigate();
   const userRole = useUserRole();
   const [page, setPage] = useState(1);
-  const columns = [
+
+  // const columns = [
+  //   { header: "Id", cell: ({ row }) => row.index + 1 },
+  //   { header: "Lead Name", accessorKey: "leadName" },
+  //   {
+  //     header: "Mobile Number",
+  //     accessorKey: "leadmobile",
+  //   },
+  //   { header: "Email", accessorKey: "leadEmail" },
+  //   { header: "Status", accessorKey: "status" },
+  //   {
+  //     header: "Note",
+  //     accessorKey: "conversationLogs",
+  //     cell: ({ row }) => {
+  //       const logs = row?.original?.conversationLogs || [];
+  //       const lastComment = logs[logs?.length - 1]?.comment || "No Comment";
+  //       const preview = lastComment.substring(0, 6);
+
+  //       return (
+  //         <TooltipProvider>
+  //           <Tooltip>
+  //             <TooltipTrigger>
+  //               <p>
+  //                 {preview}
+  //                 {lastComment.length > 6 ? "..." : ""}
+  //               </p>
+  //             </TooltipTrigger>
+  //             <TooltipContent className="bg-gray-400 text-black">
+  //               <p>{lastComment}</p>
+  //             </TooltipContent>
+  //           </Tooltip>
+  //         </TooltipProvider>
+  //       );
+  //     },
+  //   },
+  //   {
+  //     header: "Create Login",
+  //     cell: ({ row }) => (
+  //       <div className="flex justify-center">
+  //         <Button
+  //           size="icon"
+  //           className="bg-[#C99227] rounded-xl shadow-none"
+  //           onClick={() => {
+  //             if (userRole === "CRM") {
+  //               navigate("/app/add-client");
+  //             }
+  //           }}
+  //         >
+  //           <img src={Link} alt="Link" />
+  //         </Button>
+  //       </div>
+  //     ),
+  //   },
+  //   {
+  //     header: "Action",
+  //     cell: ({ row }) => (
+  //       <Button
+  //         size="icon"
+  //         className="bg-[#C99227] rounded-xl shadow-none"
+  //         onClick={() => {
+  //           if (userRole === "ADMIN") {
+  //             navigate(`/app/client-details/${row?.original?.id}`);
+  //           } else {
+  //             navigate(`/app/client-details-crm/${row?.original?.id}`);
+  //           }
+  //         }}
+  //       >
+  //         <img src={Link} alt="Link" />
+  //       </Button>
+  //     ),
+  //   },
+  // ];
+
+  const baseColumns = [
     { header: "Id", cell: ({ row }) => row.index + 1 },
     { header: "Lead Name", accessorKey: "leadName" },
     {
@@ -54,25 +127,53 @@ const ClientTable = () => {
         );
       },
     },
-    {
-      header: "Action",
-      cell: ({ row }) => (
-        <Button
-          size="icon"
-          className="bg-[#C99227] rounded-xl shadow-none"
-          onClick={() => {
-            if (userRole === "ADMIN") {
-              navigate(`/app/client-details/${row?.original?.id}`);
-            } else {
-              navigate(`/app/client-details-crm/${row?.original?.id}`);
-            }
-          }}
-        >
-          <img src={Link} alt="Link" />
-        </Button>
-      ),
-    },
   ];
+
+  const actionColumn = {
+    header: "Action",
+    cell: ({ row }) => (
+      <Button
+        size="icon"
+        className="bg-[#C99227] rounded-xl shadow-none"
+        onClick={() => {
+          if (userRole === "ADMIN") {
+            navigate(`/app/client-details/${row?.original?.id}`);
+          } else {
+            navigate(`/app/client-details-crm/${row?.original?.id}`);
+          }
+        }}
+      >
+        <img src={Link} alt="Link" />
+      </Button>
+    ),
+  };
+
+  const createLoginColumn =
+    userRole === "CRM"
+      ? {
+          header: "Create Login",
+          cell: ({ row }) => (
+            <div className="flex justify-center">
+              <Button
+                size="icon"
+                className="bg-[#C99227] rounded-xl shadow-none"
+                onClick={() => {
+                  if (userRole === "CRM") {
+                    navigate("/app/add-client");
+                  }
+                }}
+              >
+                <img src={Link} alt="Link" />
+              </Button>
+            </div>
+          ),
+        }
+      : null;
+
+  const columns =
+    userRole === "CRM"
+      ? [...baseColumns, createLoginColumn, actionColumn]
+      : [...baseColumns, actionColumn];
 
   const { clientsData, totalPages, isLoading, error } = useGetClients(page);
 

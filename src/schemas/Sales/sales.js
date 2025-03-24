@@ -10,3 +10,15 @@ export const userPersonSchema = z.object({
   password: z.string().min(8, "Password must be at least 8 characters"),
   email: z.string().email("Invalid email address"),
 });
+
+// Schema for the form that requires confirmPassword
+export const userPersonWithConfirmSchema = userPersonSchema
+  .extend({
+    confirmPassword: z
+      .string()
+      .min(8, "Password must be at least 8 Characters"),
+  })
+  .refine((data) => data?.password === data?.confirmPassword, {
+    message: "Password do not match",
+    path: ["confirmPassword"],
+  });

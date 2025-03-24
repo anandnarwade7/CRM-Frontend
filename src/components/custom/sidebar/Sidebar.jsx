@@ -37,7 +37,7 @@ const Sidebar = () => {
       path: "/app/dashboard",
       img: Dashboard,
       activeImg: DashboardBg,
-      roles: ["SUPER ADMIN", "ADMIN", "SALES", "CRM"],
+      roles: ["SUPER ADMIN", "ADMIN", "SALES", "CRM", "CLIENT"],
     },
     {
       name: "Admin",
@@ -86,7 +86,7 @@ const Sidebar = () => {
       path: "/transactions",
       img: Money,
       activeImg: MoneyBg,
-      roles: ["SUPER ADMIN", "ADMIN", "CRM"],
+      roles: ["SUPER ADMIN", "ADMIN", "CRM", "CLIENT"],
     },
     {
       name: "Support",
@@ -94,6 +94,13 @@ const Sidebar = () => {
       img: Support,
       activeImg: SupportBg,
       roles: ["ADMIN", "SALES", "CRM"],
+    },
+    {
+      name: "Clients List",
+      path: "/app/clients-list",
+      img: Client,
+      activeImg: ClientBg,
+      roles: ["CRM"],
     },
   ];
 
@@ -108,6 +115,10 @@ const Sidebar = () => {
       ? "Admin"
       : userRole === "SALES"
       ? "Sales Person"
+      : userRole === "SUPER ADMIN"
+      ? "Super Admin"
+      : userRole === "CLIENT"
+      ? "Client"
       : "CRM";
 
   return (

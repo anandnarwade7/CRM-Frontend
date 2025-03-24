@@ -53,3 +53,35 @@ export const getClientLeadById = async (id) => {
     console.log("Error fetching Leads Id", error);
   }
 };
+
+// Service for Adding the Client
+export const addClient = async (id, formData) => {
+  try {
+    const response = await axios.post(
+      `${BASE_URL}/user/addclient/${id}`,
+      formData,
+      {
+        withCredentials: true,
+      }
+    );
+    return response?.data;
+  } catch (error) {
+    console.log("Error while creating the Client", error);
+  }
+};
+
+// Service for Getting Clients List added by CR Managers
+export const getClientsList = async (userId) => {
+  try {
+    const response = await axios.get(`${BASE_URL}/user/getclients`, {
+      params: {
+        role: "CLIENT",
+        userId,
+      },
+      withCredentials: true,
+    });
+    return response?.data;
+  } catch (error) {
+    console.log("Error While fetching the Clients List", error);
+  }
+};

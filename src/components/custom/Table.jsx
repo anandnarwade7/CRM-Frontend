@@ -25,8 +25,8 @@ const Table = ({ data, columns }) => {
                   {header?.isPlaceholder
                     ? null
                     : flexRender(
-                        header.column.columnDef.header,
-                        header.getContext()
+                        header?.column?.columnDef?.header,
+                        header?.getContext()
                       )}
                 </th>
               ))}
@@ -38,7 +38,7 @@ const Table = ({ data, columns }) => {
             <tr key={row?.id}>
               {row?.getVisibleCells()?.map((cell) => (
                 <td
-                  key={cell.id}
+                  key={cell?.id}
                   className="py-3 px-6 text-xs font-medium text-[#757575] whitespace-nowrap border-b border-gray-200"
                 >
                   {flexRender(

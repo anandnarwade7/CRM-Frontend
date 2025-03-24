@@ -21,6 +21,8 @@ import Client from "./Client/Client";
 import AssignClientLead from "./Client/AssignClientLead";
 import ClientsDetails from "./Client/ClientsDetails";
 import CRMClientDetails from "./Client/CRMClientDetails";
+import AddClient from "./Client/AddClient";
+import ClientsList from "./Client/ClientsList";
 
 // Projects
 import Projects from "./Projects/Projects";
@@ -47,4 +49,6 @@ export {
   InventoryDetails,
   Admin,
   AdminDetails,
+  AddClient,
+  ClientsList,
 };

@@ -1,10 +1,12 @@
 import {
+  AddClient,
   Admin,
   AdminDetails,
   AssignClientLead,
   AssignLead,
   Client,
   ClientsDetails,
+  ClientsList,
   CRManager,
   CRMClientDetails,
   Dashboard,
@@ -96,6 +98,14 @@ const router = createBrowserRouter([
           {
             path: "/app/client-details-crm/:clientId",
             element: <CRMClientDetails />,
+          },
+          {
+            path: "/app/add-client",
+            element: <AddClient />,
+          },
+          {
+            path: "/app/clients-list",
+            element: <ClientsList />,
           },
           {
             path: "/app/projects",

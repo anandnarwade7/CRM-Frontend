@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 export const loginSchema = z.object({
-  role: z.enum(["SUPER ADMIN", "ADMIN", "SALES", "CRM"], {
+  role: z.enum(["SUPER ADMIN", "ADMIN", "SALES", "CRM", "CLIENT"], {
     required_error: "Please Select a role",
   }),
   email: z.string().email("Invalid email address"),
