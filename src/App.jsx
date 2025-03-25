@@ -100,7 +100,7 @@ const router = createBrowserRouter([
             element: <CRMClientDetails />,
           },
           {
-            path: "/app/add-client",
+            path: "/app/add-client/:id",
             element: <AddClient />,
           },
           {

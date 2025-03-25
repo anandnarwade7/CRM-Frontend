@@ -58,6 +58,7 @@ export const useAddClient = () => {
     handleSubmit,
     onSubmit,
     errors,
+    reset,
     isLoading: mutation.isPending,
   };
 };

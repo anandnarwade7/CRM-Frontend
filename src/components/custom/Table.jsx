@@ -13,7 +13,7 @@ const Table = ({ data, columns }) => {
 
   return (
     <>
-      <table className="min-w-full border-separate border-spacing-y-4">
+      <table className="min-w-full overflow-x-scroll border-separate border-spacing-y-4">
         <thead className="bg-[#F6F6F6]">
           {table?.getHeaderGroups()?.map((headerGroup) => (
             <tr key={headerGroup?.id} className="text-left">

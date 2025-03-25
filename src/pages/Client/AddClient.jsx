@@ -1,13 +1,17 @@
-import { Link } from "react-router";
+import { Link, useParams } from "react-router";
 import { Back } from "../../assets";
 import { Label } from "../../components/ui/label";
 import { Input } from "../../components/ui/input";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
 import { Button } from "../../components/ui/button";
 import { useAddClient } from "../../hooks/Client/useAddClient";
+import { useGetClientById } from "../../hooks/Client/useGetClientById";
 
 const AddClient = () => {
+  const { id } = useParams();
+
+  // States for password toggling
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [isConfirmPasswordVisible, setIsConfirmPasswordVisible] =
     useState(false);
@@ -18,8 +22,29 @@ const AddClient = () => {
     setIsConfirmPasswordVisible((prevState) => !prevState);
 
   // Custom Hook for Handling Form
-  const { register, handleSubmit, onSubmit, errors, isLoading } =
+  const { register, handleSubmit, onSubmit, errors, reset, isLoading } =
     useAddClient();
+
+  // Custom hook for getting the clients data with id
+  const {
+    data: clientData,
+    isLoading: isClientLoading,
+    error: clientError,
+  } = useGetClientById(id);
+
+  console.log("ClientData", clientData);
+
+  useEffect(() => {
+    if (clientData) {
+      reset({
+        name: clientData?.leadName || "",
+        mobile: clientData?.leadmobile || "",
+        email: clientData?.leadEmail || "",
+        password: "",
+        confirmPassword: "",
+      });
+    }
+  }, [clientData, reset]);
 
   return (
     <section className="bg-white h-full w-full rounded-xl px-6 py-3">
@@ -41,6 +66,7 @@ const AddClient = () => {
               id="name"
               className="w-full border-2 focus-visible:ring-0 shadow-none py-5 mt-1"
               {...register("name")}
+              disabled
             />
             {errors.name && (
               <p className="text-red-500 text-sm">{errors.name.message}</p>
@@ -56,6 +82,7 @@ const AddClient = () => {
               id="mobile"
               className="w-full border-2 focus-visible:ring-0 shadow-none py-5 mt-1"
               {...register("mobile")}
+              disabled
             />
             {errors.mobile && (
               <p className="text-red-500 text-sm">{errors.mobile.message}</p>
@@ -71,6 +98,7 @@ const AddClient = () => {
               id="email"
               className="w-full focus-visible:ring-0 shadow-none border-2 py-5 mt-1"
               {...register("email")}
+              disabled
             />
             {errors.email && (
               <p className="text-red-500 text-sm">{errors.email.message}</p>

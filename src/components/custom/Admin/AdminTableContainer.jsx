@@ -1,4 +1,4 @@
-import { Pencil } from "lucide-react";
+import { Separator } from "../../ui/separator";
 import { Button } from "../../ui/button";
 import { useState } from "react";
 import Table from "../Table";
@@ -8,6 +8,8 @@ import { formatDate } from "../../../utils/utilityFunction";
 
 const AdminTableContainer = () => {
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [selectedAction, setSelectedAction] = useState(null);
+  const [selectedUserId, setSelectedUserId] = useState(null);
 
   const { data, isLoading, error } = useGetAdmins();
 
@@ -18,46 +20,6 @@ const AdminTableContainer = () => {
   if (data?.length === 0) {
     return <p>No Data Found</p>;
   }
-
-  const sampleData = [
-    {
-      id: 1,
-      name: "Sam",
-      property: "XYZ builders",
-      mobile: "9487758778",
-      email: "Abc@gmail.com",
-      createdDate: "12/01/25",
-      subscriptionDate: "08/01/25 - 08/04/25",
-    },
-
-    {
-      id: 2,
-      name: "Sam",
-      property: "XYZ builders",
-      mobile: "9487758778",
-      email: "Abc@gmail.com",
-      createdDate: "12/01/25",
-      subscriptionDate: "08/01/25 - 08/04/25",
-    },
-    {
-      id: 3,
-      name: "Sam",
-      property: "XYZ builders",
-      mobile: "9487758778",
-      email: "Abc@gmail.com",
-      createdDate: "12/01/25",
-      subscriptionDate: "08/01/25 - 08/04/25",
-    },
-    {
-      id: 4,
-      name: "Sam",
-      property: "XYZ builders",
-      mobile: "9487758778",
-      email: "Abc@gmail.com",
-      createdDate: "12/01/25",
-      subscriptionDate: "08/01/25 - 08/04/25",
-    },
-  ];
 
   const columns = [
     {
@@ -85,10 +47,16 @@ const AdminTableContainer = () => {
       accessorKey: "createdOn",
       cell: ({ row }) => formatDate(row?.original?.createdOn),
     },
-    // {
-    //   header: "Subscription Date",
-    //   accessorKey: "subscriptionDate",
-    // },
+    {
+      header: "Subscription Date",
+      cell: ({ row }) => (
+        <div className="flex items-center gap-2 -mx-2">
+          <p>{formatDate(row?.original?.startDate)}</p>
+          <Separator className="w-1 bg-black" />
+          <p>{formatDate(row?.original?.endDate)}</p>
+        </div>
+      ),
+    },
     {
       header: "Action",
       cell: ({ row }) => (
@@ -96,9 +64,11 @@ const AdminTableContainer = () => {
           className="bg-[#C99227] rounded-md"
           onClick={() => {
             setDialogOpen(true);
+            setSelectedAction(row?.original?.action);
+            setSelectedUserId(row?.original?.id);
           }}
         >
-          Unblock
+          {row?.original?.action === "UNBLOCK" ? "Block" : "Unblock"}
         </Button>
       ),
     },
@@ -106,7 +76,12 @@ const AdminTableContainer = () => {
   return (
     <div className="my-6">
       <Table data={data} columns={columns} />
-      <UpdateAdminDialog open={dialogOpen} onClose={setDialogOpen} />
+      <UpdateAdminDialog
+        open={dialogOpen}
+        onClose={setDialogOpen}
+        selectedAction={selectedAction}
+        selectedUserId={selectedUserId}
+      />
     </div>
   );
 };

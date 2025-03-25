@@ -29,3 +29,19 @@ export const getAdmins = async () => {
     console.log("Error Fetching Admins", error);
   }
 };
+
+// Service for Block and Unblock the Admin
+export const updateAdminAction = async (userId, status) => {
+  try {
+    const response = await axios.put(
+      `${BASE_URL}/user/updateadmin/${userId}/${status}`,
+      {},
+      {
+        withCredentials: true,
+      }
+    );
+    return response?.data;
+  } catch (error) {
+    console.log("Error Update the Status", error);
+  }
+};

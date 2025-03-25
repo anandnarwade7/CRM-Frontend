@@ -62,5 +62,6 @@ export const useAddAdmin = () => {
     onSubmit,
     setValue,
     control,
+    isLoading: mutation.isPending,
   };
 };

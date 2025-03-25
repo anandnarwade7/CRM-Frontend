@@ -3,7 +3,7 @@ import { Back } from "../../assets";
 import { Label } from "../../components/ui/label";
 import { Input } from "../../components/ui/input";
 import { useState } from "react";
-import { Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff, Loader2 } from "lucide-react";
 import { Button } from "../../components/ui/button";
 import { useAddAdmin } from "../../hooks/Admin/useAddAdmin";
 import DatePicker from "../../components/custom/DatePicker";
@@ -17,7 +17,8 @@ const AdminDetails = () => {
   const toggleConfirmVisibility = () =>
     setConfirmPasswordVisible((prevState) => !prevState);
 
-  const { register, errors, handleSubmit, onSubmit, control } = useAddAdmin();
+  const { register, errors, handleSubmit, onSubmit, control, isLoading } =
+    useAddAdmin();
 
   return (
     <section className="bg-white w-full h-full px-6 py-3 rounded-lg">
@@ -224,8 +225,9 @@ const AdminDetails = () => {
           <Button
             type="submit"
             className="bg-[#C99227] text-white w-full max-w-md"
+            disabled={isLoading}
           >
-            Add
+            {isLoading ? <Loader2 className="animate-spin" size={24} /> : "Add"}
           </Button>
         </div>
       </form>

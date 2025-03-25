@@ -86,6 +86,13 @@ const UserPersonTable = () => {
     if (page > 1) setPage((prev) => prev - 1);
   };
 
+  if (
+    data === "No users found for the role: CRM" ||
+    data === "No users found for the role: SALES"
+  ) {
+    return <p className="text-center my-4 ">No Users Found</p>;
+  }
+
   return (
     <>
       <UserTable

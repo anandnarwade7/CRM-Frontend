@@ -158,9 +158,7 @@ const ClientTable = () => {
                 size="icon"
                 className="bg-[#C99227] rounded-xl shadow-none"
                 onClick={() => {
-                  if (userRole === "CRM") {
-                    navigate("/app/add-client");
-                  }
+                  navigate(`/app/add-client/${row?.original?.id}`);
                 }}
               >
                 <img src={Link} alt="Link" />

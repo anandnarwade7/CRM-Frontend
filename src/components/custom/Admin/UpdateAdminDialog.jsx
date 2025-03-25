@@ -1,3 +1,4 @@
+import { useAdminActionStatus } from "../../../hooks/Admin/useAdminActionStatus";
 import { Button } from "../../ui/button";
 import {
   Dialog,
@@ -6,7 +7,17 @@ import {
   DialogTitle,
 } from "../../ui/dialog";
 
-const UpdateAdminDialog = ({ open, onClose }) => {
+const UpdateAdminDialog = ({
+  open,
+  onClose,
+  selectedAction,
+  selectedUserId,
+}) => {
+  const { handleYesClick } = useAdminActionStatus(
+    selectedUserId,
+    selectedAction,
+    onClose
+  );
   return (
     <Dialog open={open} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-md">
@@ -16,7 +27,12 @@ const UpdateAdminDialog = ({ open, onClose }) => {
           </DialogTitle>
         </DialogHeader>
         <div className="flex items-center gap-4">
-          <Button className="bg-[#C99227] w-full max-w-md p-5">Yes</Button>
+          <Button
+            className="bg-[#C99227] w-full max-w-md p-5"
+            onClick={handleYesClick}
+          >
+            Yes
+          </Button>
           <Button
             onClick={() => onClose(false)}
             className="border-2 border-[#C99227] bg-white text-[#C99227] w-full max-w-md p-5"

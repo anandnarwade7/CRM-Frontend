@@ -5,6 +5,9 @@ import LoginImage from "./Img/login.jpg";
 import DashboardSales from "./Icons/dashboard-sales.svg";
 import DashboardTime from "./Icons/dashboard-time.svg";
 import DashboardList from "./Icons/dashboard-list.svg";
+import DashboardLineUp from "./Icons/lineUp.svg";
+import DashboardInvoice from "./Icons/invoice.svg";
+import DashboardUserAdmin from "./Icons/userAdmin.svg";
 
 // Sidebar
 import ProfilePic from "./Img/ProfilePic.png";
@@ -63,4 +66,7 @@ export {
   DashboardSales,
   DashboardTime,
   DashboardList,
+  DashboardLineUp,
+  DashboardInvoice,
+  DashboardUserAdmin,
 };

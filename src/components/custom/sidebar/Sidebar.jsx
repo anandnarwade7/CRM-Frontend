@@ -1,6 +1,6 @@
 import { Separator } from "../../ui/separator";
 import { Badge } from "../../ui/badge";
-import { Link, useLocation } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import Profile from "../Profile/Profile";
 import {
   Dashboard,
@@ -23,12 +23,13 @@ import {
   Logout,
   Admin,
 } from "../../../assets/index";
-import { useEffect, useState } from "react";
 import { useUserRole } from "../../../hooks/use-userrole";
+import { Button } from "../../ui/button";
 
 const Sidebar = () => {
   const location = useLocation();
   const userRole = useUserRole();
+  const navigate = useNavigate();
 
   // Navigation Links
   const menuItems = [
@@ -121,6 +122,12 @@ const Sidebar = () => {
       ? "Client"
       : "CRM";
 
+  // Handle Function for Logout navigating to login page
+  const handleLogout = () => {
+    sessionStorage.clear();
+    navigate("/");
+  };
+
   return (
     <>
       <aside className="w-64 h-screen bg-white fixed top-0 left-0 flex flex-col">
@@ -167,10 +174,13 @@ const Sidebar = () => {
 
         {/* Logout Button */}
         <div className="px-4 py-2">
-          <Link className="flex items-center gap-4 m-2 text-[--text-color]">
+          <Button
+            onClick={handleLogout}
+            className="bg-white text-black flex items-center gap-3"
+          >
             <img src={Logout} alt="logout" />
             logout
-          </Link>
+          </Button>
         </div>
       </aside>
     </>

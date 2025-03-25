@@ -1,6 +1,8 @@
-import AdminDashboard from "../../components/custom/Dashboard/AdminDashboard";
+import AdminDashboard from "./AdminDashboard";
 import { useUserRole } from "../../hooks/use-userrole";
 import SalesDashboard from "./SalesDashboard";
+import SuperAdminDashboard from "./SuperAdminDashboard";
+import CRMDashboard from "./CRMDashboard";
 
 const Dashboard = () => {
   const userRole = useUserRole();
@@ -11,8 +13,10 @@ const Dashboard = () => {
         <AdminDashboard />
       ) : userRole === "SALES" ? (
         <SalesDashboard />
+      ) : userRole === "SUPER ADMIN" ? (
+        <SuperAdminDashboard />
       ) : (
-        <p>CR Dashboard</p>
+        <CRMDashboard />
       )}
     </div>
   );
