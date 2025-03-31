@@ -30,7 +30,10 @@ const UserPersonDetails = () => {
         </Link> */}
 
         <div className="flex items-center">
-          <Button onClick={() => navigate(-1)} className="shadow-none">
+          <Button
+            onClick={() => navigate(-1)}
+            className="bg-white text-black shadow-none"
+          >
             <img src={Back} alt="back" />
           </Button>
           <span className="text-2xl font-semibold text-[#707070]">

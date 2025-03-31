@@ -7,20 +7,44 @@ import {
   DashboardUserAdmin,
 } from "../../assets";
 import DashboardCard from "../../components/custom/DashboardCard";
+import { useAdminDashboard } from "../../hooks/Dashboard/useAdminDashboard";
 
 const SuperAdminDashboard = () => {
+  const { isLoading, isError, data, error } = useAdminDashboard();
+
+  console.log("Super Admin Dashboard", data);
+
+  if (isLoading) {
+    return <p>Loading...</p>;
+  }
+
+  if (error) {
+    return <p className="text-sm text-red-500">{error?.message}</p>;
+  }
   return (
     <>
       <>
         <div className="flex items-center gap-4">
           {/* Sales Person */}
-          <DashboardCard title="Admins" data={"-"} img={DashboardUserAdmin} />
+          <DashboardCard
+            title="Admins"
+            data={data?.admins || "-"}
+            img={DashboardUserAdmin}
+          />
 
           {/* CRM Manager */}
-          <DashboardCard title="CRM Managers" data={"-"} img={DashboardTime} />
+          <DashboardCard
+            title="CRM Managers"
+            data={data?.crm || "-"}
+            img={DashboardTime}
+          />
 
           {/* Total Leads */}
-          <DashboardCard title="Sales Persons" data={"-"} img={DashboardList} />
+          <DashboardCard
+            title="Sales Persons"
+            data={data?.sales || "-"}
+            img={DashboardList}
+          />
         </div>
         <div className="flex items-center gap-4 my-4">
           {/* Total Invoice Raised */}

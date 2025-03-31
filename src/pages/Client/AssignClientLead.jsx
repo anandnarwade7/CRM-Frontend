@@ -91,7 +91,7 @@ const AssignClientLead = () => {
             </label>
           </div>
         </RadioGroup>
-        <Button
+        {/* <Button
           className="bg-[#C99227] shadow-none text-white"
           onClick={() => downloadTemplate()}
           disabled={isDownloading}
@@ -101,7 +101,7 @@ const AssignClientLead = () => {
           ) : (
             "Export Leads"
           )}
-        </Button>
+        </Button> */}
       </div>
       <div>
         {distribution === "Specific" ? (
@@ -118,6 +118,7 @@ const AssignClientLead = () => {
               selectPlaceholder={"Select"}
               fileInputLabel={"Clients Files"}
               fileInputRef={fileInputRef}
+              removeFileInput={true}
             />
           </>
         ) : (
@@ -127,6 +128,7 @@ const AssignClientLead = () => {
             errors={errors}
             selectLabel={"Total No. of CR Manager"}
             fileInputLabel={"Clients Files"}
+            removeFileInput={true}
           />
         )}
       </div>

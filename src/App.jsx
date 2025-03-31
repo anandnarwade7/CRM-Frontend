@@ -47,6 +47,7 @@ const router = createBrowserRouter([
             path: "/app/dashboard",
             element: <Dashboard />,
           },
+          // Screens for super admin
           {
             path: "/app/admin",
             element: <Admin />,
@@ -56,13 +57,20 @@ const router = createBrowserRouter([
             element: <AdminDetails />,
           },
           {
+            path: "/app/admin-details/:id",
+            element: <AdminDetails />,
+          },
+          // screen for sales person
+          {
             path: "/app/sales-person",
             element: <SalesPerson />,
           },
+          // Viewing the sales and cr Managers details
           {
             path: "/app/userDetails",
             element: <UserPersonDetails />,
           },
+          // screen for CR Manager
           {
             path: "/app/cr-manager",
             element: <CRManager />,

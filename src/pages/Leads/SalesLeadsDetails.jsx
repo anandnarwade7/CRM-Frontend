@@ -18,6 +18,9 @@ import { Input } from "../../components/ui/input";
 import { usePostSalesLeads } from "../../hooks/Leads/usePostSalesLeads";
 import { Controller } from "react-hook-form";
 import { useGetLeadsById } from "../../hooks/Leads/useGetLeadsById";
+import DatePicker from "../../components/custom/DatePicker";
+import Table from "../../components/custom/Table";
+import { formatDate } from "../../utils/utilityFunction";
 
 const SalesLeadsDetails = () => {
   const [isStatusOpen, setIsStatusOpen] = useState(false);
@@ -46,12 +49,12 @@ const SalesLeadsDetails = () => {
     if (data) {
       setValue("status", data?.status || "COLD");
 
-      const lastComment =
-        data?.conversationLogs?.length > 0
-          ? data?.conversationLogs[data?.conversationLogs?.length - 1]?.comment
-          : "";
+      // const lastComment =
+      //   data?.conversationLogs?.length > 0
+      //     ? data?.conversationLogs[data?.conversationLogs?.length - 1]?.comment
+      //     : "";
 
-      setValue("note", lastComment);
+      // setValue("note", lastComment);
       setValue("customFields", []);
 
       // setValue(
@@ -69,6 +72,40 @@ const SalesLeadsDetails = () => {
       }
     }
   }, [data, setValue, append, leadId]);
+
+  // Data and Columns for Comments Table
+  const conversationData = data?.conversationLogs || [];
+
+  const columns = [
+    {
+      header: "Sr. No",
+      cell: ({ row }) => row.index + 1,
+    },
+    {
+      header: "Description",
+      accessorKey: "comment",
+    },
+    {
+      header: "Created Date",
+      accessorKey: "date",
+      cell: ({ row }) => (
+        <p>
+          {row?.original?.date ? formatDate(Number(row?.original?.date)) : "-"}
+        </p>
+      ),
+    },
+    {
+      header: "Reminder Date",
+      accessorKey: "dueDate",
+      cell: ({ row }) => (
+        <p>
+          {row?.original?.dueDate
+            ? formatDate(Number(row?.original?.dueDate))
+            : "-"}
+        </p>
+      ),
+    },
+  ];
 
   return (
     <div className="w-full rounded-xl bg-white h-full px-6 py-3">
@@ -136,9 +173,31 @@ const SalesLeadsDetails = () => {
           )}
         </div>
         <div className="my-7">
-          <Label htmlFor="note" className="text-[#233A48] text-sm font-normal">
-            Note
-          </Label>
+          <div className="flex items-center justify-between mb-4">
+            <Label
+              htmlFor="note"
+              className="text-[#233A48] text-sm font-normal"
+            >
+              Note
+            </Label>
+            <div className="w-full max-w-[20%]">
+              <Controller
+                control={control}
+                name="dueDate"
+                render={({ field }) => (
+                  <DatePicker
+                    value={field.value}
+                    onChange={(date) => field.onChange(date)}
+                  />
+                )}
+              />
+              {errors?.dueDate && (
+                <p className="text-red-500 text-sm mt-1">
+                  {errors?.dueDate?.message}
+                </p>
+              )}
+            </div>
+          </div>
           <Textarea
             placeholder="Note"
             id="note"
@@ -148,6 +207,13 @@ const SalesLeadsDetails = () => {
           />
           {errors.note && (
             <p className="text-red-500 text-sm">{errors.note.message}</p>
+          )}
+        </div>
+
+        <div>
+          <Table data={conversationData} columns={columns} />
+          {conversationData.length === 0 && (
+            <p className="text-center text-sm">No Comments Found</p>
           )}
         </div>
 

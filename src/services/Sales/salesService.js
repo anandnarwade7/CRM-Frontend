@@ -3,35 +3,55 @@ import { BASE_URL } from "../../utils/constant";
 
 // Service for add the new User.
 export const addSalesPerson = async (userId, formData) => {
-  const response = await axios.post(
-    `${BASE_URL}/user/addUser/${userId}`,
-    formData,
-    {
-      withCredentials: true,
-    }
-  );
-  return response?.data;
+  try {
+    const response = await axios.post(
+      `${BASE_URL}/user/addUser/${userId}`,
+      formData,
+      {
+        withCredentials: true,
+      }
+    );
+    return response?.data;
+  } catch (error) {
+    console.log("Error while creating the user", error);
+    throw new Error("Failed to Create the User");
+  }
 };
 
 // service for Getting the users.
 export const fetchUsers = async (role, page = 1) => {
-  const response = await axios.get(`${BASE_URL}/user/getUsers`, {
-    params: {
-      role,
-      page,
-    },
-    withCredentials: true,
-  });
-  return response?.data;
+  try {
+    const response = await axios.get(`${BASE_URL}/user/getUsers`, {
+      params: {
+        role,
+        page,
+      },
+      withCredentials: true,
+    });
+    return response?.data;
+  } catch (error) {
+    console.log("Error Fetching Users", error);
+
+    throw new Error(
+      error?.response?.data?.message || `Failed to Fetch:${role}`
+    );
+  }
 };
 
 // Service for getting Page size for Users.
 export const fetchUserPageCount = async (role) => {
-  const response = await axios.get(`${BASE_URL}/user/getCountByRole/${role}`, {
-    withCredentials: true,
-  });
+  try {
+    const response = await axios.get(
+      `${BASE_URL}/user/getCountByRole/${role}`,
+      {
+        withCredentials: true,
+      }
+    );
 
-  return response?.data;
+    return response?.data;
+  } catch (error) {
+    console.log("Error while fetching the page size of the user", error);
+  }
 };
 
 // Service for updating the User Status (Block and unBlock)

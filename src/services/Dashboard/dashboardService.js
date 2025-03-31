@@ -10,6 +10,7 @@ export const adminDashboardService = async () => {
     return response?.data;
   } catch (error) {
     console.log("Admin Dashboard Error", error);
+    throw new Error(error?.response?.data?.message || "Failed to Fetch");
   }
 };
 

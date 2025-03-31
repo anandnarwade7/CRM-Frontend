@@ -3,9 +3,10 @@ import { useToast } from "@/hooks/use-toast";
 import { adminSchema } from "../../schemas/Admin/admin";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
-import { createAdmin } from "../../services/Admin/adminService";
+import { createAdmin, updateAdmin } from "../../services/Admin/adminService";
+import { useNavigate } from "react-router";
 
-export const useAddAdmin = () => {
+export const useAddAdmin = (id) => {
   const {
     register,
     reset,
@@ -17,16 +18,42 @@ export const useAddAdmin = () => {
     resolver: zodResolver(adminSchema),
   });
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   // Mutation for adding the new Admin
   const mutation = useMutation({
-    mutationFn: createAdmin,
+    mutationFn: async (formData) => {
+      if (id) {
+        const updateData = {
+          password: formData?.password,
+          startDate: new Date(formData?.startDate).getTime(),
+          endDate: new Date(formData?.endDate).getTime(),
+        };
+
+        return updateAdmin({ id, data: updateData });
+      } else {
+        const createData = {
+          ...formData,
+          startDate: new Date(formData?.startDate).getTime(),
+          endDate: new Date(formData?.endDate).getTime(),
+        };
+
+        delete createData.confirmPassword;
+
+        return createAdmin(createData);
+      }
+    },
     onSuccess: (data) => {
       if (data) {
         toast({
-          title: "Admin Created successfully",
+          title: id
+            ? "Admin Updated successfully"
+            : "Admin Created successfully",
           duration: 2000,
         });
+        setTimeout(() => {
+          navigate("/app/admin");
+        }, 2100);
         reset();
       }
     },
@@ -43,16 +70,7 @@ export const useAddAdmin = () => {
 
   // HandleSumbit Function
   const onSubmit = (formData) => {
-    const formattedFormData = {
-      ...formData,
-      startDate: new Date(formData?.startDate).getTime(),
-      endDate: new Date(formData?.endDate).getTime(),
-    };
-
-    delete formattedFormData.confirmPassword;
-
-    console.log("Formatted Data before API Call:", formattedFormData);
-    mutation.mutate(formattedFormData);
+    mutation.mutate(formData);
   };
 
   return {

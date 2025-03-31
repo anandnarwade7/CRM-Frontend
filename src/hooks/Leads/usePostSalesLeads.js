@@ -59,9 +59,11 @@ export const usePostSalesLeads = (leadId, data, isStatusOpen) => {
     const value = data?.customFields?.map((item) => item?.value) || [];
     const comment = data?.note;
     const status = data?.status;
+    const dueDate = data?.dueDate ? new Date(data?.dueDate).getTime() : 0;
 
     const formData = new FormData();
     formData?.append("comment", comment);
+    formData?.append("dueDate", dueDate);
 
     if (status) {
       formData?.append("status", status);
@@ -72,7 +74,6 @@ export const usePostSalesLeads = (leadId, data, isStatusOpen) => {
 
     mutation.mutate(formData, {
       onSuccess: (response) => {
-        console.log("POST SALES LEADS", response);
         // reset();
         toast({
           title: "Convert Lead Successfully",

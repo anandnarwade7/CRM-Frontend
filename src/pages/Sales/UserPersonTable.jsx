@@ -93,6 +93,10 @@ const UserPersonTable = () => {
     return <p className="text-center my-4 ">No Users Found</p>;
   }
 
+  if (error) {
+    return <p className="text-red-500">{error.message}</p>;
+  }
+
   return (
     <>
       <UserTable

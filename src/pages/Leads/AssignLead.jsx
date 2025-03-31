@@ -118,6 +118,7 @@ const AssignLead = () => {
               selectPlaceholder={"Select Sales Person"}
               fileInputLabel={"Lead Files"}
               fileInputRef={fileInputRef}
+              removeFileInput={false}
             />
           </>
         ) : (
@@ -127,6 +128,7 @@ const AssignLead = () => {
             errors={errors}
             selectLabel={"Total No. of Sales Person"}
             fileInputLabel={"Lead Files"}
+            removeFileInput={false}
           />
         )}
       </div>

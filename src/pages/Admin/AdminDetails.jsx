@@ -1,15 +1,18 @@
-import { Link } from "react-router";
+import { Link, useParams } from "react-router";
 import { Back } from "../../assets";
 import { Label } from "../../components/ui/label";
 import { Input } from "../../components/ui/input";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
 import { Button } from "../../components/ui/button";
 import { useAddAdmin } from "../../hooks/Admin/useAddAdmin";
 import DatePicker from "../../components/custom/DatePicker";
 import { Controller } from "react-hook-form";
+import { useGetAdminById } from "../../hooks/Admin/useGetAdminById";
 
 const AdminDetails = () => {
+  const { id } = useParams();
+
   const [isVisible, setIsVisible] = useState(false);
   const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
 
@@ -17,8 +20,41 @@ const AdminDetails = () => {
   const toggleConfirmVisibility = () =>
     setConfirmPasswordVisible((prevState) => !prevState);
 
-  const { register, errors, handleSubmit, onSubmit, control, isLoading } =
-    useAddAdmin();
+  const {
+    register,
+    errors,
+    handleSubmit,
+    onSubmit,
+    setValue,
+    control,
+    isLoading,
+  } = useAddAdmin(id);
+
+  // Fetching the data by it's id and set
+  const {
+    data: adminData,
+    isLoading: getAdminByIdLoading,
+    error,
+  } = useGetAdminById(id);
+
+  useEffect(() => {
+    if (adminData) {
+      setValue("name", adminData?.name || "");
+      setValue("mobile", adminData?.mobile || "");
+      setValue("email", adminData?.email || "");
+      setValue("propertyName", adminData?.propertyName || "");
+      setValue("password", adminData?.password || "");
+      setValue("confirmPassword", adminData?.password || "");
+      setValue(
+        "startDate",
+        adminData?.startDate ? new Date(adminData?.startDate) : null
+      );
+      setValue(
+        "endDate",
+        adminData?.endDate ? new Date(adminData?.endDate) : null
+      );
+    }
+  }, [adminData, setValue]);
 
   return (
     <section className="bg-white w-full h-full px-6 py-3 rounded-lg">
@@ -27,7 +63,9 @@ const AdminDetails = () => {
         <Link to={"/app/admin"}>
           <img src={Back} alt="back" />
         </Link>
-        <p className="text-[#707070] font-medium text-2xl">Add Admin</p>
+        <p className="text-[#707070] font-medium text-2xl">
+          {id ? "Edit Admin" : "Add Admin"}
+        </p>
       </div>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="grid grid-cols-2 gap-5 my-6">
@@ -41,6 +79,7 @@ const AdminDetails = () => {
               id="name"
               {...register("name")}
               className="w-full focus-visible:ring-0 shadow-none border py-5 mt-1"
+              disabled={id}
             />
             {errors.name && (
               <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>
@@ -56,6 +95,7 @@ const AdminDetails = () => {
               id="mobile"
               {...register("mobile")}
               className="w-full focus-visible:ring-0 shadow-none border py-5 mt-1"
+              disabled={id}
             />
             {errors.mobile && (
               <p className="text-red-500 text-sm mt-1">
@@ -76,6 +116,7 @@ const AdminDetails = () => {
               id="propertyName"
               {...register("propertyName")}
               className="w-full focus-visible:ring-0 shadow-none border py-5 mt-1"
+              disabled={id}
             />
             {errors.propertyName && (
               <p className="text-red-500 text-sm mt-1">
@@ -93,6 +134,7 @@ const AdminDetails = () => {
               id="email"
               {...register("email")}
               className="w-full focus-visible:ring-0 shadow-none border py-5 mt-1"
+              disabled={id}
             />
             {errors.email && (
               <p className="text-red-500 text-sm mt-1">
@@ -227,7 +269,13 @@ const AdminDetails = () => {
             className="bg-[#C99227] text-white w-full max-w-md"
             disabled={isLoading}
           >
-            {isLoading ? <Loader2 className="animate-spin" size={24} /> : "Add"}
+            {isLoading ? (
+              <Loader2 className="animate-spin" size={24} />
+            ) : id ? (
+              "Update"
+            ) : (
+              "add"
+            )}
           </Button>
         </div>
       </form>

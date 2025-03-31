@@ -3,7 +3,7 @@ import AdminTableContainer from "../../components/custom/Admin/AdminTableContain
 
 const Admin = () => {
   return (
-    <section className="bg-white w-full  h-full p-3 rounded-lg">
+    <section className="bg-white w-full max-w-screen-lg h-full p-3 rounded-lg">
       <AdminHeader />
       <AdminTableContainer />
     </section>

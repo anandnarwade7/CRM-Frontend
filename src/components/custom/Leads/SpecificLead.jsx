@@ -19,6 +19,7 @@ const SpecificLead = ({
   selectPlaceholder,
   fileInputLabel,
   fileInputRef,
+  removeFileInput,
 }) => {
   // const fileInputRef = useRef(null);
 
@@ -100,26 +101,33 @@ const SpecificLead = ({
           )}
         </div>
 
-        <div className="w-full">
-          <Label htmlFor="leadFiles">{fileInputLabel}</Label>
-          <div className="flex rounded-lg shadow-none">
-            <Input
-              type="file"
-              accept=".xlsx, .xls"
-              onChange={handleFileChange}
-              id="leadFiles"
-              ref={fileInputRef}
-              className="-me-px flex-1 rounded-e-none shadow-none focus-visible:z-10"
-            />
-            <button
-              onClick={() => fileInputRef.current?.click()}
-              className="inline-flex items-center rounded-e-lg border border-input bg-[#F9AE00] px-3 text-sm text-white font-medium text-foreground outline-offset-2 transition-colors focus:z-10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-ring/70 disabled:cursor-not-allowed disabled:opacity-50"
-            >
-              Upload
-            </button>
+        {removeFileInput ? (
+          <div className="mt-1 ml-5">
+            <p>Total No of Clients</p>
+            <p>100</p>
           </div>
-          {errors.file && <p className="text-red-500 mt-2">{errors.file}</p>}
-        </div>
+        ) : (
+          <div className="w-full">
+            <Label htmlFor="leadFiles">{fileInputLabel}</Label>
+            <div className="flex rounded-lg shadow-none">
+              <Input
+                type="file"
+                accept=".xlsx, .xls"
+                onChange={handleFileChange}
+                id="leadFiles"
+                ref={fileInputRef}
+                className="-me-px flex-1 rounded-e-none shadow-none focus-visible:z-10"
+              />
+              <button
+                onClick={() => fileInputRef.current?.click()}
+                className="inline-flex items-center rounded-e-lg border border-input bg-[#F9AE00] px-3 text-sm text-white font-medium text-foreground outline-offset-2 transition-colors focus:z-10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-ring/70 disabled:cursor-not-allowed disabled:opacity-50"
+              >
+                Upload
+              </button>
+            </div>
+            {errors.file && <p className="text-red-500 mt-2">{errors.file}</p>}
+          </div>
+        )}
       </div>
     </div>
   );

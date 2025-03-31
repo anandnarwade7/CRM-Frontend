@@ -9,7 +9,7 @@ import { useNavigate } from "react-router";
 
 export const useAssignClientLeads = () => {
   const [distribution, setDistribution] = useState("Specific");
-  const [file, setFile] = useState(null);
+  // const [file, setFile] = useState(null);
   const [selectedCRManagers, setSelectedCRManagers] = useState([]);
   const [errors, setErrors] = useState({
     crManager: "",
@@ -22,10 +22,10 @@ export const useAssignClientLeads = () => {
   useEffect(() => {
     if (distribution) {
       setSelectedCRManagers([]);
-      setFile(null);
+      // setFile(null);
       setErrors({
         crManager: "",
-        file: "",
+        // file: "",
       });
     }
   }, [distribution]);
@@ -36,21 +36,21 @@ export const useAssignClientLeads = () => {
   const { toast } = useToast();
 
   // Function For Handling File
-  const handleFileChange = (e) => {
-    const selectedFile = e.target.files[0];
-    setErrors((prev) => ({ ...prev, file: "" }));
+  // const handleFileChange = (e) => {
+  //   const selectedFile = e.target.files[0];
+  //   setErrors((prev) => ({ ...prev, file: "" }));
 
-    if (selectedFile) {
-      const fileType = selectedFile.name.split(".").pop();
-      if (fileType === "xlsx" || fileType === "xls") {
-        setFile(selectedFile);
-      } else {
-        alert("Please select an Excel file (.xlsx or .xls)");
-        setFile(null);
-        e.target.value = "";
-      }
-    }
-  };
+  //   if (selectedFile) {
+  //     const fileType = selectedFile.name.split(".").pop();
+  //     if (fileType === "xlsx" || fileType === "xls") {
+  //       setFile(selectedFile);
+  //     } else {
+  //       alert("Please select an Excel file (.xlsx or .xls)");
+  //       setFile(null);
+  //       e.target.value = "";
+  //     }
+  //   }
+  // };
 
   // Handle checkbox change (select/unselect salesperson)
   const handleCheckboxChange = (id) => {
@@ -72,7 +72,7 @@ export const useAssignClientLeads = () => {
     let isValid = true;
     const newErrors = {
       crManager: "",
-      file: "",
+      // file: "",
     };
 
     if (distribution === "Specific") {
@@ -82,10 +82,10 @@ export const useAssignClientLeads = () => {
       }
     }
 
-    if (!file) {
-      newErrors.file = "Please upload an Excel file";
-      isValid = false;
-    }
+    // if (!file) {
+    //   newErrors.file = "Please upload an Excel file";
+    //   isValid = false;
+    // }
 
     setErrors(newErrors);
     return isValid;
@@ -96,7 +96,8 @@ export const useAssignClientLeads = () => {
     mutationFn: async () => {
       const formData = new FormData();
       formData.append("userId", userId);
-      formData.append("file", file);
+
+      // formData.append("file", file);
 
       if (distribution === "Specific") {
         const allCRMIDs = crm?.map((crManager) => crManager?.id);
@@ -105,14 +106,12 @@ export const useAssignClientLeads = () => {
           (id) => !selectedCRManagers?.includes(id)
         );
 
-        console.log("Unselected CRMs", unSelectedCRMs);
-
-        // formData.append("assignedTo", selectedCRManagers);
         formData.append("assignedTo", unSelectedCRMs);
+        formData.append("leadIds", 37);
       }
 
       const response = await axios.post(
-        `${BASE_URL}/clients/upload`,
+        `${BASE_URL}/clients/assign`,
         formData,
         {
           withCredentials: true,
@@ -130,14 +129,14 @@ export const useAssignClientLeads = () => {
           duration: 2000,
         });
         setSelectedCRManagers([]);
-        setFile(null);
+        // setFile(null);
         setErrors({
           crManager: "",
-          file: "",
+          // file: "",
         });
-        if (fileInputRef.current) {
-          fileInputRef.current.value = "";
-        }
+        // if (fileInputRef.current) {
+        //   fileInputRef.current.value = "";
+        // }
 
         setTimeout(() => {
           navigate("/app/client");
@@ -157,10 +156,10 @@ export const useAssignClientLeads = () => {
           duration: 2000,
         });
         selectedCRManagers([]);
-        setFile(null);
+        // setFile(null);
         setErrors({
           crManager: "",
-          file: "",
+          // file: "",
         });
       }
     },
@@ -176,8 +175,8 @@ export const useAssignClientLeads = () => {
   return {
     distribution,
     setDistribution,
-    file,
-    handleFileChange,
+    // file,
+    // handleFileChange,
     selectedCRManagers,
     handleCheckboxChange,
     crm,

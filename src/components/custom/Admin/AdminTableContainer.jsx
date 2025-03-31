@@ -5,21 +5,16 @@ import Table from "../Table";
 import UpdateAdminDialog from "./UpdateAdminDialog";
 import { useGetAdmins } from "../../../hooks/Admin/useGetAdmins";
 import { formatDate } from "../../../utils/utilityFunction";
+import { Pencil } from "lucide-react";
+import { useNavigate } from "react-router";
 
 const AdminTableContainer = () => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedAction, setSelectedAction] = useState(null);
   const [selectedUserId, setSelectedUserId] = useState(null);
+  const navigate = useNavigate();
 
   const { data, isLoading, error } = useGetAdmins();
-
-  if (isLoading) {
-    return <p>Loading...</p>;
-  }
-
-  if (data?.length === 0) {
-    return <p>No Data Found</p>;
-  }
 
   const columns = [
     {
@@ -61,6 +56,17 @@ const AdminTableContainer = () => {
       header: "Action",
       cell: ({ row }) => (
         <Button
+          className="bg-yellow-600 hover:bg-yellow-700 p-2 rounded-xl"
+          onClick={() => navigate(`/app/admin-details/${row?.original?.id}`)}
+        >
+          <Pencil className="h-4 w-4 text-white" />
+        </Button>
+      ),
+    },
+    {
+      header: "Access",
+      cell: ({ row }) => (
+        <Button
           className="bg-[#C99227] rounded-md"
           onClick={() => {
             setDialogOpen(true);
@@ -73,6 +79,27 @@ const AdminTableContainer = () => {
       ),
     },
   ];
+
+  if (isLoading) {
+    return <p>Loading...</p>;
+  }
+
+  if (error) {
+    return (
+      <p className="text-red-500">
+        Error while fetching admins: {error.message}
+      </p>
+    );
+  }
+
+  if (data?.length === 0) {
+    return <p>No Data Found</p>;
+  }
+
+  if (data === "No users found for the role: ADMIN") {
+    return <p>No Admin Found</p>;
+  }
+
   return (
     <div className="my-6">
       <Table data={data} columns={columns} />

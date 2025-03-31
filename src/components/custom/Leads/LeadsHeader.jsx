@@ -27,7 +27,7 @@ const LeadsHeader = () => {
       {/* Upper Header */}
       <div className="flex items-center justify-between">
         <p className="font-medium text-2xl text-[#707070]">Leads</p>
-        <Button className="shadow-none">
+        <Button className="bg-white text-black shadow-none">
           <img src={Notification} alt="notification" />
         </Button>
       </div>

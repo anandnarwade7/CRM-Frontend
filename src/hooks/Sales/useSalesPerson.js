@@ -34,13 +34,15 @@ export const useSalesPerson = (role) => {
       reset();
       queryClient.invalidateQueries({ queryKey: ["users"] });
     },
-    onError: () => {
-      toast({
-        variant: "destructive",
-        title: "Error Adding Sales Person",
-        description: errorMessage,
-        duration: 2000,
-      });
+    onError: (error) => {
+      if (error) {
+        toast({
+          variant: "destructive",
+          title: "Oh! Got Error",
+          description: error?.message || "Something went wrong.",
+          duration: 2000,
+        });
+      }
     },
   });
 

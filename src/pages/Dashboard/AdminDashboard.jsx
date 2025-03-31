@@ -9,10 +9,18 @@ import { useAdminDashboard } from "../../hooks/Dashboard/useAdminDashboard";
 import DashboardCard from "../../components/custom/DashboardCard";
 
 const AdminDashboard = () => {
-  const { isPending, isError, data, error } = useAdminDashboard();
+  const { isLoading, isError, data, error } = useAdminDashboard();
+
+  if (isLoading) {
+    return <p>Loading...</p>;
+  }
+
+  if (error) {
+    return <p className="text-sm text-red-500">{error?.message}</p>;
+  }
 
   return (
-    <>
+    <section className="w-full h-full bg-white p-6">
       <div className="flex items-center gap-4">
         {/* Sales Person */}
         <DashboardCard
@@ -55,7 +63,7 @@ const AdminDashboard = () => {
           img={DashboardInvoice}
         />
       </div>
-    </>
+    </section>
   );
 };
 
