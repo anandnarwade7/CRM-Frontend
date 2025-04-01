@@ -6,6 +6,7 @@ import { useMutation } from "@tanstack/react-query";
 import { useToast } from "../use-toast";
 import { useGetCRM } from "../Client/useGetCRM";
 import { useNavigate } from "react-router";
+import { useGetConvertedLeads } from "./useGetConvertedLeads";
 
 export const useAssignClientLeads = () => {
   const [distribution, setDistribution] = useState("Specific");
@@ -17,6 +18,8 @@ export const useAssignClientLeads = () => {
   });
   const fileInputRef = useRef(null);
   const navigate = useNavigate();
+  const userId = useUserId();
+  const { toast } = useToast();
 
   // Reset the file, selectedPerson array and errors
   useEffect(() => {
@@ -32,8 +35,22 @@ export const useAssignClientLeads = () => {
 
   // Custom hook for getting sales person data
   const { data: crm, error, isLoading } = useGetCRM("CRM");
-  const userId = useUserId();
-  const { toast } = useToast();
+
+  // Custom hook for getting the converted leads and sending as payload
+  const {
+    data: convertedLeadsData,
+    isLoading: convertedLeadsLoading,
+    error: convertedLeadsError,
+  } = useGetConvertedLeads();
+
+  const leadsIds = convertedLeadsData?.map((leadData) => leadData?.id);
+
+  console.log(
+    "COnverted Leads Data",
+    convertedLeadsData,
+    convertedLeadsData?.length,
+    leadsIds
+  );
 
   // Function For Handling File
   // const handleFileChange = (e) => {
@@ -107,7 +124,10 @@ export const useAssignClientLeads = () => {
         );
 
         formData.append("assignedTo", unSelectedCRMs);
-        formData.append("leadIds", 37);
+      }
+
+      if (convertedLeadsData) {
+        formData.append("leadIds", leadsIds);
       }
 
       const response = await axios.post(
@@ -186,5 +206,6 @@ export const useAssignClientLeads = () => {
     handleSubmit,
     isSubmitting: mutation.isLoading,
     fileInputRef,
+    convertedLeadsData,
   };
 };

@@ -9,6 +9,7 @@ const EquallyLead = ({
   selectLabel,
   fileInputLabel,
   removeFileInput,
+  noOfClients,
 }) => {
   const fileInputRef = useRef(null);
   return (
@@ -21,7 +22,7 @@ const EquallyLead = ({
         {removeFileInput ? (
           <div className="mt-1 ml-5">
             <p>Total No of Clients</p>
-            <p>100</p>
+            <p>{noOfClients}</p>
           </div>
         ) : (
           <div className="w-full md:w-1/2 ">

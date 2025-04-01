@@ -85,3 +85,15 @@ export const getClientsList = async (userId) => {
     console.log("Error While fetching the Clients List", error);
   }
 };
+
+// Service for getting converted leads
+export const getConvertedLeads = async () => {
+  try {
+    const response = await axios.get(`${BASE_URL}/import/convertedleads`, {
+      withCredentials: true,
+    });
+    return response?.data;
+  } catch (error) {
+    console.log("Error While fetching the Converted Leads", error);
+  }
+};

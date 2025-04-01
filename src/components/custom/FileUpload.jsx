@@ -67,7 +67,7 @@ const FileUpload = ({ title, name, control, setValue, trigger }) => {
     <div>
       <p className="text-sm font-medium mb-2">{title}</p>
       <Card
-        className={`border-2 border-[#B0A7A7] shadow-none rounded-md cursor-pointer w-full md:max-w-[55%]`}
+        className={`border-2 border-[#B0A7A7] shadow-none rounded-md cursor-pointer w-full`}
       >
         <input
           type="file"

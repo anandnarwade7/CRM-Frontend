@@ -1,7 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useFieldArray, useForm } from "react-hook-form";
 import { salesLeadsSchema } from "../../schemas/Leads/leads";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { useToast } from "@/hooks/use-toast";
 import { BASE_URL } from "../../utils/constant";
@@ -25,6 +25,8 @@ export const usePostSalesLeads = (leadId, data, isStatusOpen) => {
       customFields: [],
     },
   });
+
+  const queryClient = useQueryClient();
 
   // For Dynamic Custom Fields
   const { fields, append, remove } = useFieldArray({
@@ -74,7 +76,11 @@ export const usePostSalesLeads = (leadId, data, isStatusOpen) => {
 
     mutation.mutate(formData, {
       onSuccess: (response) => {
-        // reset();
+        queryClient.invalidateQueries(["leadById", leadId]); // Invalidate specific query based on leadId
+        reset({
+          ...getValues(),
+          note: "",
+        });
         toast({
           title: "Convert Lead Successfully",
           duration: 2000,

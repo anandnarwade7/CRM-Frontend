@@ -20,6 +20,7 @@ const SpecificLead = ({
   fileInputLabel,
   fileInputRef,
   removeFileInput,
+  noOfClients,
 }) => {
   // const fileInputRef = useRef(null);
 
@@ -104,7 +105,7 @@ const SpecificLead = ({
         {removeFileInput ? (
           <div className="mt-1 ml-5">
             <p>Total No of Clients</p>
-            <p>100</p>
+            <p>{noOfClients}</p>
           </div>
         ) : (
           <div className="w-full">

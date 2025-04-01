@@ -18,6 +18,7 @@ import FileUpload from "../../components/custom/FileUpload";
 import { useGetClientById } from "../../hooks/Client/useGetClientById";
 import { useUpdateCRMLeads } from "../../hooks/Client/useUpdateCRMLeads";
 import { Input } from "../../components/ui/input";
+import EventDetailsTable from "../../components/custom/Client/EventDetailsTable";
 
 const CRMClientDetails = () => {
   // Geting the ID from the URL
@@ -109,6 +110,78 @@ const CRMClientDetails = () => {
             )}
           </div>
         </div>
+
+        {/* File Uploads Section */}
+        <div>
+          <p className="font-medium my-8">Upload Initial documents</p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-20">
+            <div>
+              <FileUpload
+                title="Upload Agreement "
+                name="agreementFile"
+                control={control}
+                setValue={setValue}
+                trigger={trigger}
+              />
+              {errors?.agreementFile && (
+                <p className="text-red-500 text-sm">
+                  {errors?.agreementFile?.message}
+                </p>
+              )}
+            </div>
+            <div>
+              <FileUpload
+                title="Upload Stamp duty"
+                name="stampDutyFile"
+                control={control}
+                setValue={setValue}
+                trigger={trigger}
+              />
+              {errors?.stampDutyFile && (
+                <p className="text-red-500 text-sm">
+                  {errors?.stampDutyFile?.message}
+                </p>
+              )}
+            </div>
+            <div>
+              <FileUpload
+                title="Upload TDS Document"
+                name="tdsDocFile"
+                control={control}
+                setValue={setValue}
+                trigger={trigger}
+              />
+              {errors?.tdsDocFile && (
+                <p className="text-red-500 text-sm">
+                  {errors?.tdsDocFile?.message}
+                </p>
+              )}
+            </div>
+            <div>
+              <FileUpload
+                title="Upload Bank Sanction"
+                name="bankSanctionFile"
+                control={control}
+                setValue={setValue}
+                trigger={trigger}
+              />
+              {errors?.bankSanctionFile && (
+                <p className="text-red-500 text-sm">
+                  {errors?.bankSanctionFile?.message}
+                </p>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* Event Details Section */}
+        <div>
+          <p>Event details</p>
+          <div>
+            <EventDetailsTable />
+          </div>
+        </div>
+
         <div className="my-7">
           <Label htmlFor="note" className="text-[#233A48] text-sm font-normal">
             Note
@@ -125,36 +198,6 @@ const CRMClientDetails = () => {
           )}
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 my-10">
-          <div>
-            <FileUpload
-              title="Upload Invoice from cr manager"
-              name="invoiceFile"
-              control={control}
-              setValue={setValue}
-              trigger={trigger}
-            />
-            {errors?.invoiceFile && (
-              <p className="text-red-500 text-sm">
-                {errors?.invoiceFile?.message}
-              </p>
-            )}
-          </div>
-          <div>
-            <FileUpload
-              title="Receipt Received  from client"
-              name="receiptFile"
-              control={control}
-              setValue={setValue}
-              trigger={trigger}
-            />
-            {errors?.receiptFile && (
-              <p className="text-red-500 text-sm">
-                {errors?.receiptFile?.message}
-              </p>
-            )}
-          </div>
-        </div>
         {/* Dynamic Custom Fields */}
 
         <div className="my-4">

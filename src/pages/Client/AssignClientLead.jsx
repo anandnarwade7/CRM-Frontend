@@ -23,6 +23,7 @@ const AssignClientLead = () => {
     handleSubmit,
     isSubmitting,
     fileInputRef,
+    convertedLeadsData,
   } = useAssignClientLeads();
 
   const [isDownloading, setIsDownloading] = useState(false);
@@ -119,6 +120,7 @@ const AssignClientLead = () => {
               fileInputLabel={"Clients Files"}
               fileInputRef={fileInputRef}
               removeFileInput={true}
+              noOfClients={convertedLeadsData?.length}
             />
           </>
         ) : (
@@ -129,6 +131,7 @@ const AssignClientLead = () => {
             selectLabel={"Total No. of CR Manager"}
             fileInputLabel={"Clients Files"}
             removeFileInput={true}
+            noOfClients={convertedLeadsData?.length}
           />
         )}
       </div>

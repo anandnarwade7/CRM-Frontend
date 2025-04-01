@@ -14,22 +14,40 @@ export const updateCRMLeadSchema = z.object({
     )
     .optional(),
 
-  invoiceFile: z
+  agreementFile: z
     .instanceof(File)
     .optional()
     .refine((file) => !file || file.type === "application/pdf", {
       message: "Only PDF Files are allowed for the invoice",
     })
     .refine((file) => !file || file.size <= 5 * 1024 * 1024, {
-      message: "Invoice file size must be less than 5MB",
+      message: "Agreement file size must be less than 5MB",
     }),
-  receiptFile: z
+  stampDutyFile: z
     .instanceof(File)
     .optional()
     .refine((file) => !file || file.type === "application/pdf", {
       message: "Only PDF Files are allowed for the Receipt",
     })
     .refine((file) => !file || file.size <= 5 * 1024 * 1024, {
-      message: "Receipt file size must be less than 5MB",
+      message: "Stamp Duty file size must be less than 5MB",
+    }),
+  tdsDocFile: z
+    .instanceof(File)
+    .optional()
+    .refine((file) => !file || file.type === "application/pdf", {
+      message: "Only PDF Files are allowed for the Receipt",
+    })
+    .refine((file) => !file || file.size <= 5 * 1024 * 1024, {
+      message: "TDS Document file size must be less than 5MB",
+    }),
+  bankSanctionFile: z
+    .instanceof(File)
+    .optional()
+    .refine((file) => !file || file.type === "application/pdf", {
+      message: "Only PDF Files are allowed for the Receipt",
+    })
+    .refine((file) => !file || file.size <= 5 * 1024 * 1024, {
+      message: "Bank Sanction file size must be less than 5MB",
     }),
 });
