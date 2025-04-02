@@ -5,6 +5,7 @@ export const updateCRMLeadSchema = z.object({
     message: "Status is Required",
   }),
   note: z.string().min(5, "Note Must be least 5 Characters"),
+  dueDate: z.date({ required_error: "Reminder Date is Required" }).optional(),
   customFields: z
     .array(
       z.object({
@@ -13,12 +14,14 @@ export const updateCRMLeadSchema = z.object({
       })
     )
     .optional(),
+});
 
+export const uploadDocsSchema = z.object({
   agreementFile: z
     .instanceof(File)
     .optional()
     .refine((file) => !file || file.type === "application/pdf", {
-      message: "Only PDF Files are allowed for the invoice",
+      message: "Only PDF Files are allowed for the agreement",
     })
     .refine((file) => !file || file.size <= 5 * 1024 * 1024, {
       message: "Agreement file size must be less than 5MB",
@@ -27,7 +30,7 @@ export const updateCRMLeadSchema = z.object({
     .instanceof(File)
     .optional()
     .refine((file) => !file || file.type === "application/pdf", {
-      message: "Only PDF Files are allowed for the Receipt",
+      message: "Only PDF Files are allowed for the stamp duty",
     })
     .refine((file) => !file || file.size <= 5 * 1024 * 1024, {
       message: "Stamp Duty file size must be less than 5MB",
@@ -36,7 +39,7 @@ export const updateCRMLeadSchema = z.object({
     .instanceof(File)
     .optional()
     .refine((file) => !file || file.type === "application/pdf", {
-      message: "Only PDF Files are allowed for the Receipt",
+      message: "Only PDF Files are allowed for the tds",
     })
     .refine((file) => !file || file.size <= 5 * 1024 * 1024, {
       message: "TDS Document file size must be less than 5MB",
@@ -45,7 +48,7 @@ export const updateCRMLeadSchema = z.object({
     .instanceof(File)
     .optional()
     .refine((file) => !file || file.type === "application/pdf", {
-      message: "Only PDF Files are allowed for the Receipt",
+      message: "Only PDF Files are allowed for the bank sanction",
     })
     .refine((file) => !file || file.size <= 5 * 1024 * 1024, {
       message: "Bank Sanction file size must be less than 5MB",

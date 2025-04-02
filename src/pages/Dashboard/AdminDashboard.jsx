@@ -20,7 +20,7 @@ const AdminDashboard = () => {
   }
 
   return (
-    <section className="w-full h-full bg-white p-6">
+    <section>
       <div className="flex items-center gap-4">
         {/* Sales Person */}
         <DashboardCard

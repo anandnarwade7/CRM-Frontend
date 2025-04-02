@@ -97,3 +97,17 @@ export const getConvertedLeads = async () => {
     console.log("Error While fetching the Converted Leads", error);
   }
 };
+
+// Service Upload Docs for CR Manager
+export const uploadDocs = async (id, formData) => {
+  try {
+    const resposne = await axios.put(
+      `${BASE_URL}/clients/uploaddocs/${id}`,
+      formData,
+      { withCredentials: true }
+    );
+    return resposne?.data;
+  } catch (error) {
+    console.log("Error While Uploading the Documents", error);
+  }
+};

@@ -19,6 +19,7 @@ import { useGetClientById } from "../../hooks/Client/useGetClientById";
 import { useUpdateCRMLeads } from "../../hooks/Client/useUpdateCRMLeads";
 import { Input } from "../../components/ui/input";
 import EventDetailsTable from "../../components/custom/Client/EventDetailsTable";
+import DatePicker from "../../components/custom/DatePicker";
 
 const CRMClientDetails = () => {
   // Geting the ID from the URL
@@ -113,7 +114,10 @@ const CRMClientDetails = () => {
 
         {/* File Uploads Section */}
         <div>
-          <p className="font-medium my-8">Upload Initial documents</p>
+          <div className="flex items-center justify-between my-8">
+            <p className="font-medium">Upload Initial documents</p>
+            <Button type="button">Upload</Button>
+          </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-20">
             <div>
               <FileUpload
@@ -175,17 +179,39 @@ const CRMClientDetails = () => {
         </div>
 
         {/* Event Details Section */}
-        <div>
-          <p>Event details</p>
+        <div className="my-16">
+          <p className="mb-4">Event details</p>
           <div>
             <EventDetailsTable />
           </div>
         </div>
 
         <div className="my-7">
-          <Label htmlFor="note" className="text-[#233A48] text-sm font-normal">
-            Note
-          </Label>
+          <div className="flex items-center justify-between">
+            <Label
+              htmlFor="note"
+              className="text-[#233A48] text-sm font-normal"
+            >
+              Note
+            </Label>
+            <div className="w-full max-w-[20%] mb-3">
+              <Controller
+                control={control}
+                name="dueDate"
+                render={({ field }) => (
+                  <DatePicker
+                    value={field.value}
+                    onChange={(date) => field.onChange(date)}
+                  />
+                )}
+              />
+              {errors?.dueDate && (
+                <p className="text-red-500 text-sm mt-1">
+                  {errors?.dueDate?.message}
+                </p>
+              )}
+            </div>
+          </div>
           <Textarea
             placeholder="Note"
             id="note"

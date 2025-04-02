@@ -5,6 +5,7 @@ import {
   AssignClientLead,
   AssignLead,
   Client,
+  ClientActivities,
   ClientsDetails,
   ClientsList,
   CRManager,
@@ -75,6 +76,7 @@ const router = createBrowserRouter([
             path: "/app/cr-manager",
             element: <CRManager />,
           },
+          // Routes for Leads
           {
             path: "/app/leads",
             element: <Leads />,
@@ -91,6 +93,7 @@ const router = createBrowserRouter([
             path: "/app/leads-details-sales/:leadId",
             element: <SalesLeadsDetails />,
           },
+          // Routes for Clients
           {
             path: "/app/client",
             element: <Client />,
@@ -110,6 +113,10 @@ const router = createBrowserRouter([
           {
             path: "/app/add-client/:id",
             element: <AddClient />,
+          },
+          {
+            path: "/app/activities",
+            element: <ClientActivities />,
           },
           {
             path: "/app/clients-list",

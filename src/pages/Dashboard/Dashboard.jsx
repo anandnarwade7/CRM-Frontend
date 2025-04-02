@@ -3,6 +3,7 @@ import { useUserRole } from "../../hooks/use-userrole";
 import SalesDashboard from "./SalesDashboard";
 import SuperAdminDashboard from "./SuperAdminDashboard";
 import CRMDashboard from "./CRMDashboard";
+import ClientDashboard from "./ClientDashboard";
 
 const Dashboard = () => {
   const userRole = useUserRole();
@@ -15,6 +16,8 @@ const Dashboard = () => {
         <SalesDashboard />
       ) : userRole === "SUPER ADMIN" ? (
         <SuperAdminDashboard />
+      ) : userRole === "CLIENT" ? (
+        <ClientDashboard />
       ) : (
         <CRMDashboard />
       )}

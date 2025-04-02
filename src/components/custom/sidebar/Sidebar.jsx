@@ -87,7 +87,7 @@ const Sidebar = () => {
       path: "/transactions",
       img: Money,
       activeImg: MoneyBg,
-      roles: ["SUPER ADMIN", "ADMIN", "CRM", "CLIENT"],
+      roles: ["SUPER ADMIN", "ADMIN", "CRM"],
     },
     {
       name: "Support",
@@ -97,12 +97,19 @@ const Sidebar = () => {
       roles: ["ADMIN", "SALES", "CRM"],
     },
     {
-      name: "Clients List",
-      path: "/app/clients-list",
+      name: "Activities",
+      path: "/app/activities",
       img: Client,
       activeImg: ClientBg,
-      roles: ["CRM"],
+      roles: ["CLIENT"],
     },
+    // {
+    //   name: "Clients List",
+    //   path: "/app/clients-list",
+    //   img: Client,
+    //   activeImg: ClientBg,
+    //   roles: ["CRM"],
+    // },
   ];
 
   // Filtering out the Sidebar based on the role

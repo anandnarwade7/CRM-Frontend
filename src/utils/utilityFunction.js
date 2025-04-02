@@ -26,3 +26,8 @@ export const formatDate = (milliseconds) => {
   if (!milliseconds) return "N/A"; // Handle missing values
   return format(new Date(milliseconds), "dd/MM/yyyy");
 };
+
+// Function for adding ... at the end of the string
+export const truncateName = (str, maxLength = 10) => {
+  return str.length > maxLength ? str.slice(0, maxLength - 1) + "..." : str;
+};

@@ -23,6 +23,7 @@ import ClientsDetails from "./Client/ClientsDetails";
 import CRMClientDetails from "./Client/CRMClientDetails";
 import AddClient from "./Client/AddClient";
 import ClientsList from "./Client/ClientsList";
+import ClientActivities from "./Client/ClientActivities";
 
 // Projects
 import Projects from "./Projects/Projects";
@@ -51,4 +52,5 @@ export {
   AdminDetails,
   AddClient,
   ClientsList,
+  ClientActivities,
 };
