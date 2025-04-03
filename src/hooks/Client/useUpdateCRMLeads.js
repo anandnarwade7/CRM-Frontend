@@ -21,7 +21,7 @@ export const useUpdateCRMLeads = () => {
   });
 
   const onSubmit = (data) => {
-    console.log("Validated FOrm Data", data);
+    console.log("Validated Form Data", data);
   };
 
   return {

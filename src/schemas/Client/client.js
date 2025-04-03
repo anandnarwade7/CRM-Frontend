@@ -16,41 +16,49 @@ export const updateCRMLeadSchema = z.object({
     .optional(),
 });
 
-export const uploadDocsSchema = z.object({
+export const fileUploadSchema = z.object({
   agreementFile: z
-    .instanceof(File)
-    .optional()
-    .refine((file) => !file || file.type === "application/pdf", {
-      message: "Only PDF Files are allowed for the agreement",
+    .any()
+    .refine((file) => file instanceof File, {
+      message: "Agreement file is required",
     })
-    .refine((file) => !file || file.size <= 5 * 1024 * 1024, {
+    .refine((file) => file instanceof File && file.type === "application/pdf", {
+      message: "Agreement file must be a PDF",
+    })
+    .refine((file) => file instanceof File && file.size <= 5 * 1024 * 1024, {
       message: "Agreement file size must be less than 5MB",
     }),
   stampDutyFile: z
-    .instanceof(File)
-    .optional()
-    .refine((file) => !file || file.type === "application/pdf", {
-      message: "Only PDF Files are allowed for the stamp duty",
+    .any()
+    .refine((file) => file instanceof File, {
+      message: "Stamp Duty file is required",
     })
-    .refine((file) => !file || file.size <= 5 * 1024 * 1024, {
+    .refine((file) => file instanceof File && file.type === "application/pdf", {
+      message: "Stamp Duty file must be a PDF",
+    })
+    .refine((file) => file instanceof File && file.size <= 5 * 1024 * 1024, {
       message: "Stamp Duty file size must be less than 5MB",
     }),
   tdsDocFile: z
-    .instanceof(File)
-    .optional()
-    .refine((file) => !file || file.type === "application/pdf", {
-      message: "Only PDF Files are allowed for the tds",
+    .any()
+    .refine((file) => file instanceof File, {
+      message: "TDS file is required",
     })
-    .refine((file) => !file || file.size <= 5 * 1024 * 1024, {
-      message: "TDS Document file size must be less than 5MB",
+    .refine((file) => file instanceof File && file.type === "application/pdf", {
+      message: "TDS file must be a PDF",
+    })
+    .refine((file) => file instanceof File && file.size <= 5 * 1024 * 1024, {
+      message: "TDS file size must be less than 5MB",
     }),
   bankSanctionFile: z
-    .instanceof(File)
-    .optional()
-    .refine((file) => !file || file.type === "application/pdf", {
-      message: "Only PDF Files are allowed for the bank sanction",
+    .any()
+    .refine((file) => file instanceof File, {
+      message: "Bank Sanction file is required",
     })
-    .refine((file) => !file || file.size <= 5 * 1024 * 1024, {
+    .refine((file) => file instanceof File && file.type === "application/pdf", {
+      message: "Bank Sanction file must be a PDF",
+    })
+    .refine((file) => file instanceof File && file.size <= 5 * 1024 * 1024, {
       message: "Bank Sanction file size must be less than 5MB",
     }),
 });
