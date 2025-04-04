@@ -28,6 +28,8 @@ const CRMClientDetails = () => {
   // Fetching Data as per Id
   const { data, isLoading, error } = useGetClientById(clientId);
 
+  console.log(data);
+
   // Form Handling with Validation
   const {
     register,
