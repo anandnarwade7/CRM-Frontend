@@ -8,6 +8,7 @@ import axios from "axios";
 import { BASE_URL } from "../../../utils/constant";
 import { useUserId } from "../../../hooks/use-user-id";
 import { useParams } from "react-router";
+import { useToast } from "@/hooks/use-toast";
 
 const columns = [
   { key: "event", label: "Event" },
@@ -25,10 +26,12 @@ const fileFields = ["statusReport", "architectLetter", "invoice", "receipt"];
 const EventDetailsTable = () => {
   const userId = useUserId();
   const { clientId } = useParams();
+  const { toast } = useToast();
 
   const [rows, setRows] = useState([
     {
       id: 1,
+      eventId: null,
       event: "",
       percentage: "",
       basePrice: "",
@@ -46,6 +49,8 @@ const EventDetailsTable = () => {
       architectLetterUrl: "",
       invoiceUrl: "",
       receiptUrl: "",
+
+      isEditing: true,
     },
   ]);
 
@@ -54,6 +59,7 @@ const EventDetailsTable = () => {
       ...rows,
       {
         id: rows.length + 1,
+        eventId: null,
         event: "",
         percentage: "",
         basePrice: "",
@@ -71,12 +77,20 @@ const EventDetailsTable = () => {
         architectLetterUrl: "",
         invoiceUrl: "",
         receiptUrl: "",
+
+        isEditing: true,
       },
     ]);
   };
 
   const deleteLastRow = () => {
     if (rows.length > 1) setRows(rows.slice(0, -1));
+  };
+
+  const toggleEditMode = (index) => {
+    const updatedRows = [...rows];
+    updatedRows[index].isEditing = !updatedRows[index].isEditing;
+    setRows(updatedRows);
   };
 
   const handleInputChange = (index, field, value) => {
@@ -120,25 +134,87 @@ const EventDetailsTable = () => {
 
     formData.append("eventDetails", JSON.stringify(eventDetails));
 
-    try {
-      const response = await axios.post(
-        `${BASE_URL}/event/addEventDetails/${userId}`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-          withCredentials: true,
-        }
-      );
+    const url = row?.eventId
+      ? `${BASE_URL}/event/updateEvent/${row?.eventId}/${userId}`
+      : `${BASE_URL}/event/addEventDetails/${userId}`;
 
-      console.log("Event Details Saved", response);
+    try {
+      // const response = await axios.post(
+      //   `${BASE_URL}/event/addEventDetails/${userId}`,
+      //   formData,
+      //   {
+      //     headers: {
+      //       "Content-Type": "multipart/form-data",
+      //     },
+      //     withCredentials: true,
+      //   }
+      // );
+      const method = row?.eventId ? "put" : "post";
+
+      const response = await axios({
+        method,
+        url,
+        data: formData,
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+        withCredentials: true,
+      });
+
+      if (response?.data) {
+        toast({
+          title: "Success",
+          description: `Event details ${
+            row?.eventId ? "updated" : "saved"
+          } successfully.`,
+          duration: 2000,
+        });
+        // ✅ Fetch updated event details after successful save
+        fetchEventDetails();
+      }
     } catch (error) {
-      console.log("Error Posting the Event Details", error);
+      if (error) {
+        toast({
+          title: "Error",
+          description: "Failed to save event details. Please try again.",
+          variant: "destructive",
+          duration: 2000,
+        });
+      }
     }
   };
 
-  const fetchEventDetails = async (eventId, index) => {
+  // delete event by ID
+  const handleEventDelete = async (eventId) => {
+    try {
+      const response = await axios.delete(
+        `${BASE_URL}/event/deleteEventById/${eventId}`,
+        {
+          withCredentials: true,
+        }
+      );
+      if (response?.data) {
+        toast({
+          title: "Success",
+          description: "Event details deleted successfully.",
+          duration: 2000,
+        });
+        // ✅ Fetch updated event details after successful save
+        fetchEventDetails();
+      }
+    } catch (error) {
+      if (error) {
+        toast({
+          title: "Error",
+          description: "Failed to delete event details. Please try again.",
+          variant: "destructive",
+          duration: 2000,
+        });
+      }
+    }
+  };
+
+  const fetchEventDetails = async () => {
     try {
       const response = await axios.get(
         `${BASE_URL}/event/getalleventdetails/${clientId}`,
@@ -147,24 +223,53 @@ const EventDetailsTable = () => {
         }
       );
       if (response?.data) {
-        const updatedRows = [...rows];
-        updatedRows[index] = {
-          ...updatedRows[index],
-          percentage: response?.data?.percentage || "",
-          invoiceDate: response?.data?.invoiceDate || "",
-          dueDate: response?.data?.dueDate || "",
-          paymentDate: response?.data?.paymentDate || "",
-          basePrice: response?.data?.basePriceAmount || "",
-          gst: response?.data?.gstAmount || "",
-          paidBy: response?.data?.paidByName || "",
-          // Add file URLs if they exist
-          statusReportUrl: response?.data?.statusReport?.url || "",
-          architectLetterUrl: response?.data?.architectsLetter?.url || "",
-          invoiceUrl: response?.data?.invoice?.url || "",
-          receiptUrl: response?.data?.receipt?.url || "",
-        };
+        // const updatedRows = [...rows];
+        // updatedRows[index] = {
+        //   ...updatedRows[index],
+        //   percentage: response?.data?.percentage || "",
+        //   invoiceDate: response?.data?.invoiceDate || "",
+        //   dueDate: response?.data?.dueDate || "",
+        //   paymentDate: response?.data?.paymentDate || "",
+        //   basePrice: response?.data?.basePriceAmount || "",
+        //   gst: response?.data?.gstAmount || "",
+        //   paidBy: response?.data?.paidByName || "",
+        //   // Add file URLs if they exist
+        //   statusReportUrl: response?.data?.statusReport?.url || "",
+        //   architectLetterUrl: response?.data?.architectsLetter?.url || "",
+        //   invoiceUrl: response?.data?.invoice?.url || "",
+        //   receiptUrl: response?.data?.receipt?.url || "",
+        // };
 
-        setRows(updatedRows);
+        // setRows(updatedRows);
+
+        if (Array.isArray(response.data)) {
+          const mappedRows = response.data.map((event, idx) => ({
+            id: event.eventId || idx + 1,
+            eventId: event?.eventId,
+            event: event.eventName || "",
+            percentage: event.percentage || "",
+            basePrice: event.basePriceAmount || "",
+            gst: event.gstAmount || "",
+            invoiceDate: event.invoiceDate ? new Date(event.invoiceDate) : "",
+            dueDate: event.dueDate ? new Date(event.dueDate) : "",
+            paymentDate: event.paymentDate ? new Date(event.paymentDate) : "",
+            paidBy: event.paidByName || "",
+
+            statusReport: null,
+            architectLetter: null,
+            invoice: null,
+            receipt: null,
+
+            statusReportUrl: event.statusReport?.url || "",
+            architectLetterUrl: event.architectsLetter?.url || "",
+            invoiceUrl: event.invoice?.url || "",
+            receiptUrl: event.receipt?.url || "",
+
+            isEditing: false,
+          }));
+
+          setRows(mappedRows);
+        }
       }
       console.log("Getting the Event Details", response);
     } catch (error) {
@@ -172,37 +277,60 @@ const EventDetailsTable = () => {
     }
   };
 
-  const handleDownloadFile = async (url) => {
+  const handleDownloadFile = async (url, fileName) => {
+    // if (!url) return;
+
+    // try {
+    //   const response = await axios.get(url, {
+    //     responseType: "blob",
+    //   });
+    //   const blob = new Blob([response?.data]);
+
+    //   const downloadUrl = window.URL.createObjectURL(blob);
+
+    //   const link = document.createElement("a");
+    //   link.href = downloadUrl;
+    //   link.setAttribute("download", "donwload-file");
+
+    //   document.body.appendChild(link);
+    //   link.click();
+    //   link.remove();
+
+    //   window.URL.revokeObjectURL(downloadUrl);
+    // } catch (error) {
+    //   console.log("Error While Download the File", error);
+    // }
+
     if (!url) return;
 
     try {
       const response = await axios.get(url, {
         responseType: "blob",
+        withCredentials: true, // if your API requires auth
       });
-      const blob = new Blob([response?.data]);
+
+      const blob = new Blob([response.data], { type: "application/pdf" });
 
       const downloadUrl = window.URL.createObjectURL(blob);
-
       const link = document.createElement("a");
-      link.href = downloadUrl;
-      link.setAttribute("download");
 
+      link.href = downloadUrl;
+      link.setAttribute("download", fileName); // Ensure .pdf extension
       document.body.appendChild(link);
       link.click();
       link.remove();
 
       window.URL.revokeObjectURL(downloadUrl);
     } catch (error) {
-      console.log("Error While Download the File", error);
+      console.error("Error While Downloading the File", error);
     }
   };
 
   useEffect(() => {
-    rows.forEach((row, index) => {
-      const eventId = row.id;
-      fetchEventDetails(eventId, index);
-    });
+    fetchEventDetails();
   }, []);
+
+  console.log(rows);
 
   // Map API response fields to component fields
   const getUrlFieldName = (field) => {
@@ -276,19 +404,7 @@ const EventDetailsTable = () => {
                     key={field}
                     className="py-3 px-2 border-b border-gray-200"
                   >
-                    {row[getUrlFieldName(field)] ? (
-                      <div className="flex flex-col items-center">
-                        <Button
-                          onClick={() =>
-                            handleDownloadFile(row[getUrlFieldName(field)])
-                          }
-                          variant="outline"
-                          size="icon"
-                        >
-                          <Download size={18} color="#4CAF50" />
-                        </Button>
-                      </div>
-                    ) : (
+                    {row?.isEditing ? (
                       <>
                         <label className="cursor-pointer flex items-center justify-center">
                           <File size={18} color="#757575" />
@@ -296,7 +412,7 @@ const EventDetailsTable = () => {
                             type="file"
                             id={`${field}-${index}`}
                             className="hidden"
-                            accept="image/*,application/pdf"
+                            accept="application/pdf"
                             onChange={(e) =>
                               handleFileUpload(index, field, e.target.files[0])
                             }
@@ -308,19 +424,47 @@ const EventDetailsTable = () => {
                           </span>
                         )}
                       </>
+                    ) : (
+                      row[getUrlFieldName(field)] && (
+                        <div className="flex flex-col items-center">
+                          <Button
+                            onClick={() =>
+                              handleDownloadFile(
+                                row[getUrlFieldName(field)],
+                                field
+                              )
+                            }
+                            variant="outline"
+                            size="icon"
+                          >
+                            <Download size={18} color="#4CAF50" />
+                          </Button>
+                        </div>
+                      )
                     )}
                   </td>
                 ))}
                 <td className="py-4 px-2 border-b border-gray-200 flex items-center gap-1">
+                  {row?.isEditing ? (
+                    <Button
+                      onClick={() => handleSubmitData(row)}
+                      type="button"
+                      className="text-[#E1777C] bg-white"
+                    >
+                      Save
+                    </Button>
+                  ) : (
+                    <Button
+                      onClick={() => toggleEditMode(index)}
+                      type="button"
+                      className="text-[#E1777C] bg-white"
+                    >
+                      Edit
+                    </Button>
+                  )}
+
                   <Button
-                    onClick={() => handleSubmitData(row)}
-                    type="button"
-                    className="text-[#E1777C] bg-white"
-                  >
-                    Save
-                  </Button>
-                  <Button
-                    // onClick={handleSubmitData}
+                    onClick={() => handleEventDelete(row?.eventId)}
                     type="button"
                     className="text-[#757575] bg-white"
                   >
