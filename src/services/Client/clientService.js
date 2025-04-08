@@ -111,3 +111,18 @@ export const uploadDocs = async (id, formData) => {
     console.log("Error While Uploading the Documents", error);
   }
 };
+
+// Service for geeting event details for client user
+export const getClientShowEvents = async (leadId) => {
+  try {
+    const response = await axios.get(
+      `${BASE_URL}/event/getalleventdetails/${leadId}`,
+      {
+        withCredentials: true,
+      }
+    );
+    return response?.data;
+  } catch (error) {
+    console.log("Error While Getting Event Details", error);
+  }
+};

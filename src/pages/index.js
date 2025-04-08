@@ -24,7 +24,7 @@ import CRMClientDetails from "./Client/CRMClientDetails";
 import AddClient from "./Client/AddClient";
 import ClientsList from "./Client/ClientsList";
 import ClientActivities from "./Client/ClientActivities";
-
+import ClientShowEventDetails from "./Client/ClientShowEventDetails";
 // Projects
 import Projects from "./Projects/Projects";
 import InventoryDetails from "./Projects/InventoryDetails";
@@ -32,6 +32,9 @@ import InventoryDetails from "./Projects/InventoryDetails";
 // Super Admin
 import Admin from "./Admin/Admin";
 import AdminDetails from "./Admin/AdminDetails";
+
+// Not Found
+import NotFound from "./NotFound/NotFound";
 
 export {
   Login,
@@ -53,4 +56,6 @@ export {
   AddClient,
   ClientsList,
   ClientActivities,
+  ClientShowEventDetails,
+  NotFound,
 };

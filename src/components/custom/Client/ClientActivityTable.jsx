@@ -7,6 +7,7 @@ import { useUserId } from "../../../hooks/use-user-id";
 import axios from "axios";
 import { BASE_URL } from "../../../utils/constant";
 import TablePagination from "../TablePagination/TablePagination";
+import { useNavigate } from "react-router";
 
 const fetchClientData = async (id, page) => {
   const response = await axios.get(
@@ -18,6 +19,7 @@ const fetchClientData = async (id, page) => {
 
 const ClientActivityTable = () => {
   const userId = useUserId();
+  const navigate = useNavigate();
   const [page, setPage] = useState(1);
 
   const { data, error, isLoading } = useQuery({
@@ -137,7 +139,15 @@ const ClientActivityTable = () => {
       },
       {
         header: "Event Details",
-        cell: ({ row }) => <Button>Show</Button>,
+        cell: ({ row }) => (
+          <Button
+            onClick={() =>
+              navigate(`/app/show-eventdetails/${row?.original?.id}`)
+            }
+          >
+            Show
+          </Button>
+        ),
       },
     ],
     []

@@ -223,26 +223,7 @@ const EventDetailsTable = () => {
         }
       );
       if (response?.data) {
-        // const updatedRows = [...rows];
-        // updatedRows[index] = {
-        //   ...updatedRows[index],
-        //   percentage: response?.data?.percentage || "",
-        //   invoiceDate: response?.data?.invoiceDate || "",
-        //   dueDate: response?.data?.dueDate || "",
-        //   paymentDate: response?.data?.paymentDate || "",
-        //   basePrice: response?.data?.basePriceAmount || "",
-        //   gst: response?.data?.gstAmount || "",
-        //   paidBy: response?.data?.paidByName || "",
-        //   // Add file URLs if they exist
-        //   statusReportUrl: response?.data?.statusReport?.url || "",
-        //   architectLetterUrl: response?.data?.architectsLetter?.url || "",
-        //   invoiceUrl: response?.data?.invoice?.url || "",
-        //   receiptUrl: response?.data?.receipt?.url || "",
-        // };
-
-        // setRows(updatedRows);
-
-        if (Array.isArray(response.data)) {
+        if (Array.isArray(response.data) && response?.data?.length > 0) {
           const mappedRows = response.data.map((event, idx) => ({
             id: event.eventId || idx + 1,
             eventId: event?.eventId,
@@ -269,6 +250,33 @@ const EventDetailsTable = () => {
           }));
 
           setRows(mappedRows);
+        } else {
+          // Set a default row if no data is returned
+          setRows([
+            {
+              id: 1,
+              eventId: null,
+              event: "",
+              percentage: "",
+              basePrice: "",
+              gst: "",
+              statusReport: null,
+              architectLetter: null,
+              invoice: null,
+              invoiceDate: "",
+              dueDate: "",
+              paymentDate: "",
+              paidBy: "",
+              receipt: null,
+
+              statusReportUrl: "",
+              architectLetterUrl: "",
+              invoiceUrl: "",
+              receiptUrl: "",
+
+              isEditing: true,
+            },
+          ]);
         }
       }
       console.log("Getting the Event Details", response);
@@ -339,7 +347,7 @@ const EventDetailsTable = () => {
   };
   return (
     <>
-      <div className="w-full max-w-[62rem] overflow-x-auto">
+      <div className="w-full max-w-[60rem] overflow-x-auto">
         <table className="min-w-full border-separate border-spacing-y-4">
           <thead className="bg-[#F6F6F6] sticky top-0">
             <tr>

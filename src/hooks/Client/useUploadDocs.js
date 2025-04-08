@@ -40,7 +40,6 @@ export const useUploadDocs = (clientId) => {
       }
     },
   });
-  console.log("Files Error", errors);
 
   // Submit Handler
   const onSubmit = (data) => {

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link, useParams } from "react-router";
 import { Back } from "../../assets";
 import { Controller, useForm } from "react-hook-form";
@@ -21,6 +21,8 @@ import { Input } from "../../components/ui/input";
 import EventDetailsTable from "../../components/custom/Client/EventDetailsTable";
 import DatePicker from "../../components/custom/DatePicker";
 import { useUploadDocs } from "../../hooks/Client/useUploadDocs";
+import { formatDate } from "../../utils/utilityFunction";
+import Table from "../../components/custom/Table";
 
 const CRMClientDetails = () => {
   // Geting the ID from the URL
@@ -33,14 +35,15 @@ const CRMClientDetails = () => {
   // Form Handling with Validation
   const {
     register,
+    control: updateCRMControl,
     handleSubmit,
-    watch,
+    setValue: updateCRMSetValue,
     errors,
     append,
     remove,
     fields,
     onSubmit,
-  } = useUpdateCRMLeads();
+  } = useUpdateCRMLeads(clientId);
 
   const {
     setValue,
@@ -51,6 +54,46 @@ const CRMClientDetails = () => {
     onSubmit: onSubmitFiles,
     isLoading: fileUploading,
   } = useUploadDocs(clientId);
+
+  useEffect(() => {
+    if (data) {
+      updateCRMSetValue("status", data?.status || "");
+    }
+  }, [data, clientId, updateCRMSetValue]);
+
+  // Data and Columns for Comments Table
+  const crmConversationData = data?.conversationLogs || [];
+
+  const columns = [
+    {
+      header: "Sr. No",
+      cell: ({ row }) => row.index + 1,
+    },
+    {
+      header: "Description",
+      accessorKey: "comment",
+    },
+    {
+      header: "Created Date",
+      accessorKey: "date",
+      cell: ({ row }) => (
+        <p>
+          {row?.original?.date ? formatDate(Number(row?.original?.date)) : "-"}
+        </p>
+      ),
+    },
+    {
+      header: "Reminder Date",
+      accessorKey: "dueDate",
+      cell: ({ row }) => (
+        <p>
+          {row?.original?.dueDate
+            ? formatDate(Number(row?.original?.dueDate))
+            : "-"}
+        </p>
+      ),
+    },
+  ];
 
   return (
     <div className="w-full rounded-xl bg-white h-full px-6 py-3">
@@ -93,7 +136,7 @@ const CRMClientDetails = () => {
           </Label>
           <Controller
             name="status"
-            control={control}
+            control={updateCRMControl}
             render={({ field }) => (
               <Select
                 onValueChange={(value) => {
@@ -213,7 +256,7 @@ const CRMClientDetails = () => {
           </Label>
           <div className="w-full max-w-[20%] mb-3">
             <Controller
-              control={control}
+              control={updateCRMControl}
               name="dueDate"
               render={({ field }) => (
                 <DatePicker
@@ -237,7 +280,14 @@ const CRMClientDetails = () => {
           {...register("note")}
         />
         {errors.note && (
-          <p className="text-red-500 text-sm">{errors?.note?.message}</p>
+          <p className="text-red-500 text-sm">{errors.note.message}</p>
+        )}
+      </div>
+
+      <div>
+        <Table data={crmConversationData} columns={columns} />
+        {crmConversationData.length === 0 && (
+          <p className="text-center text-sm">No Comments Found</p>
         )}
       </div>
 

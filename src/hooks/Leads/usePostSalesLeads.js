@@ -37,17 +37,21 @@ export const usePostSalesLeads = (leadId, data, isStatusOpen) => {
   const { toast } = useToast();
 
   const postLead = async (formData) => {
-    const response = await axios.post(
-      `${BASE_URL}/import/updateFields/${leadId}`,
-      formData,
-      {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-        withCredentials: true,
-      }
-    );
-    return response?.data;
+    try {
+      const response = await axios.post(
+        `${BASE_URL}/import/updateFields/${leadId}`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+          withCredentials: true,
+        }
+      );
+      return response?.data;
+    } catch (error) {
+      console.log("Error while converting Sales leads", error);
+    }
   };
 
   const mutation = useMutation({

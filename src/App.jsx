@@ -7,6 +7,7 @@ import {
   Client,
   ClientActivities,
   ClientsDetails,
+  ClientShowEventDetails,
   ClientsList,
   CRManager,
   CRMClientDetails,
@@ -15,6 +16,7 @@ import {
   Leads,
   LeadsDetails,
   Login,
+  NotFound,
   Projects,
   SalesLeadsDetails,
   SalesPerson,
@@ -114,6 +116,7 @@ const router = createBrowserRouter([
             path: "/app/add-client/:id",
             element: <AddClient />,
           },
+          // Routes for Client Activities
           {
             path: "/app/activities",
             element: <ClientActivities />,
@@ -123,6 +126,10 @@ const router = createBrowserRouter([
             element: <ClientsList />,
           },
           {
+            path: `/app/show-eventdetails/:leadId`,
+            element: <ClientShowEventDetails />,
+          },
+          {
             path: "/app/projects",
             element: <Projects />,
           },
@@ -130,9 +137,17 @@ const router = createBrowserRouter([
             path: "/app/inventory-details",
             element: <InventoryDetails />,
           },
+          {
+            path: "*",
+            element: <NotFound />,
+          },
         ],
       },
     ],
+  },
+  {
+    path: "*",
+    element: <NotFound />,
   },
 ]);
 function App() {
