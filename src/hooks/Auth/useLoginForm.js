@@ -5,7 +5,6 @@ import { useMutation } from "@tanstack/react-query";
 import { loginUser } from "../../services/Auth/authService";
 import { useToast } from "@/hooks/use-toast";
 import { useNavigate } from "react-router";
-import { jwtDecode } from "jwt-decode";
 
 export const useLoginForm = () => {
   const {
@@ -25,8 +24,6 @@ export const useLoginForm = () => {
     onSuccess: (data) => {
       console.log("Login Data", data, data?.id);
       if (data) {
-        const decodedToken = jwtDecode(data?.token);
-
         toast({
           title: "Login Successful",
           description: "You have successfully logged in.",
@@ -34,7 +31,6 @@ export const useLoginForm = () => {
         });
         sessionStorage.setItem("userId", data?.id);
         sessionStorage.setItem("role", data?.role);
-        sessionStorage.setItem("tokenExpiry", decodedToken?.exp * 1000);
         navigate("/app/dashboard");
       }
     },

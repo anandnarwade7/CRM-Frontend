@@ -138,7 +138,11 @@ const AssignClientLead = () => {
       <div className="flex justify-end my-4">
         <Button
           onClick={handleSubmit}
-          disabled={isSubmitting}
+          disabled={
+            isSubmitting ||
+            crm?.length === 0 ||
+            convertedLeadsData?.length === 0
+          }
           className="bg-[#C99227] shadow-none text-white w-[49%]"
         >
           {isSubmitting ? (

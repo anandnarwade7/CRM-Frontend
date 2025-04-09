@@ -33,7 +33,9 @@ const Login = () => {
             <div className="w-[11rem] h-[4rem] bg-[#F8F8F8] rounded-lg"></div>
           </div>
 
-          <p className="text-2xl font-bold text-center mt-2 mb-5">Log in</p>
+          <p className="text-2xl font-bold text-center text-main mt-2 mb-5">
+            Log in
+          </p>
 
           <CardContent>
             <form onSubmit={handleSubmit(onSubmit)}>
@@ -125,7 +127,7 @@ const Login = () => {
                 {/* Login Button */}
                 <Button
                   type="submit"
-                  className="w-full bg-[#C99227] hover:bg-yellow-700"
+                  className="w-full bg-main"
                   disabled={isLoading}
                 >
                   {isLoading ? (

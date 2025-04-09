@@ -43,7 +43,11 @@ export const useAssignClientLeads = () => {
     error: convertedLeadsError,
   } = useGetConvertedLeads();
 
-  const leadsIds = convertedLeadsData?.map((leadData) => leadData?.id);
+  let leadsIds;
+
+  if (convertedLeadsData?.length > 0) {
+    leadsIds = convertedLeadsData?.map((leadData) => leadData?.id);
+  }
 
   console.log(
     "COnverted Leads Data",
@@ -51,6 +55,8 @@ export const useAssignClientLeads = () => {
     convertedLeadsData?.length,
     leadsIds
   );
+
+  console.log("CRM DATA", crm);
 
   // Function For Handling File
   // const handleFileChange = (e) => {
@@ -117,13 +123,16 @@ export const useAssignClientLeads = () => {
       // formData.append("file", file);
 
       if (distribution === "Specific") {
-        const allCRMIDs = crm?.map((crManager) => crManager?.id);
+        if (crm?.length > 0) {
+          const allCRMIDs = crm?.map((crManager) => crManager?.id);
 
-        const unSelectedCRMs = allCRMIDs?.filter(
-          (id) => !selectedCRManagers?.includes(id)
-        );
+          const unSelectedCRMs = allCRMIDs?.filter(
+            (id) => !selectedCRManagers?.includes(id)
+          );
+          console.log("All CRM IDs");
 
-        formData.append("assignedTo", unSelectedCRMs);
+          formData.append("assignedTo", unSelectedCRMs);
+        }
       }
 
       if (convertedLeadsData) {

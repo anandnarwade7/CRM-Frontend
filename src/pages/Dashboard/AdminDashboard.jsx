@@ -47,19 +47,19 @@ const AdminDashboard = () => {
         {/* Total Invoice Raised */}
         <DashboardCard
           title="Total Invoice Raised"
-          data={data?.leads || "-"}
+          data={"-"}
           img={DashboardLineUp}
         />
         {/* Total Amount Paid */}
         <DashboardCard
           title="Total Amount Paid"
-          data={data?.leads || "-"}
+          data={"-"}
           img={DashboardInvoice}
         />
         {/* Total Amount Paid */}
         <DashboardCard
           title="Total Unpaid Amount"
-          data={data?.leads || "-"}
+          data={"-"}
           img={DashboardInvoice}
         />
       </div>
