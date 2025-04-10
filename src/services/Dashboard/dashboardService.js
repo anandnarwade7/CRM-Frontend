@@ -28,3 +28,18 @@ export const salesDashboardService = async (userId) => {
     console.log("Sales Dashboard Error", error);
   }
 };
+
+// Service for Fetching the CR Manager Dashboard Data
+export const crmDashboardService = async (userId) => {
+  try {
+    const response = await axios.get(
+      `${BASE_URL}/clients/getleadcount?userId=${userId}`,
+      {
+        withCredentials: true,
+      }
+    );
+    return response?.data;
+  } catch (error) {
+    console.log("CRM Dashboard Error", error);
+  }
+};
