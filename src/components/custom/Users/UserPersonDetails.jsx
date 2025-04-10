@@ -46,7 +46,9 @@ const UserPersonDetails = () => {
         <div className="grid grid-cols-2 gap-4">
           {/* Name  */}
           <div>
-            <Label htmlFor="name">Name</Label>
+            <Label htmlFor="name" className="text-main-label">
+              Name
+            </Label>
             <Input
               type="text"
               placeholder="Enter name"
@@ -61,7 +63,9 @@ const UserPersonDetails = () => {
 
           {/* Mobile Number  */}
           <div>
-            <Label htmlFor="mobile">Mobile Number</Label>
+            <Label htmlFor="mobile" className="text-main-label">
+              Mobile Number
+            </Label>
             <Input
               type="text"
               placeholder="Enter Mobile Number"
@@ -76,7 +80,9 @@ const UserPersonDetails = () => {
 
           {/* Password  */}
           <div>
-            <Label htmlFor="password">Set Password</Label>
+            <Label htmlFor="password" className="text-main-label">
+              Set Password
+            </Label>
             <div className="relative">
               <Input
                 className="w-full  focus-visible:ring-0 shadow-none border-2 py-5 pe-8 mt-1"
@@ -107,7 +113,9 @@ const UserPersonDetails = () => {
 
           {/* Email  */}
           <div>
-            <Label htmlFor="email">Email</Label>
+            <Label htmlFor="email" className="text-main-label">
+              Email
+            </Label>
             <Input
               type="email"
               placeholder="Enter Email"
@@ -123,7 +131,7 @@ const UserPersonDetails = () => {
         <div className="flex justify-end mt-3">
           <Button
             type="submit"
-            className="bg-[#C99227] shadow-none w-full max-w-[31.8rem]"
+            className="bg-main shadow-none w-full max-w-[31.8rem]"
             disabled={isLoading}
           >
             {isLoading ? <Loader2 className="animate-spin" size={24} /> : "Add"}

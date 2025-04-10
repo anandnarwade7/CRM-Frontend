@@ -20,7 +20,7 @@ const Table = ({ data, columns }) => {
               {headerGroup?.headers?.map((header) => (
                 <th
                   key={header.id}
-                  className="py-4 px-6 text-left text-xs font-medium text-black"
+                  className="py-4 px-6 text-left text-xs font-medium text-main"
                 >
                   {header?.isPlaceholder
                     ? null
@@ -39,7 +39,7 @@ const Table = ({ data, columns }) => {
               {row?.getVisibleCells()?.map((cell) => (
                 <td
                   key={cell?.id}
-                  className="py-3 px-6 text-xs font-medium text-[#757575] whitespace-nowrap border-b border-gray-200"
+                  className="py-3 px-6 text-xs font-medium text-main-grey whitespace-nowrap border-b border-gray-200"
                 >
                   {flexRender(
                     cell?.column?.columnDef?.cell,

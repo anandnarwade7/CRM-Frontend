@@ -3,6 +3,7 @@ import {
   DashboardTime,
   DashboardList,
 } from "../../assets/index";
+import DashboardCard from "../../components/custom/DashboardCard";
 import { useSalesDashboard } from "../../hooks/Dashboard/useSalesDashboard";
 import { useUserId } from "../../hooks/use-user-id";
 
@@ -13,15 +14,11 @@ const SalesDashboard = () => {
   return (
     <div className="flex items-center gap-4">
       {/* Sales Person */}
-      <div className="w-full max-w-[21rem] bg-white rounded-lg p-9 flex items-center justify-between shadow-sm">
-        <div>
-          <p className="text-[#5B5959] font-normal text-xl">Converted Leads</p>
-          <p className="text-[#D0AF6E] font-medium text-5xl mt-4">
-            {data?.convertedLeads}
-          </p>
-        </div>
-        <img src={DashboardSales} alt="DashboardSales" />
-      </div>
+      <DashboardCard
+        data={data?.convertedLeads || "-"}
+        img={DashboardSales}
+        title="Converted Leads"
+      />
 
       {/* Target */}
       {/* <div className="w-full max-w-[21rem] bg-white rounded-lg p-9 flex items-center justify-between shadow-sm">
@@ -35,15 +32,12 @@ const SalesDashboard = () => {
       </div> */}
 
       {/* Total Leads */}
-      <div className="w-full max-w-[21rem] bg-white rounded-lg p-9 flex items-center justify-between shadow-sm">
-        <div>
-          <p className="text-[#5B5959] font-normal text-xl">Total Leads</p>
-          <p className="text-[#D0AF6E] font-medium text-5xl mt-4">
-            {data?.totalLeads}
-          </p>
-        </div>
-        <img src={DashboardList} alt="DashboardList" />
-      </div>
+
+      <DashboardCard
+        data={data?.totalLeads || "-"}
+        img={DashboardList}
+        title="Total Leads"
+      />
     </div>
   );
 };

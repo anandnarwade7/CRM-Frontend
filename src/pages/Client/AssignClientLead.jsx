@@ -49,14 +49,16 @@ const AssignClientLead = () => {
             <div
               className={`relative w-5 h-5 border-2 rounded-full flex items-center justify-center cursor-pointer ${
                 distribution === "Equally"
-                  ? "border-[#C99227]"
+                  ? "border-main-secondary"
                   : "border-[#B5B5B5]"
               }`}
               onClick={() => setDistribution("Equally")}
             >
               <div
                 className={`w-3 h-3 rounded-full ${
-                  distribution === "Equally" ? "bg-[#C99227]" : "bg-[#B5B5B5]"
+                  distribution === "Equally"
+                    ? "bg-main-secondary"
+                    : "bg-[#B5B5B5]"
                 }`}
               ></div>
             </div>
@@ -72,14 +74,16 @@ const AssignClientLead = () => {
             <div
               className={`relative w-5 h-5 border-2 border-[#B5B5B5] rounded-full flex items-center justify-center cursor-pointer ${
                 distribution === "Specific"
-                  ? "border-[#C99227]"
+                  ? "border-main-secondary"
                   : "border-[#B5B5B5]"
               }`}
               onClick={() => setDistribution("Specific")}
             >
               <div
                 className={`w-3 h-3 rounded-full ${
-                  distribution === "Specific" ? "bg-[#C99227]" : "bg-[#B5B5B5]"
+                  distribution === "Specific"
+                    ? "bg-main-secondary"
+                    : "bg-[#B5B5B5]"
                 }`}
               ></div>
             </div>
@@ -143,7 +147,7 @@ const AssignClientLead = () => {
             crm?.length === 0 ||
             convertedLeadsData?.length === 0
           }
-          className="bg-[#C99227] shadow-none text-white w-[49%]"
+          className="bg-main shadow-none text-white w-[49%]"
         >
           {isSubmitting ? (
             <Loader2 className="animate-spin" size={24} />

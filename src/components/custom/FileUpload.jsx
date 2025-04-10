@@ -65,7 +65,7 @@ const FileUpload = ({ title, name, control, setValue, trigger }) => {
 
   return (
     <div>
-      <p className="text-sm font-medium mb-2">{title}</p>
+      <p className="text-sm font-medium text-main-text mb-2">{title}</p>
       <Card
         className={`border-2 border-[#B0A7A7] shadow-none rounded-md cursor-pointer w-full`}
       >
@@ -82,14 +82,14 @@ const FileUpload = ({ title, name, control, setValue, trigger }) => {
         >
           {field?.value ? (
             <div className="flex flex-col items-center justify-center space-y-2">
-              <UploadIcon className="w-8 h-8 text-amber-500" />
+              <UploadIcon className="w-8 h-8 text-main-secondary" />
               <span className="text-xs text-muted-foreground text-center">
                 {field.value.name}
               </span>
             </div>
           ) : (
             <div className="flex flex-col items-center justify-center space-y-2">
-              <UploadIcon className="w-8 h-8 text-amber-500" />
+              <UploadIcon className="w-8 h-8 text-main-secondary" />
               <span className="text-xs text-muted-foreground">
                 click to upload
               </span>

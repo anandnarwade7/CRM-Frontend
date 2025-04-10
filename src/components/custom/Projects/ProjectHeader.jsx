@@ -10,7 +10,7 @@ const ProjectHeader = () => {
       <p className="font-medium text-2xl text-[#707070]">Project Details</p>
       <Button
         onClick={() => navigate("/app/inventory-details")}
-        className="bg-[#C99227] shadow-none"
+        className="bg-main shadow-none"
       >
         <Plus size={18} />
         Inventory

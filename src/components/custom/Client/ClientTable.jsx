@@ -15,6 +15,8 @@ import {
   TooltipTrigger,
 } from "../../ui/tooltip";
 import { useUserRole } from "../../../hooks/use-userrole";
+import Table from "../Table";
+import TablePagination from "../TablePagination/TablePagination";
 
 const ClientTable = () => {
   const navigate = useNavigate();
@@ -134,7 +136,7 @@ const ClientTable = () => {
     cell: ({ row }) => (
       <Button
         size="icon"
-        className="bg-[#C99227] rounded-xl shadow-none"
+        className="bg-main-secondary rounded-xl shadow-none"
         onClick={() => {
           if (userRole === "ADMIN") {
             navigate(`/app/client-details/${row?.original?.id}`);
@@ -156,7 +158,7 @@ const ClientTable = () => {
             <div className="flex justify-center">
               <Button
                 size="icon"
-                className="bg-[#C99227] rounded-xl shadow-none"
+                className="bg-main-secondary rounded-xl shadow-none"
                 onClick={() => {
                   navigate(`/app/add-client/${row?.original?.id}`);
                 }}
@@ -175,12 +177,6 @@ const ClientTable = () => {
 
   const { clientsData, totalPages, isLoading, error } = useGetClients(page);
 
-  const table = useReactTable({
-    data: clientsData || [],
-    columns,
-    getCoreRowModel: getCoreRowModel(),
-  });
-
   if (isLoading) {
     return <p>Loading....</p>;
   }
@@ -191,36 +187,8 @@ const ClientTable = () => {
 
   return (
     <div className="my-2">
-      <table className="min-w-full border-separate border-spacing-y-4">
-        <thead className="bg-[#F6F6F6]">
-          {table?.getHeaderGroups().map((headerGroup) => (
-            <tr key={headerGroup?.id} className="bg-gray-200 text-left">
-              {headerGroup.headers.map((header) => (
-                <th key={header.id} className="px-4 py-4 font-medium text-sm">
-                  {flexRender(
-                    header.column.columnDef.header,
-                    header.getContext()
-                  )}
-                </th>
-              ))}
-            </tr>
-          ))}
-        </thead>
-        <tbody>
-          {table.getRowModel().rows.map((row) => (
-            <tr key={row.id}>
-              {row.getVisibleCells().map((cell) => (
-                <td
-                  key={cell.id}
-                  className="px-4 py-2 border-b border-gray-200 text-[#757575] font-medium text-sm"
-                >
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                </td>
-              ))}
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <Table data={clientsData || []} columns={columns} />
+      <TablePagination totalPages={totalPages} page={page} setPage={setPage} />
     </div>
   );
 };

@@ -66,6 +66,7 @@ export default {
           accent: "hsl(var(--main-accent-color))",
           text: "hsl(var(--text-main-color))",
           grey: "hsl(var(--text-grey-color))",
+          label: "hsl(var(--text-label-color))",
         },
       },
     },

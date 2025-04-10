@@ -119,7 +119,7 @@ const SalesLeadsDetails = () => {
             <p className="text-[#707070] font-medium text-2xl">Lead Details</p>
           </div>
           <Button
-            className="shadow-none bg-[#C99227] p-5 text-sm"
+            className="shadow-none bg-main p-5 text-sm"
             type="button"
             onClick={() => setIsStatusOpen(true)}
           >
@@ -137,7 +137,7 @@ const SalesLeadsDetails = () => {
             <div>
               <Label
                 htmlFor="status"
-                className="text-[#233A48] text-sm font-normal"
+                className="text-main-label text-sm font-normal"
               >
                 Lead Disposal
               </Label>
@@ -271,7 +271,7 @@ const SalesLeadsDetails = () => {
 
         <div>
           <Button
-            className="text-[#C99227] bg-transparent shadow-none"
+            className="text-main-secondary bg-transparent shadow-none"
             type="button"
             onClick={() => append({ label: "", value: "" })}
           >
@@ -281,7 +281,7 @@ const SalesLeadsDetails = () => {
         </div>
         <div>
           <Button
-            className="shadow-none bg-[#C99227] p-5 text-sm w-full max-w-[10rem] mt-10"
+            className="shadow-none bg-main p-5 text-sm w-full max-w-[10rem] mt-10"
             type="submit"
           >
             Update

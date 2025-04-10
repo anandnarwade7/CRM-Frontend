@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { Button } from "../../ui/button";
 import Table from "../Table";
-import { File } from "lucide-react";
+import { DownloadIcon, File } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { useUserId } from "../../../hooks/use-user-id";
 import axios from "axios";
@@ -64,12 +64,11 @@ const ClientActivityTable = () => {
               <Button
                 variant="ghost"
                 size="icon"
-                className="h-8 w-8"
                 onClick={() =>
                   downloadFile(row?.original?.agreement, "Agreement.pdf")
                 }
               >
-                <File className="h-4 w-4 text-gray-500" />
+                <DownloadIcon className="h-4 w-4 text-main-secondary" />
               </Button>
             </div>
           ) : (
@@ -85,12 +84,11 @@ const ClientActivityTable = () => {
               <Button
                 variant="ghost"
                 size="icon"
-                className="h-8 w-8"
                 onClick={() =>
                   downloadFile(row?.original?.stampDuty, "Stamp Duty.pdf")
                 }
               >
-                <File className="h-4 w-4 text-gray-500" />
+                <DownloadIcon className="h-4 w-4 text-main-secondary" />
               </Button>
             </div>
           ) : (
@@ -106,10 +104,9 @@ const ClientActivityTable = () => {
               <Button
                 variant="ghost"
                 size="icon"
-                className="h-8 w-8"
                 onClick={() => downloadFile(row?.original?.tdsDoc, "TDS.pdf")}
               >
-                <File className="h-4 w-4 text-gray-500" />
+                <DownloadIcon className="h-4 w-4 text-main-secondary" />
               </Button>
             </div>
           ) : (
@@ -125,12 +122,11 @@ const ClientActivityTable = () => {
               <Button
                 variant="ghost"
                 size="icon"
-                className="h-8 w-8"
                 onClick={() =>
                   downloadFile(row?.original?.bankSanction, "Bank Sanction.pdf")
                 }
               >
-                <File className="h-4 w-4 text-gray-500" />
+                <DownloadIcon className="h-4 w-4 text-main-secondary" />
               </Button>
             </div>
           ) : (
@@ -144,6 +140,7 @@ const ClientActivityTable = () => {
             onClick={() =>
               navigate(`/app/show-eventdetails/${row?.original?.id}`)
             }
+            className="bg-main-secondary text-white"
           >
             Show
           </Button>

@@ -107,7 +107,7 @@ const CRMClientDetails = () => {
           <p className="text-[#707070] font-medium text-2xl">Lead Details</p>
         </div>
         <Button
-          className="shadow-none bg-[#C99227] p-5 text-sm"
+          className="shadow-none bg-main text-white p-5 text-sm"
           type="button"
           onClick={handleSubmit(onSubmit)}
         >
@@ -116,21 +116,18 @@ const CRMClientDetails = () => {
       </div>
       {/* Main Content */}
       <div className="grid grid-cols-3 gap-10 my-4">
-        <LeadsDetailsInput label="Id" data={data?.id || "1"} />
-        <LeadsDetailsInput label="Lead Name" data={data?.leadName || "XYZ"} />
+        <LeadsDetailsInput label="Id" data={data?.id || "-"} />
+        <LeadsDetailsInput label="Lead Name" data={data?.leadName || "-"} />
         <LeadsDetailsInput
           label="Mobile Number"
-          data={data?.leadmobile || "9021008874"}
+          data={data?.leadmobile || "-"}
         />
-        <LeadsDetailsInput
-          label="Email"
-          data={data?.leadEmail || "xyz@gmail.com"}
-        />
+        <LeadsDetailsInput label="Email" data={data?.leadEmail || "-"} />
 
         <div>
           <Label
             htmlFor="status"
-            className="text-[#233A48] text-sm font-normal"
+            className="text-main-label text-sm font-normal"
           >
             Status
           </Label>
@@ -168,9 +165,10 @@ const CRMClientDetails = () => {
       {/* File Uploads Section */}
       <div>
         <div className="flex items-center justify-between my-8">
-          <p className="font-medium">Upload Initial documents</p>
+          <p className="font-medium text-main-text">Upload Initial documents</p>
           <Button
             type="button"
+            className="shadow-none bg-main text-white p-5 text-sm"
             disabled={fileUploading}
             onClick={handleFileSubmit(onSubmitFiles)}
           >
@@ -243,12 +241,13 @@ const CRMClientDetails = () => {
 
       {/* Event Details Section */}
       <div className="my-16">
-        <p className="mb-4">Event details</p>
+        <p className="mb-4 text-main-text font-medium">Event details</p>
         <div>
           <EventDetailsTable />
         </div>
       </div>
 
+      {/* Notes Section */}
       <div className="my-7">
         <div className="flex items-center justify-between">
           <Label htmlFor="note" className="text-[#233A48] text-sm font-normal">
@@ -344,7 +343,7 @@ const CRMClientDetails = () => {
       </div>
       <div>
         <Button
-          className="text-[#C99227] bg-transparent shadow-none"
+          className="text-main-secondary bg-transparent shadow-none"
           type="button"
           onClick={() => append({ label: "", value: "" })}
         >

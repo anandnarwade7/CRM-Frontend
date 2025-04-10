@@ -144,7 +144,7 @@ const Sidebar = () => {
         <Separator className="mb-4" />
 
         <div className="mx-4">
-          <Badge className="bg-[#FFF7E7] text-[#343434] px-4 py-2 text-base rounded-md shadow-none hover:bg-[#FFF7E7]">
+          <Badge className="bg-main text-white px-4 py-2 text-base rounded-xl shadow-none hover:bg-[#FFF7E7]">
             {user}
           </Badge>
         </div>
@@ -160,7 +160,7 @@ const Sidebar = () => {
                 to={item.path}
                 className={`flex items-center space-x-3 p-2 rounded-lg transition-all ${
                   isActive
-                    ? "bg-[#FFF7E7] text-[#C99227]"
+                    ? "bg-main-accent text-white"
                     : "text-gray-700 hover:bg-gray-100"
                 }`}
               >
@@ -183,7 +183,7 @@ const Sidebar = () => {
         <div className="px-4 py-2">
           <Button
             onClick={handleLogout}
-            className="bg-white text-black flex items-center gap-3"
+            className="bg-white text-main-text flex items-center gap-3"
           >
             <img src={Logout} alt="logout" />
             logout

@@ -217,7 +217,7 @@ const AdminDetails = () => {
 
         {/* Date Picker */}
         <div className="my-10">
-          <p className="text-[#C99227] font-medium">
+          <p className="text-main-text font-medium mb-6">
             Set your subscription duration
           </p>
           <div className="grid grid-cols-2 gap-8">
@@ -266,7 +266,7 @@ const AdminDetails = () => {
         <div className="flex items-center justify-end">
           <Button
             type="submit"
-            className="bg-[#C99227] text-white w-full max-w-md"
+            className="bg-main text-white w-full max-w-md"
             disabled={isLoading}
           >
             {isLoading ? (
@@ -274,7 +274,7 @@ const AdminDetails = () => {
             ) : id ? (
               "Update"
             ) : (
-              "add"
+              "Add"
             )}
           </Button>
         </div>

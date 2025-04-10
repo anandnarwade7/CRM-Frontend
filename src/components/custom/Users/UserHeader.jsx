@@ -17,7 +17,7 @@ const UserHeader = ({ title, btnText }) => {
       <div className="flex items-center justify-between">
         <p className="text-2xl font-medium text-[#707070]">{title}</p>
         <Button
-          className="bg-[#C99227] shadow-none"
+          className="bg-main shadow-none"
           onClick={() =>
             navigate("/app/userDetails", { state: { detailTitle, role } })
           }

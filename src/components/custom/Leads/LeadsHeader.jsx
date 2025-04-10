@@ -36,7 +36,7 @@ const LeadsHeader = () => {
         <div className="flex justify-between my-3">
           <div>
             <Select defaultValue="ASSIGNED" onValueChange={handleStatusChange}>
-              <SelectTrigger className="w-[180px] shadow-none border-0 focus:ring-0 bg-[#FFD073] text-[#FFFFFF]">
+              <SelectTrigger className="w-[180px] shadow-none border-0 focus:ring-0 bg-main text-white">
                 <SelectValue placeholder="Select Status" />
               </SelectTrigger>
               <SelectContent>
@@ -50,7 +50,7 @@ const LeadsHeader = () => {
           </div>
           <Button
             onClick={() => navigate("/app/assign-leads")}
-            className="bg-[#C99227] shadow-none"
+            className="bg-main shadow-none"
           >
             <Plus size={18} />
             Assign Leads

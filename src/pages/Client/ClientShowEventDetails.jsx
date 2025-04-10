@@ -63,7 +63,6 @@ const ClientShowEventDetails = () => {
               <Button
                 variant="ghost"
                 size="icon"
-                className="h-8 w-8"
                 onClick={() =>
                   downloadFile(
                     row?.original?.statusReport?.url,
@@ -71,7 +70,7 @@ const ClientShowEventDetails = () => {
                   )
                 }
               >
-                <DownloadIcon className="h-4 w-4 text-gray-500" />
+                <DownloadIcon className="h-4 w-4 text-main-secondary" />
               </Button>
             </div>
           ) : (
@@ -87,7 +86,6 @@ const ClientShowEventDetails = () => {
               <Button
                 variant="ghost"
                 size="icon"
-                className="h-8 w-8"
                 onClick={() =>
                   downloadFile(
                     row?.original?.architectsLetter?.url,
@@ -95,7 +93,7 @@ const ClientShowEventDetails = () => {
                   )
                 }
               >
-                <DownloadIcon className="h-4 w-4 text-gray-500" />
+                <DownloadIcon className="h-4 w-4 text-main-secondary" />
               </Button>
             </div>
           ) : (
@@ -111,12 +109,11 @@ const ClientShowEventDetails = () => {
               <Button
                 variant="ghost"
                 size="icon"
-                className="h-8 w-8"
                 onClick={() =>
                   downloadFile(row?.original?.invoice?.url, "Invoice.pdf")
                 }
               >
-                <DownloadIcon className="h-4 w-4 text-gray-500" />
+                <DownloadIcon className="h-4 w-4 text-main-secondary" />
               </Button>
             </div>
           ) : (
@@ -132,12 +129,11 @@ const ClientShowEventDetails = () => {
               <Button
                 variant="ghost"
                 size="icon"
-                className="h-8 w-8"
                 onClick={() =>
                   downloadFile(row?.original?.receipt?.url, "Receipt.pdf")
                 }
               >
-                <DownloadIcon className="h-4 w-4 text-gray-500" />
+                <DownloadIcon className="h-4 w-4 text-main-secondary" />
               </Button>
             </div>
           ) : (

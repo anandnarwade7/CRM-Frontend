@@ -27,7 +27,7 @@ const InventoryDetails = () => {
 
         {/* Property */}
         <div className="my-10">
-          <p className="text-xl font-semibold mb-1">Property</p>
+          <p className="text-xl font-semibold text-main-text mb-1">Property</p>
           <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:gap-32">
             <div>
               <FormInput name="propertyName" label="Property Name" />
@@ -40,7 +40,9 @@ const InventoryDetails = () => {
 
         {/* Towers/Floors/Flats */}
         <div>
-          <p className="text-xl font-semibold mb-5">Towers/Floors/Flats</p>
+          <p className="text-xl font-semibold text-main-text mb-5">
+            Towers/Floors/Flats
+          </p>
           <div>
             <div className="grid grid-cols-1 gap-4 lg:grid-cols-3 lg:gap-10 mb-6">
               <FormInput label="Total Tower" name="totalTower" />
@@ -67,7 +69,7 @@ const InventoryDetails = () => {
         <div className="flex items-center justify-end mt-7 my-3">
           <Button
             type="submit"
-            className="bg-[#C99227] text-white rounded-md w-full max-w-40"
+            className="bg-main text-white rounded-md w-full max-w-40"
           >
             Create
           </Button>

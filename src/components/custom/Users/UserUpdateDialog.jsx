@@ -49,13 +49,17 @@ const UserUpdateDialog = ({ open, onClose, selectedData }) => {
     <Dialog open={open} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle className="text-left">Update Sales Details</DialogTitle>
+          <DialogTitle className="text-left text-main-grey">
+            Update Sales Details
+          </DialogTitle>
         </DialogHeader>
         <form onSubmit={handleSubmit(handleFormSubmit)}>
           <div>
             <div className="space-y-4">
               <div>
-                <Label htmlFor="name">Name</Label>
+                <Label htmlFor="name" className="text-main-label">
+                  Name
+                </Label>
                 <Input
                   type="text"
                   placeholder="Enter name"
@@ -70,7 +74,9 @@ const UserUpdateDialog = ({ open, onClose, selectedData }) => {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <Label htmlFor="mobile">Mobile Number</Label>
+                  <Label htmlFor="mobile" className="text-main-label">
+                    Mobile Number
+                  </Label>
                   <Input
                     type="text"
                     placeholder="Enter Mobile Number"
@@ -85,7 +91,9 @@ const UserUpdateDialog = ({ open, onClose, selectedData }) => {
                   )}
                 </div>
                 <div>
-                  <Label htmlFor="password">Password</Label>
+                  <Label htmlFor="password" className="text-main-label">
+                    Password
+                  </Label>
                   <div className="relative">
                     <Input
                       className="w-full pe-8"
@@ -118,7 +126,9 @@ const UserUpdateDialog = ({ open, onClose, selectedData }) => {
               </div>
 
               <div>
-                <Label htmlFor="email">Email</Label>
+                <Label htmlFor="email" className="text-main-label">
+                  Email
+                </Label>
                 <Input
                   type="email"
                   placeholder="Abc@gmail.com"
@@ -135,7 +145,7 @@ const UserUpdateDialog = ({ open, onClose, selectedData }) => {
           <DialogFooter className="sm:justify-start">
             <Button
               type="submit"
-              className="w-full bg-yellow-600 hover:bg-yellow-700 text-white rounded-lg mt-3 shadow-none"
+              className="w-full bg-main-secondary text-white rounded-lg mt-3 shadow-none"
               disabled={isPending}
             >
               {isPending ? (

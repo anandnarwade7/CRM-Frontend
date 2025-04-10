@@ -8,7 +8,7 @@ const AdminHeader = () => {
     <div className="flex items-center justify-between">
       <p className="text-2xl font-medium text-[#707070]">Admin Details</p>
       <Button
-        className="bg-[#C99227] font-medium"
+        className="bg-main font-medium"
         onClick={() => navigate("/app/admin-details")}
       >
         <Plus />

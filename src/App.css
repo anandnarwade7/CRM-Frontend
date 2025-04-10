@@ -2,6 +2,7 @@
   --main-color: 203 58% 26%; /* #1c4d6b */
   --main-secondary-color: 356 68% 66%; /* #e1777c */
   --main-accent-color: 206 34% 74%; /* #9fbdd0 */
-  --text-main-color: 203 58% 26%;
+  --text-main-color: 203 58% 26%; /* #1c4d6b */
   --text-grey-color: 0 0% 46%; /* #757575 */
+  --text-label-color: 203, 35%, 21%; /* #233A48 */
 }

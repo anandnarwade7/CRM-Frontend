@@ -12,7 +12,7 @@ const ClientHeader = () => {
       {/* Upper Header */}
       <div className="flex items-center justify-between">
         <p className="font-medium text-2xl text-[#707070]">Client Details</p>
-        <Button className="bg-white text-black shadow-none">
+        <Button className="bg-white shadow-none">
           <img src={Notification} alt="notification" />
         </Button>
       </div>
@@ -21,7 +21,7 @@ const ClientHeader = () => {
         <div className="flex justify-end my-4">
           <Button
             onClick={() => navigate("/app/client-leads")}
-            className="bg-[#C99227] shadow-none"
+            className="bg-main shadow-none"
           >
             <Plus size={18} />
             Assign Leads

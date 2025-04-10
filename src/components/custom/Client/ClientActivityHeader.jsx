@@ -17,7 +17,7 @@ const ClientActivityHeader = () => {
             <SearchIcon size={16} />
           </div>
         </div>
-        <Button className="bg-[#1C4D6B]">Export</Button>
+        <Button className="bg-main">Export</Button>
       </div>
     </div>
   );

@@ -10,7 +10,6 @@ import { useUserId } from "../../../hooks/use-user-id";
 import TablePagination from "../TablePagination/TablePagination";
 
 const LeadsTable = () => {
-  const [selectedLead, setSelectedLead] = useState(null);
   const [page, setPage] = useState(1);
   const status = useSelector((state) => state.leads.status);
   const userRole = useUserRole();
@@ -26,8 +25,6 @@ const LeadsTable = () => {
   if (leadsData?.length === 0) {
     return <p>No Data Available</p>;
   }
-
-  console.log("Selected Lead", selectedLead);
 
   return (
     <>
@@ -54,7 +51,7 @@ const LeadsTable = () => {
                 <td className="p-3">{lead?.mobileNumber}</td>
                 <td className="p-3">{lead?.email}</td>
                 <td className="p-3">{lead?.salesPerson}</td>
-                <td className="p-3 text-[#D0AF6E]">
+                <td className="p-3 text-main-text">
                   {lead?.status === "ASSIGNED"
                     ? "Assigned"
                     : lead?.status === "COMPLETED"
@@ -65,9 +62,8 @@ const LeadsTable = () => {
                   <td className="p-3">
                     <Button
                       size="icon"
-                      className="bg-[#C99227] rounded-xl shadow-none"
+                      className="bg-main-secondary rounded-xl shadow-none"
                       onClick={() => {
-                        // setSelectedLead(lead);
                         if (userRole === "ADMIN") {
                           navigate(`/app/leads-details/${lead?.id}`);
                         } else {

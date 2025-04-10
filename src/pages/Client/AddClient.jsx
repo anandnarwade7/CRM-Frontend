@@ -59,7 +59,9 @@ const AddClient = () => {
         <div className="grid grid-cols-2 gap-4 my-10">
           {/* Name  */}
           <div>
-            <Label htmlFor="name">Client Name</Label>
+            <Label htmlFor="name" className="text-main-label">
+              Client Name
+            </Label>
             <Input
               type="text"
               placeholder="Enter name"
@@ -75,7 +77,9 @@ const AddClient = () => {
 
           {/* Mobile Number  */}
           <div>
-            <Label htmlFor="mobile">Phone Number</Label>
+            <Label htmlFor="mobile" className="text-main-label">
+              Phone Number
+            </Label>
             <Input
               type="text"
               placeholder="Enter Mobile Number"
@@ -91,7 +95,9 @@ const AddClient = () => {
 
           {/* Email  */}
           <div>
-            <Label htmlFor="email">Email</Label>
+            <Label htmlFor="email" className="text-main-label">
+              Email
+            </Label>
             <Input
               type="email"
               placeholder="Enter Email"
@@ -107,7 +113,9 @@ const AddClient = () => {
 
           {/* Password  */}
           <div>
-            <Label htmlFor="password">Set Password</Label>
+            <Label htmlFor="password" className="text-main-label">
+              Set Password
+            </Label>
             <div className="relative">
               <Input
                 className="w-full  focus-visible:ring-0 shadow-none border-2 py-5 pe-8 mt-1"
@@ -139,7 +147,9 @@ const AddClient = () => {
           </div>
           {/* Confirm Password  */}
           <div>
-            <Label htmlFor="confirmPassword">Confirm Password</Label>
+            <Label htmlFor="confirmPassword" className="text-main-label">
+              Confirm Password
+            </Label>
             <div className="relative">
               <Input
                 className="w-full  focus-visible:ring-0 shadow-none border-2 py-5 pe-8 mt-1"
@@ -175,7 +185,7 @@ const AddClient = () => {
         <div className="flex justify-end mt-3">
           <Button
             type="submit"
-            className="bg-[#C99227] shadow-none w-full max-w-[31.8rem]"
+            className="bg-main shadow-none w-full max-w-[31.8rem]"
             disabled={isLoading}
           >
             {isLoading ? (

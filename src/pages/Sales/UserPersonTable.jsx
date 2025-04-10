@@ -7,6 +7,7 @@ import UserUpdateDialog from "../../components/custom/Users/UserUpdateDialog";
 import { useActionUser } from "../../hooks/Sales/useActionUser";
 import UserPagination from "../../components/custom/Users/UserPagination";
 import { useLastPathSegment } from "../../hooks/use-lastpathsegment";
+import Table from "../../components/custom/Table";
 
 const UserPersonTable = () => {
   const [page, setPage] = useState(1);
@@ -48,7 +49,7 @@ const UserPersonTable = () => {
       header: "Edit",
       cell: ({ row }) => (
         <Button
-          className="bg-yellow-600 hover:bg-yellow-700 p-2 rounded-xl"
+          className="bg-main-secondary p-2 rounded-xl"
           onClick={() => {
             setSelectedRowData(row?.original);
             setDialogOpen(true);
@@ -68,7 +69,7 @@ const UserPersonTable = () => {
           <div>
             <Button
               onClick={() => handleAction(row?.original?.id, status)}
-              className="bg-yellow-600 hover:bg-yellow-700 p-2"
+              className="bg-main-secondary p-2"
             >
               {currentAction === "BLOCK" ? "UnBlock" : "Block"}
             </Button>
@@ -99,12 +100,13 @@ const UserPersonTable = () => {
 
   return (
     <>
-      <UserTable
+      {/* <UserTable
         columns={columns}
         isLoading={isLoading}
         error={error}
         data={data || []}
-      />
+      /> */}
+      <Table columns={columns} data={data || []} />
       <UserPagination
         handlePreviousPage={handlePreviousPage}
         handleNextPage={handleNextPage}

@@ -28,14 +28,14 @@ const UpdateAdminDialog = ({
         </DialogHeader>
         <div className="flex items-center gap-4">
           <Button
-            className="bg-[#C99227] w-full max-w-md p-5"
+            className="bg-main-secondary w-full max-w-md p-5"
             onClick={handleYesClick}
           >
             Yes
           </Button>
           <Button
             onClick={() => onClose(false)}
-            className="border-2 border-[#C99227] bg-white text-[#C99227] w-full max-w-md p-5"
+            className="border-2 border-main-secondary bg-white text-main-secondary w-full max-w-md p-5"
           >
             No
           </Button>

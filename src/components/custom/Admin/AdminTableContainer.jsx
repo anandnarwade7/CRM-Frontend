@@ -19,7 +19,7 @@ const AdminTableContainer = () => {
   const columns = [
     {
       header: "ID",
-      accessorKey: "id",
+      cell: ({ row }) => row?.index + 1,
     },
     {
       header: "Name",
@@ -56,7 +56,7 @@ const AdminTableContainer = () => {
       header: "Action",
       cell: ({ row }) => (
         <Button
-          className="bg-yellow-600 hover:bg-yellow-700 p-2 rounded-xl"
+          className="bg-main-secondary p-2 rounded-xl"
           onClick={() => navigate(`/app/admin-details/${row?.original?.id}`)}
         >
           <Pencil className="h-4 w-4 text-white" />
@@ -67,7 +67,7 @@ const AdminTableContainer = () => {
       header: "Access",
       cell: ({ row }) => (
         <Button
-          className="bg-[#C99227] rounded-md"
+          className="bg-main-secondary rounded-md"
           onClick={() => {
             setDialogOpen(true);
             setSelectedAction(row?.original?.action);

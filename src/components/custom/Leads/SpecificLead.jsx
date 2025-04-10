@@ -48,7 +48,9 @@ const SpecificLead = ({
     <div>
       <div className="grid grid-cols-2 gap-4">
         <div className="w-full">
-          <Label htmlFor="salesPerson">{selectLabel}</Label>
+          <Label htmlFor="salesPerson" className="text-main-label">
+            {selectLabel}
+          </Label>
           <div>
             <Select>
               <SelectTrigger className="shadow-none focus:ring-0">
@@ -69,7 +71,10 @@ const SpecificLead = ({
                     onChange={handleSelectAll}
                     className="w-4 h-4 text-orange-400 bg-white border-2 border-gray-300 rounded-md  focus:outline-none cursor-pointer transition-all duration-150"
                   />
-                  <label className="cursor-pointer" htmlFor="selectAll">
+                  <label
+                    className="cursor-pointer text-main-label"
+                    htmlFor="selectAll"
+                  >
                     Select All
                   </label>
                 </div>
@@ -88,7 +93,7 @@ const SpecificLead = ({
                     />
                     <label
                       htmlFor={`salesPerson-${person?.id}`}
-                      className="cursor-pointer"
+                      className="cursor-pointer text-main-label"
                     >
                       {person.name}
                     </label>
@@ -109,7 +114,9 @@ const SpecificLead = ({
           </div>
         ) : (
           <div className="w-full">
-            <Label htmlFor="leadFiles">{fileInputLabel}</Label>
+            <Label htmlFor="leadFiles" className="text-main-label">
+              {fileInputLabel}
+            </Label>
             <div className="flex rounded-lg shadow-none">
               <Input
                 type="file"
@@ -121,7 +128,7 @@ const SpecificLead = ({
               />
               <button
                 onClick={() => fileInputRef.current?.click()}
-                className="inline-flex items-center rounded-e-lg border border-input bg-[#F9AE00] px-3 text-sm text-white font-medium text-foreground outline-offset-2 transition-colors focus:z-10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-ring/70 disabled:cursor-not-allowed disabled:opacity-50"
+                className="inline-flex items-center rounded-e-lg border border-input bg-main px-3 text-sm text-white font-medium text-foreground outline-offset-2 transition-colors focus:z-10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-ring/70 disabled:cursor-not-allowed disabled:opacity-50"
               >
                 Upload
               </button>

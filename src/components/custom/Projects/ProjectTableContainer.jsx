@@ -55,7 +55,7 @@ const ProjectTableContainer = () => {
       cell: () => (
         <Button
           size="icon"
-          className="bg-[#C99227] rounded-xl shadow-none"
+          className="bg-main-secondary rounded-xl shadow-none"
           // onClick={() => {
           //   navigate("/app/inventory-details");
           // }}

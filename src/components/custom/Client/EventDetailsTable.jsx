@@ -351,13 +351,13 @@ const EventDetailsTable = () => {
         <table className="min-w-full border-separate border-spacing-y-4">
           <thead className="bg-[#F6F6F6] sticky top-0">
             <tr>
-              <th className="py-4 px-6 text-left text-xs font-medium text-black">
+              <th className="py-4 px-6 text-left text-xs font-medium text-main-text">
                 Sr.no
               </th>
               {columns.map((col) => (
                 <th
                   key={col.key}
-                  className="py-4 px-6 text-left text-xs font-medium text-black"
+                  className="py-4 px-6 text-left text-xs font-medium text-main-text"
                 >
                   {col.label}
                 </th>
@@ -365,12 +365,12 @@ const EventDetailsTable = () => {
               {fileFields.map((field) => (
                 <th
                   key={field}
-                  className="py-4 px-6 text-left text-xs font-medium text-black"
+                  className="py-4 px-6 text-left text-xs font-medium text-main-text"
                 >
                   {field}
                 </th>
               ))}
-              <th className="py-4 px-6 text-left text-xs font-medium text-black">
+              <th className="py-4 px-6 text-left text-xs font-medium text-main-text">
                 Action
               </th>
             </tr>
@@ -378,7 +378,7 @@ const EventDetailsTable = () => {
           <tbody>
             {rows.map((row, index) => (
               <tr key={index}>
-                <td className="py-3 px-6 text-xs font-medium text-[#757575] border-b border-gray-200">
+                <td className="py-3 px-6 text-xs font-medium text-main-grey border-b border-gray-200">
                   {index + 1}
                 </td>
                 {columns.map((col) => (
@@ -398,7 +398,10 @@ const EventDetailsTable = () => {
                     ) : (
                       <Input
                         type="text"
-                        className="w-full shadow-none focus-visible:ring-0 border-gray-300 p-1"
+                        className={`w-full shadow-none focus-visible:ring-0 border-gray-300 p-1 ${
+                          row?.isEditing ? "text-black" : "text-main-grey"
+                        }`}
+                        disabled={!row?.isEditing}
                         value={row[col.key]}
                         onChange={(e) =>
                           handleInputChange(index, col.key, e.target.value)
@@ -424,6 +427,7 @@ const EventDetailsTable = () => {
                             onChange={(e) =>
                               handleFileUpload(index, field, e.target.files[0])
                             }
+                            disabled={!row?.isEditing}
                           />
                         </label>
                         {row[field] && (
@@ -457,7 +461,7 @@ const EventDetailsTable = () => {
                     <Button
                       onClick={() => handleSubmitData(row)}
                       type="button"
-                      className="text-[#E1777C] bg-white"
+                      className="text-main-secondary bg-white"
                     >
                       Save
                     </Button>
@@ -465,7 +469,7 @@ const EventDetailsTable = () => {
                     <Button
                       onClick={() => toggleEditMode(index)}
                       type="button"
-                      className="text-[#E1777C] bg-white"
+                      className="text-main-secondary bg-white"
                     >
                       Edit
                     </Button>
@@ -474,7 +478,7 @@ const EventDetailsTable = () => {
                   <Button
                     onClick={() => handleEventDelete(row?.eventId)}
                     type="button"
-                    className="text-[#757575] bg-white"
+                    className="text-main-grey bg-white"
                   >
                     Delete
                   </Button>

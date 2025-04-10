@@ -9,7 +9,7 @@ const FormInput = ({ name, label, type = "text" }) => {
   } = useFormContext();
   return (
     <div className="w-full">
-      <Label htmlFor={name} className="text-sm font-medium">
+      <Label htmlFor={name} className="text-sm font-medium text-main-text">
         {label}
       </Label>
       <Input
