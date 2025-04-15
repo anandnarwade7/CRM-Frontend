@@ -6,6 +6,7 @@ import { useUserId } from "../../hooks/use-user-id";
 import { useMutation } from "@tanstack/react-query";
 import { useToast } from "../../hooks/use-toast";
 import { useNavigate } from "react-router";
+import axiosInstance from "../../services/axiosInstance";
 
 export const useSpecificAssignLeads = () => {
   const [distribution, setDistribution] = useState("Specific");
@@ -102,11 +103,10 @@ export const useSpecificAssignLeads = () => {
         formData.append("assignedTo", selectedSalesPersons);
       }
 
-      const response = await axios.post(
-        `${BASE_URL}/import/upload-template`,
+      const response = await axiosInstance.post(
+        `/import/upload-template`,
         formData,
         {
-          withCredentials: true,
           headers: {
             "Content-Type": "multipart/form-data",
           },

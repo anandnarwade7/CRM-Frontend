@@ -31,6 +31,7 @@ export const useLoginForm = () => {
         });
         sessionStorage.setItem("userId", data?.id);
         sessionStorage.setItem("role", data?.role);
+        sessionStorage.setItem("token", data?.token);
         navigate("/app/dashboard");
       }
     },

@@ -7,6 +7,7 @@ import { useToast } from "../use-toast";
 import { useGetCRM } from "../Client/useGetCRM";
 import { useNavigate } from "react-router";
 import { useGetConvertedLeads } from "./useGetConvertedLeads";
+import axiosInstance from "../../services/axiosInstance";
 
 export const useAssignClientLeads = () => {
   const [distribution, setDistribution] = useState("Specific");
@@ -139,16 +140,11 @@ export const useAssignClientLeads = () => {
         formData.append("leadIds", leadsIds);
       }
 
-      const response = await axios.post(
-        `${BASE_URL}/clients/assign`,
-        formData,
-        {
-          withCredentials: true,
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
+      const response = await axiosInstance.post(`/clients/assign`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
       return response.data;
     },
     onSuccess: (data) => {

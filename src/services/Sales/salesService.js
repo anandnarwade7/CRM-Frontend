@@ -1,15 +1,13 @@
 import axios from "axios";
 import { BASE_URL } from "../../utils/constant";
+import axiosInstance from "../axiosInstance";
 
 // Service for add the new User.
 export const addSalesPerson = async (userId, formData) => {
   try {
-    const response = await axios.post(
-      `${BASE_URL}/user/addUser/${userId}`,
-      formData,
-      {
-        withCredentials: true,
-      }
+    const response = await axiosInstance.post(
+      `/user/addUser/${userId}`,
+      formData
     );
     return response?.data;
   } catch (error) {
@@ -21,12 +19,11 @@ export const addSalesPerson = async (userId, formData) => {
 // service for Getting the users.
 export const fetchUsers = async (role, page = 1) => {
   try {
-    const response = await axios.get(`${BASE_URL}/user/getUsers`, {
+    const response = await axiosInstance.get(`/user/getUsers`, {
       params: {
         role,
         page,
       },
-      withCredentials: true,
     });
     return response?.data;
   } catch (error) {
@@ -41,12 +38,7 @@ export const fetchUsers = async (role, page = 1) => {
 // Service for getting Page size for Users.
 export const fetchUserPageCount = async (role) => {
   try {
-    const response = await axios.get(
-      `${BASE_URL}/user/getCountByRole/${role}`,
-      {
-        withCredentials: true,
-      }
-    );
+    const response = await axiosInstance.get(`/user/getCountByRole/${role}`);
 
     return response?.data;
   } catch (error) {
@@ -57,10 +49,9 @@ export const fetchUserPageCount = async (role) => {
 // Service for updating the User Status (Block and unBlock)
 export const userActionStatus = async (id, status) => {
   try {
-    const response = await axios.put(
-      `${BASE_URL}/user/updateUser/${id}/${status}`,
-      {},
-      { withCredentials: true }
+    const response = await axiosInstance.put(
+      `/user/updateUser/${id}/${status}`,
+      {}
     );
     console.log("User Action Status Updated:", response.data);
     return response.data;
@@ -73,10 +64,9 @@ export const userActionStatus = async (id, status) => {
 // Service for Update the User Details
 export const updateUserDetails = async (id, formData) => {
   try {
-    const response = await axios.put(
-      `${BASE_URL}/user/addDetails/${id}`,
-      formData,
-      { withCredentials: "true" }
+    const response = await axiosInstance.put(
+      `/user/addDetails/${id}`,
+      formData
     );
 
     console.log("Update the User Details", response?.data);

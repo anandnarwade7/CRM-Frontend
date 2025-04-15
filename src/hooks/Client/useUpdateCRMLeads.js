@@ -5,6 +5,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { BASE_URL } from "../../utils/constant";
 import { useToast } from "@/hooks/use-toast";
+import axiosInstance from "../../services/axiosInstance";
 
 export const useUpdateCRMLeads = (clientId) => {
   // Validation for updating the leads through CRM
@@ -37,8 +38,8 @@ export const useUpdateCRMLeads = (clientId) => {
 
   const postCRMLead = async (formData) => {
     try {
-      const response = await axios.post(
-        `${BASE_URL}/clients/updateFields/${clientId}`,
+      const response = await axiosInstance.post(
+        `/clients/updateFields/${clientId}`,
         formData,
         {
           headers: {

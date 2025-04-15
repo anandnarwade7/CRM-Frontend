@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import { getExportClientLead } from "../../services/Client/clientservice";
+import { getExportClientLead } from "../../services/Client/clientService";
 
 export const useExportClientLeads = (setIsDownloading) => {
   const mutation = useMutation({

@@ -144,7 +144,7 @@ const Sidebar = () => {
         <Separator className="mb-4" />
 
         <div className="mx-4">
-          <Badge className="bg-main text-white px-4 py-2 text-base rounded-xl shadow-none hover:bg-[#FFF7E7]">
+          <Badge className="bg-main text-white px-4 py-2 text-base rounded-xl shadow-none hover:bg-main">
             {user}
           </Badge>
         </div>

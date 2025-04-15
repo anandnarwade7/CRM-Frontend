@@ -9,6 +9,7 @@ import { BASE_URL } from "../../../utils/constant";
 import { useUserId } from "../../../hooks/use-user-id";
 import { useParams } from "react-router";
 import { useToast } from "@/hooks/use-toast";
+import axiosInstance from "../../../services/axiosInstance";
 
 const columns = [
   { key: "event", label: "Event" },
@@ -135,8 +136,8 @@ const EventDetailsTable = () => {
     formData.append("eventDetails", JSON.stringify(eventDetails));
 
     const url = row?.eventId
-      ? `${BASE_URL}/event/updateEvent/${row?.eventId}/${userId}`
-      : `${BASE_URL}/event/addEventDetails/${userId}`;
+      ? `/event/updateEvent/${row?.eventId}/${userId}`
+      : `/event/addEventDetails/${userId}`;
 
     try {
       // const response = await axios.post(
@@ -151,14 +152,13 @@ const EventDetailsTable = () => {
       // );
       const method = row?.eventId ? "put" : "post";
 
-      const response = await axios({
+      const response = await axiosInstance({
         method,
         url,
         data: formData,
         headers: {
           "Content-Type": "multipart/form-data",
         },
-        withCredentials: true,
       });
 
       if (response?.data) {
@@ -187,11 +187,8 @@ const EventDetailsTable = () => {
   // delete event by ID
   const handleEventDelete = async (eventId) => {
     try {
-      const response = await axios.delete(
-        `${BASE_URL}/event/deleteEventById/${eventId}`,
-        {
-          withCredentials: true,
-        }
+      const response = await axiosInstance.delete(
+        `/event/deleteEventById/${eventId}`
       );
       if (response?.data) {
         toast({
@@ -216,11 +213,8 @@ const EventDetailsTable = () => {
 
   const fetchEventDetails = async () => {
     try {
-      const response = await axios.get(
-        `${BASE_URL}/event/getalleventdetails/${clientId}`,
-        {
-          withCredentials: true,
-        }
+      const response = await axiosInstance.get(
+        `/event/getalleventdetails/${clientId}`
       );
       if (response?.data) {
         if (Array.isArray(response.data) && response?.data?.length > 0) {
@@ -286,35 +280,11 @@ const EventDetailsTable = () => {
   };
 
   const handleDownloadFile = async (url, fileName) => {
-    // if (!url) return;
-
-    // try {
-    //   const response = await axios.get(url, {
-    //     responseType: "blob",
-    //   });
-    //   const blob = new Blob([response?.data]);
-
-    //   const downloadUrl = window.URL.createObjectURL(blob);
-
-    //   const link = document.createElement("a");
-    //   link.href = downloadUrl;
-    //   link.setAttribute("download", "donwload-file");
-
-    //   document.body.appendChild(link);
-    //   link.click();
-    //   link.remove();
-
-    //   window.URL.revokeObjectURL(downloadUrl);
-    // } catch (error) {
-    //   console.log("Error While Download the File", error);
-    // }
-
     if (!url) return;
 
     try {
       const response = await axios.get(url, {
         responseType: "blob",
-        withCredentials: true, // if your API requires auth
       });
 
       const blob = new Blob([response.data], { type: "application/pdf" });
@@ -331,6 +301,11 @@ const EventDetailsTable = () => {
       window.URL.revokeObjectURL(downloadUrl);
     } catch (error) {
       console.error("Error While Downloading the File", error);
+      toast({
+        variant: "destructive",
+        title: "Download Failed",
+        duration: 2000,
+      });
     }
   };
 

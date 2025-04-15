@@ -1,12 +1,11 @@
 import axios from "axios";
 import { BASE_URL } from "../../utils/constant";
+import axiosInstance from "../axiosInstance";
 
 // Service for fetching only sales person
 export const getSales = async (role) => {
   try {
-    const response = await axios.get(`${BASE_URL}/user/getSales/${role}`, {
-      withCredentials: true,
-    });
+    const response = await axiosInstance.get(`/user/getSales/${role}`);
     console.log("Getting sales", response);
     return response?.data;
   } catch (error) {
@@ -17,12 +16,11 @@ export const getSales = async (role) => {
 // Service for Getting the Leads Table Data
 export const getLeads = async (page, status) => {
   try {
-    const response = await axios.get(`${BASE_URL}/import/assigned`, {
+    const response = await axiosInstance.get(`/import/assigned`, {
       params: {
         page,
         status,
       },
-      withCredentials: true,
     });
     return response?.data;
   } catch (error) {
@@ -33,10 +31,7 @@ export const getLeads = async (page, status) => {
 // Service for getting leads by Id
 export const getLeadsById = async (id) => {
   try {
-    const response = await axios.get(`${BASE_URL}/import/getLeadsById/${id}`, {
-      withCredentials: true,
-    });
-
+    const response = await axiosInstance.get(`/import/getLeadsById/${id}`);
     return response?.data;
   } catch (error) {
     console.log("Error fetching Leads Id", error);
@@ -46,12 +41,11 @@ export const getLeadsById = async (id) => {
 // Service for getting sales person leads data
 export const getSalesLeads = async (userId, page) => {
   try {
-    const response = await axios.get(`${BASE_URL}/import/leads`, {
+    const response = await axiosInstance.get(`/import/leads`, {
       params: {
         userId: userId,
         page: page,
       },
-      withCredentials: true,
     });
     return response?.data;
   } catch (error) {
@@ -62,7 +56,7 @@ export const getSalesLeads = async (userId, page) => {
 // Service for Downloading the template while assigning the leads
 export const getDownloadTemplate = async () => {
   try {
-    const response = await axios.get(`${BASE_URL}/import/download-template`, {
+    const response = await axiosInstance.get(`/import/download-template`, {
       responseType: "blob",
     });
     return response?.data;

@@ -8,13 +8,20 @@ import axios from "axios";
 import { BASE_URL } from "../../../utils/constant";
 import TablePagination from "../TablePagination/TablePagination";
 import { useNavigate } from "react-router";
+import axiosInstance from "../../../services/axiosInstance";
 
 const fetchClientData = async (id, page) => {
-  const response = await axios.get(
-    `${BASE_URL}/clients/get/client/data/${id}/${page}`,
-    { withCredentials: true }
-  );
-  return response?.data;
+  try {
+    const response = await axiosInstance.get(
+      `/clients/get/client/data/${id}/${page}`
+    );
+    return response?.data;
+  } catch (error) {
+    console.log("Error While fetching CLient Data", error);
+    throw new Error(
+      error?.response?.data?.message || "Failed to fetch Client Data"
+    );
+  }
 };
 
 const ClientActivityTable = () => {
@@ -152,6 +159,15 @@ const ClientActivityTable = () => {
 
   if (isLoading) {
     return <p>Loading...</p>;
+  }
+
+  if (error) {
+    return (
+      <div className="text-red-600 my-5">
+        <p>⚠️ Failed to fetch client data.</p>
+        <p>Error: {error.message}</p>
+      </div>
+    );
   }
 
   return (

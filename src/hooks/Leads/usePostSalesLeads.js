@@ -5,6 +5,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { useToast } from "@/hooks/use-toast";
 import { BASE_URL } from "../../utils/constant";
+import axiosInstance from "../../services/axiosInstance";
 
 export const usePostSalesLeads = (leadId, data, isStatusOpen) => {
   const schema = salesLeadsSchema(data?.status, isStatusOpen);
@@ -38,14 +39,13 @@ export const usePostSalesLeads = (leadId, data, isStatusOpen) => {
 
   const postLead = async (formData) => {
     try {
-      const response = await axios.post(
-        `${BASE_URL}/import/updateFields/${leadId}`,
+      const response = await axiosInstance.post(
+        `/import/updateFields/${leadId}`,
         formData,
         {
           headers: {
             "Content-Type": "multipart/form-data",
           },
-          withCredentials: true,
         }
       );
       return response?.data;

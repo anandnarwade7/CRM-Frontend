@@ -1,12 +1,11 @@
 import axios from "axios";
 import { BASE_URL } from "../../utils/constant";
+import axiosInstance from "../axiosInstance";
 
 // Service for fetching only CR Managers
 export const getCRM = async (role) => {
   try {
-    const response = await axios.get(`${BASE_URL}/user/getSales/${role}`, {
-      withCredentials: true,
-    });
+    const response = await axiosInstance.get(`/user/getSales/${role}`);
     return response?.data;
   } catch (error) {
     console.log("Error fetching sales", error);
@@ -16,7 +15,7 @@ export const getCRM = async (role) => {
 // Service for Export / Download Excel File while assigning the leads
 export const getExportClientLead = async () => {
   try {
-    const response = await axios.get(`${BASE_URL}/import/export`, {
+    const response = await axiosInstance.get(`/import/export`, {
       responseType: "blob",
     });
     return response?.data;
@@ -28,12 +27,11 @@ export const getExportClientLead = async () => {
 // Service for Getting Clients Table Data
 export const getClients = async (page, status = "CONVERTED") => {
   try {
-    const response = await axios.get(`${BASE_URL}/clients/listbystatus`, {
+    const response = await axiosInstance.get(`/clients/listbystatus`, {
       params: {
         page,
         status,
       },
-      withCredentials: true,
     });
     return response?.data;
   } catch (error) {
@@ -44,9 +42,7 @@ export const getClients = async (page, status = "CONVERTED") => {
 // Service for getting Clients by Id
 export const getClientLeadById = async (id) => {
   try {
-    const response = await axios.get(`${BASE_URL}/clients/getById/${id}`, {
-      withCredentials: true,
-    });
+    const response = await axiosInstance.get(`/clients/getById/${id}`);
 
     return response?.data;
   } catch (error) {
@@ -57,12 +53,9 @@ export const getClientLeadById = async (id) => {
 // Service for Adding the Client
 export const addClient = async (id, formData) => {
   try {
-    const response = await axios.post(
-      `${BASE_URL}/user/addclient/${id}`,
-      formData,
-      {
-        withCredentials: true,
-      }
+    const response = await axiosInstance.post(
+      `/user/addclient/${id}`,
+      formData
     );
     return response?.data;
   } catch (error) {
@@ -73,12 +66,11 @@ export const addClient = async (id, formData) => {
 // Service for Getting Clients List added by CR Managers
 export const getClientsList = async (userId) => {
   try {
-    const response = await axios.get(`${BASE_URL}/user/getclients`, {
+    const response = await axiosInstance.get(`/user/getclients`, {
       params: {
         role: "CLIENT",
         userId,
       },
-      withCredentials: true,
     });
     return response?.data;
   } catch (error) {
@@ -89,9 +81,7 @@ export const getClientsList = async (userId) => {
 // Service for getting converted leads
 export const getConvertedLeads = async () => {
   try {
-    const response = await axios.get(`${BASE_URL}/import/convertedleads`, {
-      withCredentials: true,
-    });
+    const response = await axiosInstance.get(`/import/convertedleads`);
     return response?.data;
   } catch (error) {
     console.log("Error While fetching the Converted Leads", error);
@@ -101,10 +91,9 @@ export const getConvertedLeads = async () => {
 // Service Upload Docs for CR Manager
 export const uploadDocs = async (id, formData) => {
   try {
-    const resposne = await axios.put(
-      `${BASE_URL}/clients/uploaddocs/${id}`,
-      formData,
-      { withCredentials: true }
+    const resposne = await axiosInstance.put(
+      `/clients/uploaddocs/${id}`,
+      formData
     );
     return resposne?.data;
   } catch (error) {
@@ -115,11 +104,8 @@ export const uploadDocs = async (id, formData) => {
 // Service for geeting event details for client user
 export const getClientShowEvents = async (leadId) => {
   try {
-    const response = await axios.get(
-      `${BASE_URL}/event/getalleventdetails/${leadId}`,
-      {
-        withCredentials: true,
-      }
+    const response = await axiosInstance.get(
+      `/event/getalleventdetails/${leadId}`
     );
     return response?.data;
   } catch (error) {
