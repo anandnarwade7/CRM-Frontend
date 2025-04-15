@@ -3,12 +3,42 @@ import { Input } from "../../components/ui/input";
 import { Link } from "react-router";
 import { Back } from "../../assets";
 import FormInput from "../../components/custom/FormInput";
-import { FormProvider, useForm } from "react-hook-form";
+import { FormProvider, useForm, useFormContext } from "react-hook-form";
 import { Button } from "../../components/ui/button";
 import { useCreateInventory } from "../../hooks/Projects/useCreateInventory";
+import { useEffect } from "react";
 
 const InventoryDetails = () => {
-  const { formMethods, handleSubmit, onSubmit } = useCreateInventory();
+  const {
+    formMethods,
+    handleSubmit,
+    onSubmit,
+    errors,
+    watch,
+    setValue,
+    getValues,
+  } = useCreateInventory();
+
+  const totalTower = watch("totalTower");
+  const towerCount = parseInt(totalTower, 10) || 0;
+
+  // Adjust towers array length based on totalTower
+  useEffect(() => {
+    const currentTowers = getValues("towers") || [];
+    if (currentTowers.length < towerCount) {
+      const newTowers = [...currentTowers];
+      while (newTowers.length < towerCount) {
+        newTowers.push({ towerName: "", totalFloors: 0, flatsPerFloor: 0 });
+      }
+      setValue("towers", newTowers);
+    } else if (currentTowers.length > towerCount) {
+      const newTowers = currentTowers.slice(0, towerCount);
+      setValue("towers", newTowers);
+    }
+  }, [towerCount, getValues, setValue]);
+
+  console.log(errors);
+
   return (
     <FormProvider {...formMethods}>
       <form
@@ -39,31 +69,47 @@ const InventoryDetails = () => {
         </div>
 
         {/* Towers/Floors/Flats */}
+
         <div>
-          <p className="text-xl font-semibold text-main-text mb-5">
+          <p className="text-main-text font-semibold text-xl">
             Towers/Floors/Flats
           </p>
-          <div>
-            <div className="grid grid-cols-1 gap-4 lg:grid-cols-3 lg:gap-10 mb-6">
+
+          <div className="flex items-end gap-5">
+            <div className="w-full max-w-lg">
               <FormInput label="Total Tower" name="totalTower" />
-              <FormInput label="Total Floor" name="totalFloor" />
-              <FormInput label="Flats Per Floor" name="flatsPerFloor" />
             </div>
-            <div className="flex flex-col gap-4 lg:flex-row lg:items-center justify-between lg:gap-10">
-              <div className="w-full">
-                <FormInput label="Name" name="towerName1" />
-                <FormInput label="Name" name="towerName2" />
-              </div>
-              <div className="w-full">
-                <FormInput label="Name" name="floorName1" />
-                <FormInput label="Name" name="floorName2" />
-              </div>
-              <div className="w-full">
-                <FormInput label="Name" name="flatsName1" />
-                <FormInput label="Name" name="flatsName2" />
-              </div>
+            <div className="w-full max-w-lg">
+              <Label>Total Floor</Label>
             </div>
+            <Label>Flats Per Floor</Label>
           </div>
+          {Array.from({ length: towerCount }).map((_, index) => (
+            <div key={index} className="my-4">
+              <div className="flex flex-col gap-4 md:flex-row">
+                <div className="w-full max-w-lg">
+                  <FormInput
+                    name={`towers.${index}.towerName`}
+                    label="Tower Name"
+                  />
+                </div>
+                <div className="w-full max-w-lg">
+                  <FormInput
+                    name={`towers.${index}.totalFloors`}
+                    label="Total Floors"
+                    type="number"
+                  />
+                </div>
+                <div className="w-full max-w-lg">
+                  <FormInput
+                    name={`towers.${index}.flatsPerFloor`}
+                    label="Flats Per Floor"
+                    type="number"
+                  />
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
 
         <div className="flex items-center justify-end mt-7 my-3">

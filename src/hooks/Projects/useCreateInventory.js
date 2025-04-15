@@ -1,30 +1,38 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { inventorySchema } from "../../schemas/Projects/projects";
+import { createInventorySchema } from "../../schemas/Projects/projects";
 
 export const useCreateInventory = () => {
   const formMethods = useForm({
-    resolver: zodResolver(inventorySchema),
+    resolver: zodResolver(createInventorySchema),
     defaultValues: {
       propertyName: "",
       address: "",
       totalTower: "",
-      totalFloor: "",
-      flatsPerFloor: "",
-      towerName1: "",
-      towerName2: "",
-      floorName1: "",
-      floorName2: "",
-      flatsName1: "",
-      flatsName2: "",
+      towers: [],
     },
   });
 
-  const { handleSubmit, reset } = formMethods;
+  const {
+    handleSubmit,
+    reset,
+    formState: { errors },
+    setValue,
+    watch,
+    getValues,
+  } = formMethods;
 
   const onSubmit = (data) => {
     console.log("Inventory Details", data);
   };
 
-  return { formMethods, handleSubmit, onSubmit };
+  return {
+    formMethods,
+    handleSubmit,
+    onSubmit,
+    errors,
+    watch,
+    setValue,
+    getValues,
+  };
 };
