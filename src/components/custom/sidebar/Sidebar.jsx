@@ -25,6 +25,14 @@ import {
 } from "../../../assets/index";
 import { useUserRole } from "../../../hooks/use-userrole";
 import { Button } from "../../ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "../../ui/dialog";
 
 const Sidebar = () => {
   const location = useLocation();
@@ -161,7 +169,7 @@ const Sidebar = () => {
                 className={`flex items-center space-x-3 p-2 rounded-lg transition-all ${
                   isActive
                     ? "bg-main-accent text-white"
-                    : "text-gray-700 hover:bg-gray-100"
+                    : "text-main-text hover:bg-gray-100"
                 }`}
               >
                 <img
@@ -180,7 +188,7 @@ const Sidebar = () => {
         <Separator className="mb-1" />
 
         {/* Logout Button */}
-        <div className="px-4 py-2">
+        {/* <div className="px-4 py-2">
           <Button
             onClick={handleLogout}
             className="bg-white text-main-text flex items-center gap-3"
@@ -188,6 +196,28 @@ const Sidebar = () => {
             <img src={Logout} alt="logout" />
             logout
           </Button>
+        </div> */}
+
+        <div className="px-4 py-2">
+          <Dialog>
+            <DialogTrigger>
+              <Button className="bg-white text-main-text flex items-center gap-3 w-full">
+                <img src={Logout} alt="logout" />
+                Logout
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="w-full max-w-xs">
+              <p className="text-main-text font-medium text-sm text-center mt-6">
+                Are you sure you want to log out?
+              </p>
+              <Button
+                onClick={handleLogout}
+                className="bg-main-secondary text-white"
+              >
+                Logout
+              </Button>
+            </DialogContent>
+          </Dialog>
         </div>
       </aside>
     </>

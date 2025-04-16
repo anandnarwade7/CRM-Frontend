@@ -9,7 +9,7 @@ const ProjectHeader = () => {
     <div className="flex items-center justify-between">
       <p className="font-medium text-2xl text-[#707070]">Project Details</p>
       <Button
-        onClick={() => navigate("/app/inventory-details")}
+        onClick={() => navigate("/app/create-inventory")}
         className="bg-main shadow-none"
       >
         <Plus size={18} />

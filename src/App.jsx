@@ -9,6 +9,7 @@ import {
   ClientsDetails,
   ClientShowEventDetails,
   ClientsList,
+  CreateInventoryDetails,
   CRManager,
   CRMClientDetails,
   Dashboard,
@@ -129,9 +130,14 @@ const router = createBrowserRouter([
             path: `/app/show-eventdetails/:leadId`,
             element: <ClientShowEventDetails />,
           },
+          // Project Section
           {
             path: "/app/projects",
             element: <Projects />,
+          },
+          {
+            path: "/app/create-inventory",
+            element: <CreateInventoryDetails />,
           },
           {
             path: "/app/inventory-details",

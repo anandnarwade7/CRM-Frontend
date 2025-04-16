@@ -27,6 +27,7 @@ import ClientActivities from "./Client/ClientActivities";
 import ClientShowEventDetails from "./Client/ClientShowEventDetails";
 // Projects
 import Projects from "./Projects/Projects";
+import CreateInventoryDetails from "./Projects/CreateInventoryDetails";
 import InventoryDetails from "./Projects/InventoryDetails";
 
 // Super Admin
@@ -50,6 +51,7 @@ export {
   ClientsDetails,
   CRMClientDetails,
   Projects,
+  CreateInventoryDetails,
   InventoryDetails,
   Admin,
   AdminDetails,

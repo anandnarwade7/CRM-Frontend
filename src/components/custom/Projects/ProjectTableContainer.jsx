@@ -3,6 +3,7 @@ import ProjectTable from "./ProjectTable";
 import { Button } from "../../ui/button";
 import { Link } from "../../../assets";
 import { useNavigate } from "react-router";
+import Table from "../Table";
 
 const ProjectTableContainer = () => {
   const navigate = useNavigate();
@@ -56,9 +57,9 @@ const ProjectTableContainer = () => {
         <Button
           size="icon"
           className="bg-main-secondary rounded-xl shadow-none"
-          // onClick={() => {
-          //   navigate("/app/inventory-details");
-          // }}
+          onClick={() => {
+            navigate("/app/inventory-details");
+          }}
         >
           <img src={Link} alt="Link" />
         </Button>
@@ -68,7 +69,8 @@ const ProjectTableContainer = () => {
 
   return (
     <div className="my-4">
-      <ProjectTable data={sampleData} columns={columns} />
+      {/* <ProjectTable data={sampleData} columns={columns} /> */}
+      <Table data={sampleData} columns={columns} />
     </div>
   );
 };

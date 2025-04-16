@@ -1,127 +1,85 @@
-import { Label } from "../../components/ui/label";
-import { Input } from "../../components/ui/input";
-import { Link } from "react-router";
 import { Back } from "../../assets";
-import FormInput from "../../components/custom/FormInput";
-import { FormProvider, useForm, useFormContext } from "react-hook-form";
-import { Button } from "../../components/ui/button";
-import { useCreateInventory } from "../../hooks/Projects/useCreateInventory";
-import { useEffect } from "react";
+import { Link } from "react-router";
+import { Label } from "../../components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../../components/ui/select";
+import { Dialog, DialogTrigger } from "../../components/ui/dialog";
+import { useState } from "react";
+import FlatDetailsDialog from "../../components/custom/Projects/FlatDetailsDialog";
 
 const InventoryDetails = () => {
-  const {
-    formMethods,
-    handleSubmit,
-    onSubmit,
-    errors,
-    watch,
-    setValue,
-    getValues,
-  } = useCreateInventory();
-
-  const totalTower = watch("totalTower");
-  const towerCount = parseInt(totalTower, 10) || 0;
-
-  // Adjust towers array length based on totalTower
-  useEffect(() => {
-    const currentTowers = getValues("towers") || [];
-    if (currentTowers.length < towerCount) {
-      const newTowers = [...currentTowers];
-      while (newTowers.length < towerCount) {
-        newTowers.push({ towerName: "", totalFloors: 0, flatsPerFloor: 0 });
-      }
-      setValue("towers", newTowers);
-    } else if (currentTowers.length > towerCount) {
-      const newTowers = currentTowers.slice(0, towerCount);
-      setValue("towers", newTowers);
-    }
-  }, [towerCount, getValues, setValue]);
-
-  console.log(errors);
-
+  const [selectedUnit, setSelectedUnit] = useState(null);
+  const units = [
+    ["701", "702"],
+    ["601", "602"],
+    ["501", "502"],
+    ["401", "402"],
+    ["301", "302"],
+    ["201", "202"],
+    ["101", "102"],
+  ];
   return (
-    <FormProvider {...formMethods}>
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="w-full h-full rounded-xl bg-white px-6 py-3"
-      >
-        {/* Inventory Details Header */}
-        <div className="flex items-center gap-6 mb-8">
-          <Link to={"/app/projects"}>
-            <img src={Back} alt="back" className="w-6" />
-          </Link>
-          <p className="text-[#707070] font-medium text-2xl">
-            Inventory Details
-          </p>
-        </div>
+    <section className="w-full h-full rounded-xl bg-white px-6 py-3">
+      {/* Inventory Details Header */}
+      <div className="flex items-center gap-6 mb-8">
+        <Link to={"/app/projects"}>
+          <img src={Back} alt="back" className="w-6" />
+        </Link>
+        <p className="text-[#707070] font-medium text-2xl">Inventory Details</p>
+      </div>
 
-        {/* Property */}
-        <div className="my-10">
-          <p className="text-xl font-semibold text-main-text mb-1">Property</p>
-          <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:gap-32">
-            <div>
-              <FormInput name="propertyName" label="Property Name" />
-            </div>
-            <div>
-              <FormInput name="address" label="Address" />
-            </div>
-          </div>
-        </div>
-
-        {/* Towers/Floors/Flats */}
-
-        <div>
-          <p className="text-main-text font-semibold text-xl">
-            Towers/Floors/Flats
-          </p>
-
-          <div className="flex items-end gap-5">
-            <div className="w-full max-w-lg">
-              <FormInput label="Total Tower" name="totalTower" />
-            </div>
-            <div className="w-full max-w-lg">
-              <Label>Total Floor</Label>
-            </div>
-            <Label>Flats Per Floor</Label>
-          </div>
-          {Array.from({ length: towerCount }).map((_, index) => (
-            <div key={index} className="my-4">
-              <div className="flex flex-col gap-4 md:flex-row">
-                <div className="w-full max-w-lg">
-                  <FormInput
-                    name={`towers.${index}.towerName`}
-                    label="Tower Name"
-                  />
-                </div>
-                <div className="w-full max-w-lg">
-                  <FormInput
-                    name={`towers.${index}.totalFloors`}
-                    label="Total Floors"
-                    type="number"
-                  />
-                </div>
-                <div className="w-full max-w-lg">
-                  <FormInput
-                    name={`towers.${index}.flatsPerFloor`}
-                    label="Flats Per Floor"
-                    type="number"
-                  />
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        <div className="flex items-center justify-end mt-7 my-3">
-          <Button
-            type="submit"
-            className="bg-main text-white rounded-md w-full max-w-40"
+      {/* Main Section */}
+      <div className="mx-12">
+        <p className="text-main-text font-medium">Kumar Properties</p>
+        <div className="my-6 w-full max-w-sm">
+          <Label
+            htmlFor="tower"
+            className="block text-sm mb-1 text-main-text font-medium"
           >
-            Create
-          </Button>
+            Select Tower
+          </Label>
+          <Select defaultValue="T1">
+            <SelectTrigger className="w-full border-gray-300 shadow-none">
+              <SelectValue placeholder="Select tower" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="T1">T1</SelectItem>
+              <SelectItem value="T2">T2</SelectItem>
+              <SelectItem value="T3">T3</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
-      </form>
-    </FormProvider>
+
+        {/* Units Grid */}
+        <Dialog>
+          <div className="border rounded-md overflow-hidden w-full max-w-sm">
+            {units?.map((row, rowIndex) => (
+              <div key={rowIndex} className="flex">
+                {row?.map((unit, colIndex) => (
+                  <DialogTrigger key={`${rowIndex}-${colIndex}`} asChild>
+                    <div
+                      onClick={() => setSelectedUnit(unit)}
+                      className={`cursor-pointer hover:underline flex-1 p-4 text-center border-b border-r text-main-text font-semibold
+                        ${rowIndex === units.length - 1 ? "border-b-0" : ""}
+                        ${colIndex === row.length - 1 ? "border-r-0" : ""}
+                        `}
+                    >
+                      {unit}
+                    </div>
+                  </DialogTrigger>
+                ))}
+              </div>
+            ))}
+          </div>
+          <FlatDetailsDialog unit={selectedUnit} />
+        </Dialog>
+      </div>
+    </section>
   );
 };
 
