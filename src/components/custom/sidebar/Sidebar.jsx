@@ -88,7 +88,7 @@ const Sidebar = () => {
       path: "/app/projects",
       img: Project,
       activeImg: ProjectBg,
-      roles: ["ADMIN"],
+      roles: ["ADMIN", "CRM"],
     },
     {
       name: "Transactions",

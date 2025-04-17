@@ -9,6 +9,7 @@ import { useCreateInventory } from "../../hooks/Projects/useCreateInventory";
 import { useEffect } from "react";
 import { useUserId } from "../../hooks/use-user-id";
 import { Loader2 } from "lucide-react";
+
 const CreateInventoryDetails = () => {
   const userId = useUserId();
   const {
@@ -19,6 +20,7 @@ const CreateInventoryDetails = () => {
     watch,
     setValue,
     getValues,
+    fields,
     isLoading,
   } = useCreateInventory(userId);
 
@@ -39,8 +41,6 @@ const CreateInventoryDetails = () => {
       setValue("towers", newTowers);
     }
   }, [towerCount, getValues, setValue]);
-
-  console.log(errors);
 
   return (
     <FormProvider {...formMethods}>
@@ -87,7 +87,7 @@ const CreateInventoryDetails = () => {
             </div>
             <Label>Flats Per Floor</Label> */}
           </div>
-          {Array.from({ length: towerCount }).map((_, index) => (
+          {/* {Array.from({ length: towerCount }).map((_, index) => (
             <div key={index} className="my-4">
               <div className="flex flex-col gap-4 md:flex-row">
                 <div className="w-full max-w-lg">
@@ -109,6 +109,48 @@ const CreateInventoryDetails = () => {
                     label="Flats Per Floor"
                     type="number"
                   />
+                </div>
+              </div>
+            </div>
+          ))} */}
+
+          {fields?.map((field, index) => (
+            <div key={field?.id} className="my-4">
+              <div className="flex flex-col gap-4 md:flex-row">
+                <div className="w-full max-w-lg">
+                  <FormInput
+                    name={`towers.${index}.towerName`}
+                    label="Tower Name"
+                  />
+                  {errors.towers?.[index]?.towerName && (
+                    <p className="text-red-500 text-sm">
+                      {errors.towers[index].towerName.message}
+                    </p>
+                  )}
+                </div>
+                <div className="w-full max-w-lg">
+                  <FormInput
+                    name={`towers.${index}.totalFloors`}
+                    label="Total Floors"
+                    type="number"
+                  />
+                  {errors.towers?.[index]?.totalFloors && (
+                    <p className="text-red-500 text-sm">
+                      {errors.towers[index].totalFloors.message}
+                    </p>
+                  )}
+                </div>
+                <div className="w-full max-w-lg">
+                  <FormInput
+                    name={`towers.${index}.flatsPerFloor`}
+                    label="Flats Per Floor"
+                    type="number"
+                  />
+                  {errors.towers?.[index]?.flatsPerFloor && (
+                    <p className="text-red-500 text-sm">
+                      {errors.towers[index].flatsPerFloor.message}
+                    </p>
+                  )}
                 </div>
               </div>
             </div>
