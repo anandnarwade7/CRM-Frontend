@@ -140,7 +140,7 @@ const router = createBrowserRouter([
             element: <CreateInventoryDetails />,
           },
           {
-            path: "/app/inventory-details",
+            path: "/app/inventory-details/:projectId",
             element: <InventoryDetails />,
           },
           {

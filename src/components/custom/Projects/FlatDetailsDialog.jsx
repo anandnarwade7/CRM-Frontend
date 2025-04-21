@@ -11,6 +11,8 @@ import { RadioGroup, RadioGroupItem } from "../../ui/radio-group";
 import { Button } from "../../ui/button";
 
 const FlatDetailsDialog = ({ unit }) => {
+  console.log("Selected ID", unit);
+
   const statusOptions = [
     { label: "Available", color: "bg-green-500", value: "available" },
     { label: "UN-Available", color: "bg-[#FF6F00]", value: "unavailable" },
@@ -22,7 +24,7 @@ const FlatDetailsDialog = ({ unit }) => {
   return (
     <DialogContent>
       <DialogHeader>
-        <DialogTitle>T1 {unit}</DialogTitle>
+        <DialogTitle>{unit?.flatNumber}</DialogTitle>
       </DialogHeader>
       <div>
         <Label className="text-main-text font-semibold">Area</Label>

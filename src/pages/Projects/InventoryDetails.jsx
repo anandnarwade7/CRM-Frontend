@@ -1,5 +1,5 @@
 import { Back } from "../../assets";
-import { Link } from "react-router";
+import { Link, useParams } from "react-router";
 import { Label } from "../../components/ui/label";
 import {
   Select,
@@ -11,18 +11,38 @@ import {
 import { Dialog, DialogTrigger } from "../../components/ui/dialog";
 import { useState } from "react";
 import FlatDetailsDialog from "../../components/custom/Projects/FlatDetailsDialog";
+import { useGetTowerDetails } from "../../hooks/Projects/useGetTowerDetails";
+import { Loader2 } from "lucide-react";
+import { useGetFlatsDetails } from "../../hooks/Projects/useGetFlatsDetails";
 
 const InventoryDetails = () => {
+  const { projectId } = useParams();
+  const [selectedTowerId, setSelectedTowerId] = useState(null);
   const [selectedUnit, setSelectedUnit] = useState(null);
-  const units = [
-    ["701", "702"],
-    ["601", "602"],
-    ["501", "502"],
-    ["401", "402"],
-    ["301", "302"],
-    ["201", "202"],
-    ["101", "102"],
-  ];
+
+  const {
+    data: towerSelectData,
+    isLoading: towerSelectLoading,
+    error: towerSelectError,
+  } = useGetTowerDetails(projectId);
+
+  const {
+    data: flatsData,
+    isLoading: isFlatsLoading,
+    error: flatsError,
+  } = useGetFlatsDetails(selectedTowerId);
+
+  console.log("Flats Details", flatsData);
+
+  // const units = [
+  //   ["701", "702"],
+  //   ["601", "602"],
+  //   ["501", "502"],
+  //   ["401", "402"],
+  //   ["301", "302"],
+  //   ["201", "202"],
+  //   ["101", "102"],
+  // ];
   return (
     <section className="w-full h-full rounded-xl bg-white px-6 py-3">
       {/* Inventory Details Header */}
@@ -36,46 +56,60 @@ const InventoryDetails = () => {
       {/* Main Section */}
       <div className="mx-12">
         <p className="text-main-text font-medium">Kumar Properties</p>
-        <div className="my-6 w-full max-w-sm">
-          <Label
-            htmlFor="tower"
-            className="block text-sm mb-1 text-main-text font-medium"
-          >
-            Select Tower
-          </Label>
-          <Select defaultValue="T1">
-            <SelectTrigger className="w-full border-gray-300 shadow-none">
-              <SelectValue placeholder="Select tower" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="T1">T1</SelectItem>
-              <SelectItem value="T2">T2</SelectItem>
-              <SelectItem value="T3">T3</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
+        {towerSelectLoading ? (
+          <Loader2 className="animate-spin" size={24} />
+        ) : (
+          <div className="my-6 w-full max-w-sm">
+            <Label
+              htmlFor="tower"
+              className="block text-sm mb-1 text-main-text font-medium"
+            >
+              Select Tower
+            </Label>
+            <Select onValueChange={setSelectedTowerId}>
+              <SelectTrigger className="w-full border-gray-300 shadow-none">
+                <SelectValue placeholder="Select tower" />
+              </SelectTrigger>
+              <SelectContent>
+                {towerSelectData?.map((tower) => (
+                  <SelectItem key={tower?.id} value={tower?.id}>
+                    {tower?.towerName}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+        )}
 
         {/* Units Grid */}
         <Dialog>
-          <div className="border rounded-md overflow-hidden w-full max-w-sm">
-            {units?.map((row, rowIndex) => (
-              <div key={rowIndex} className="flex">
-                {row?.map((unit, colIndex) => (
-                  <DialogTrigger key={`${rowIndex}-${colIndex}`} asChild>
-                    <div
-                      onClick={() => setSelectedUnit(unit)}
-                      className={`cursor-pointer hover:underline flex-1 p-4 text-center border-b border-r text-main-text font-semibold
-                        ${rowIndex === units.length - 1 ? "border-b-0" : ""}
-                        ${colIndex === row.length - 1 ? "border-r-0" : ""}
+          {isFlatsLoading ? (
+            <Loader2 className="animate-spin" size={24} />
+          ) : (
+            flatsData?.length > 0 && (
+              <div className="border rounded-md overflow-hidden w-full max-w-sm">
+                {flatsData?.map((row, rowIndex) => (
+                  <div key={row?.flatNumber} className="flex">
+                    {row?.map((unit, colIndex) => (
+                      <DialogTrigger key={`${rowIndex}-${colIndex}`} asChild>
+                        <div
+                          onClick={() => setSelectedUnit(unit)}
+                          className={`cursor-pointer hover:underline flex-1 p-4 text-center border-b border-r text-main-text font-semibold
+                        ${
+                          rowIndex === flatsData?.length - 1 ? "border-b-0" : ""
+                        }
+                        ${colIndex === row?.length - 1 ? "border-r-0" : ""}
                         `}
-                    >
-                      {unit}
-                    </div>
-                  </DialogTrigger>
+                        >
+                          {unit?.flatNumber}
+                        </div>
+                      </DialogTrigger>
+                    ))}
+                  </div>
                 ))}
               </div>
-            ))}
-          </div>
+            )
+          )}
           <FlatDetailsDialog unit={selectedUnit} />
         </Dialog>
       </div>

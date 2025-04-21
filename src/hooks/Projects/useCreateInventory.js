@@ -97,7 +97,7 @@ export const useCreateInventory = (userId) => {
       const towerPayload = towers?.map((tower) =>
         JSON.stringify({
           towerName: tower?.towerName,
-          totalTowers: totalTower,
+          // totalTowers: totalTower,
           totalFloors: tower?.totalFloors,
           flatPerFloor: tower?.flatsPerFloor,
           project_id: String(projectId),
@@ -107,13 +107,23 @@ export const useCreateInventory = (userId) => {
       console.log(JSON.stringify(towerPayload));
 
       const towerResponse = await createTowers(towerPayload);
-      console.log("Tower Res", towerResponse);
+      console.log("Tower Res", towerResponse?.failed[0]);
 
       toast({
         title: "Success",
         description: "Inventory successfully created.",
         duration: 2000,
       });
+
+      if (towerResponse || projectResponse) reset();
+
+      if (towerResponse?.failed?.length > 0) {
+        toast({
+          variant: "info",
+          description: towerResponse?.failed?.[0],
+          duration: 2000,
+        });
+      }
     } catch (error) {
       toast({
         variant: "destructive",

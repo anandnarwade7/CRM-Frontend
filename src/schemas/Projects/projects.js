@@ -6,14 +6,14 @@ export const towerSchema = z.object({
   totalFloors: z.coerce
     .number({ required_error: "Total Floors is required" })
     .int("Must be an integer")
-    .positive("Must be greater than 0")
-    .max(20, "Should be Less than 20"),
+    .positive("Must be greater than 0"),
+    // .max(20, "Should be Less than 20"),
 
   flatsPerFloor: z.coerce
     .number({ required_error: "Flats Per Floor is required" })
     .int("Must be an integer")
-    .positive("Must be greater than 0")
-    .max(20, "Should be Less than 20"),
+    .positive("Must be greater than 0"),
+    // .max(20, "Should be Less than 20"),
 });
 
 // Schema for whole Inventory
