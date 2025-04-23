@@ -5,7 +5,7 @@ import { useMutation } from "@tanstack/react-query";
 import {
   createProject,
   createTowers,
-} from "../../services/Project/projectservice";
+} from "../../services/Project/projectService";
 import { useToast } from "@/hooks/use-toast";
 import { useEffect } from "react";
 

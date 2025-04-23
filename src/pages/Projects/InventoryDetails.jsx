@@ -19,6 +19,7 @@ const InventoryDetails = () => {
   const { projectId } = useParams();
   const [selectedTowerId, setSelectedTowerId] = useState(null);
   const [selectedUnit, setSelectedUnit] = useState(null);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const {
     data: towerSelectData,
@@ -31,8 +32,6 @@ const InventoryDetails = () => {
     isLoading: isFlatsLoading,
     error: flatsError,
   } = useGetFlatsDetails(selectedTowerId);
-
-  console.log("Flats Details", flatsData);
 
   // const units = [
   //   ["701", "702"],
@@ -55,7 +54,7 @@ const InventoryDetails = () => {
 
       {/* Main Section */}
       <div className="mx-12">
-        <p className="text-main-text font-medium">Kumar Properties</p>
+        {/* <p className="text-main-text font-medium">Kumar Properties</p> */}
         {towerSelectLoading ? (
           <Loader2 className="animate-spin" size={24} />
         ) : (
@@ -82,24 +81,30 @@ const InventoryDetails = () => {
         )}
 
         {/* Units Grid */}
-        <Dialog>
+        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           {isFlatsLoading ? (
             <Loader2 className="animate-spin" size={24} />
           ) : (
             flatsData?.length > 0 && (
-              <div className="border rounded-md overflow-hidden w-full max-w-sm">
+              <div className="border rounded-md overflow-hidden w-full">
                 {flatsData?.map((row, rowIndex) => (
                   <div key={row?.flatNumber} className="flex">
                     {row?.map((unit, colIndex) => (
                       <DialogTrigger key={`${rowIndex}-${colIndex}`} asChild>
                         <div
                           onClick={() => setSelectedUnit(unit)}
-                          className={`cursor-pointer hover:underline flex-1 p-4 text-center border-b border-r text-main-text font-semibold
+                          className={`cursor-pointer hover:underline flex-1 p-4 text-center border-b border-r  font-semibold
                         ${
                           rowIndex === flatsData?.length - 1 ? "border-b-0" : ""
                         }
                         ${colIndex === row?.length - 1 ? "border-r-0" : ""}
-                        `}
+                        ${
+                          unit?.status === "Available"
+                            ? "text-main-available"
+                            : unit?.status == "UnAvailable"
+                            ? "text-main-unavailable"
+                            : "text-main-booked"
+                        }`}
                         >
                           {unit?.flatNumber}
                         </div>
@@ -110,7 +115,11 @@ const InventoryDetails = () => {
               </div>
             )
           )}
-          <FlatDetailsDialog unit={selectedUnit} />
+          <FlatDetailsDialog
+            unit={selectedUnit}
+            isDialogOpen={isDialogOpen}
+            setIsDialogOpen={setIsDialogOpen}
+          />
         </Dialog>
       </div>
     </section>

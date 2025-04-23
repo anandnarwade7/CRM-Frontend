@@ -7,13 +7,13 @@ export const towerSchema = z.object({
     .number({ required_error: "Total Floors is required" })
     .int("Must be an integer")
     .positive("Must be greater than 0"),
-    // .max(20, "Should be Less than 20"),
+  // .max(20, "Should be Less than 20"),
 
   flatsPerFloor: z.coerce
     .number({ required_error: "Flats Per Floor is required" })
     .int("Must be an integer")
     .positive("Must be greater than 0"),
-    // .max(20, "Should be Less than 20"),
+  // .max(20, "Should be Less than 20"),
 });
 
 // Schema for whole Inventory
@@ -26,4 +26,14 @@ export const createInventorySchema = z.object({
       message: "Total towers must be a positive number",
     }),
   towers: z.array(towerSchema),
+});
+
+// Schema for updating the flat status
+export const updateFlatStatusSchema = z.object({
+  area: z.string().refine((val) => /^\d+$/.test(val) && parseInt(val) > 0, {
+    message: "Area Must be Postive Number",
+  }),
+  status: z.enum(["Available", "UnAvailable", "Booked"], {
+    errorMap: () => ({ message: "Status is required" }),
+  }),
 });

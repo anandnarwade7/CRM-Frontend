@@ -76,3 +76,17 @@ export const getFlatsDetails = async (towerId) => {
     throw new Error(error?.response?.data?.message || "Failed to Fetch");
   }
 };
+
+// Service for Updating the Flat Status
+export const updateFlatStatus = async (flatId, data) => {
+  try {
+    const response = await axiosInstance.put(
+      `/project/update/flat/status/${flatId}`,
+      data
+    );
+    return response?.data;
+  } catch (error) {
+    console.log("Error Updating the Flat Status", error);
+    throw new Error(error?.response?.data?.message || "Failed to Update");
+  }
+};

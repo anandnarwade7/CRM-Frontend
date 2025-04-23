@@ -10,8 +10,6 @@ axiosInstance.interceptors.request.use(
   (config) => {
     const token = sessionStorage.getItem("token"); // Don't stringify
 
-    console.log("TOKEN IN SESSION", token);
-
     if (token) {
       config.headers["Authorization"] = token; // lowercase 'token'
     }

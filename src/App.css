@@ -5,4 +5,7 @@
   --text-main-color: 203 58% 26%; /* #1c4d6b */
   --text-grey-color: 0 0% 46%; /* #757575 */
   --text-label-color: 203, 35%, 21%; /* #233A48 */
+  --available-status: 140, 100%, 40%; /* #00CC44 */
+  --unavailable-status: 26, 100%, 50%; /* #FF6F00 */
+  --booked-status: 221, 100%, 76%; /* #85ACFF */
 }
