@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { number, z } from "zod";
 
 // Schema for only Tower Details
 export const towerSchema = z.object({
@@ -36,4 +36,46 @@ export const updateFlatStatusSchema = z.object({
   status: z.enum(["Available", "UnAvailable", "Booked"], {
     errorMap: () => ({ message: "Status is required" }),
   }),
+});
+
+// Schema for updating sq. ft. area will required as per initialstate areas
+export const updateSqFtSchema = z.object({
+  tower: z.string().min(1, "Tower is Required"),
+  areas: z
+    .array(
+      z.object({
+        id: z.number(),
+        flatNumber: z.number(),
+        flatType: z
+          .string()
+          .nonempty("Flat Type is required")
+          .refine(
+            (val) => {
+              const num = Number(val);
+
+              if (isNaN(num) || num <= 0 || num > 6) {
+                return false;
+              }
+
+              const decimalPart = val.split(".")[1];
+              if (decimalPart && decimalPart.length > 1) {
+                return false;
+              }
+              return true;
+            },
+            {
+              message:
+                "Flat Type must be a positive number and not greater than 6",
+            }
+          ),
+        status: z.string(),
+        flatSize: z
+          .string()
+          .nonempty("Area is required")
+          .refine((val) => !isNaN(Number(val)) && Number(val) > 0, {
+            message: "Area must be a valid number greater than 0",
+          }),
+      })
+    )
+    .min(1),
 });

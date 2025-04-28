@@ -29,6 +29,7 @@ import ClientShowEventDetails from "./Client/ClientShowEventDetails";
 import Projects from "./Projects/Projects";
 import CreateInventoryDetails from "./Projects/CreateInventoryDetails";
 import InventoryDetails from "./Projects/InventoryDetails";
+import UpdateSqFt from "./Projects/UpdateSqFt";
 
 // Super Admin
 import Admin from "./Admin/Admin";
@@ -53,6 +54,7 @@ export {
   Projects,
   CreateInventoryDetails,
   InventoryDetails,
+  UpdateSqFt,
   Admin,
   AdminDetails,
   AddClient,

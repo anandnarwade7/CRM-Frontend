@@ -8,6 +8,7 @@ import {
 } from "../../services/Project/projectService";
 import { useToast } from "@/hooks/use-toast";
 import { useEffect } from "react";
+import { useNavigate } from "react-router";
 
 export const useCreateInventory = (userId) => {
   const formMethods = useForm({
@@ -20,6 +21,7 @@ export const useCreateInventory = (userId) => {
     },
   });
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   const {
     control,
@@ -112,10 +114,18 @@ export const useCreateInventory = (userId) => {
       toast({
         title: "Success",
         description: "Inventory successfully created.",
-        duration: 2000,
+        duration: 1000,
       });
 
       if (towerResponse || projectResponse) reset();
+
+      setTimeout(() => {
+        navigate(`/app/update-sqft`, {
+          state: {
+            projectId: projectId,
+          },
+        });
+      }, 1400);
 
       if (towerResponse?.failed?.length > 0) {
         toast({

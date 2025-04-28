@@ -90,3 +90,31 @@ export const updateFlatStatus = async (flatId, data) => {
     throw new Error(error?.response?.data?.message || "Failed to Update");
   }
 };
+
+// Service for getting area details for updating the square feet
+export const getAreaDetailsForUpdate = async (projectId, towerId) => {
+  try {
+    const response = await axiosInstance.get(
+      `/project/gettower/${projectId}/${towerId}`
+    );
+    return response?.data;
+  } catch (error) {
+    console.log("Error while fetching the details about update", error);
+    throw new Error(error?.response?.data?.message || "Failed to fetch");
+  }
+};
+
+// Service for update the sq ft for specific tower and project
+export const updateFlatSqFt = async (towerId, areas) => {
+  try {
+    const response = await axiosInstance.put(
+      `/project/update-flats/${towerId}`,
+      areas
+    );
+
+    return response?.data;
+  } catch (error) {
+    console.log("Error while update the square foot for floors", error);
+    throw new Error(error?.response?.data?.message || "Failed to fetch");
+  }
+};

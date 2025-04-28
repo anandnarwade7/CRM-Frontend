@@ -21,6 +21,7 @@ import {
   Projects,
   SalesLeadsDetails,
   SalesPerson,
+  UpdateSqFt,
 } from "./pages";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
@@ -142,6 +143,10 @@ const router = createBrowserRouter([
           {
             path: "/app/inventory-details/:projectId",
             element: <InventoryDetails />,
+          },
+          {
+            path: "/app/update-sqft",
+            element: <UpdateSqFt />,
           },
           {
             path: "*",
