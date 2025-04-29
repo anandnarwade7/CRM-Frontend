@@ -1,4 +1,4 @@
-import { ProfilePic } from "../../../assets/index";
+import { CRMLogo, ProfilePic } from "../../../assets/index";
 import Placeholder from "../Placeholder";
 
 const Profile = () => {
@@ -7,7 +7,10 @@ const Profile = () => {
       <div>
         <img src={ProfilePic} alt="profilepic" />
       </div>
-      <Placeholder />
+      {/* <Placeholder /> */}
+      <div>
+        <img src={CRMLogo} alt="CRMLogo" className="w-[6rem]" />
+      </div>
     </div>
   );
 };

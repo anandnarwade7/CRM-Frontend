@@ -104,6 +104,7 @@ const UpdateSqFt = () => {
     control,
     fields,
     errors,
+    isUpating,
   } = useUpdateSqFt();
 
   const towerId = watch("tower");
@@ -197,7 +198,13 @@ const UpdateSqFt = () => {
         )}
 
         <div className="flex justify-end mt-4">
-          <Button className="bg-main w-full max-w-[150px]">Update</Button>
+          <Button className="bg-main w-full max-w-[150px]" disabled={isUpating}>
+            {isUpating ? (
+              <Loader2 className="animate-spin" size={24} />
+            ) : (
+              "Update"
+            )}
+          </Button>
         </div>
       </form>
     </section>

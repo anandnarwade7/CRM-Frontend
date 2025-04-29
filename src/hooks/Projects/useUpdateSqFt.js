@@ -43,6 +43,7 @@ export const useUpdateSqFt = () => {
     mutationFn: ({ towerId, areas }) => updateFlatSqFt(towerId, areas),
     onSuccess: (res, variables) => {
       if (res) {
+        // Updating the Status for the flats sq ft in the client side array.
         const storedSqFtStatus = sessionStorage.getItem("sqFtStatus");
 
         if (storedSqFtStatus) {
@@ -107,5 +108,6 @@ export const useUpdateSqFt = () => {
     control,
     fields,
     errors,
+    isUpating: updateFlatSqFtMutation?.isPending,
   };
 };

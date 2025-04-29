@@ -1,6 +1,9 @@
 // Login Section
 import LoginImage from "./Img/login.jpg";
 
+// Main Logo
+import CRMLogo from "./Img/CRMlogo.png";
+
 // Dashboard
 import DashboardSales from "./Icons/dashboard-sales.svg";
 import DashboardTime from "./Icons/dashboard-time.svg";
@@ -69,4 +72,5 @@ export {
   DashboardLineUp,
   DashboardInvoice,
   DashboardUserAdmin,
+  CRMLogo,
 };
