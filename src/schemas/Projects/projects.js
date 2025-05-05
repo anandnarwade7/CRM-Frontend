@@ -29,14 +29,62 @@ export const createInventorySchema = z.object({
 });
 
 // Schema for updating the flat status
-export const updateFlatStatusSchema = z.object({
+// export const updateFlatStatusSchema = z.object({
+//   area: z.string().refine((val) => /^\d+$/.test(val) && parseInt(val) > 0, {
+//     message: "Area Must be Postive Number",
+//   }),
+//   flatType: z.string().refine((val) => /^\d+$/.test(val) && parseInt(val) > 0, {
+//     message: "Flat Type Must be Postive Number",
+//   }),
+//   status: z.enum(["Available", "Booked", "Refugee"], {
+//     errorMap: () => ({ message: "Status is required" }),
+//   }),
+// });
+
+// Reusable schema fields
+const adminFields = {
   area: z.string().refine((val) => /^\d+$/.test(val) && parseInt(val) > 0, {
-    message: "Area Must be Postive Number",
+    message: "Area must be a positive number",
   }),
-  status: z.enum(["Available", "UnAvailable", "Booked"], {
+  flatType: z.string().refine((val) => /^\d+$/.test(val) && parseInt(val) > 0, {
+    message: "Flat Type must be a positive number",
+  }),
+};
+
+const crmFields = {
+  clientEmail: z.string().email("Valid client email is required"),
+};
+
+// Common for all roles
+const commonFields = {
+  status: z.enum(["Available", "Booked", "Refugee"], {
     errorMap: () => ({ message: "Status is required" }),
   }),
-});
+};
+
+/**
+ * Dynamic schema generator based on user role
+ */
+export const updateFlatStatusSchema = (userRole) => {
+  if (userRole === "ADMIN") {
+    return z.object({
+      ...commonFields,
+      ...adminFields,
+    });
+  }
+
+  if (userRole === "CRM") {
+    return z.object({
+      ...commonFields,
+      ...crmFields,
+    });
+  }
+
+  // Default: only validate status
+  return z.object({
+    ...commonFields,
+  });
+};
 
 // Schema for updating sq. ft. area will required as per initialstate areas
 export const updateSqFtSchema = z.object({

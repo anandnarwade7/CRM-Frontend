@@ -103,6 +103,8 @@ const InventoryDetails = () => {
                             ? "text-main-available"
                             : unit?.status == "UnAvailable"
                             ? "text-main-unavailable"
+                            : unit?.status == "Refugee"
+                            ? "text-main-secondary"
                             : "text-main-booked"
                         }`}
                         >

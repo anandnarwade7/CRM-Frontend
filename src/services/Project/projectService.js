@@ -80,10 +80,7 @@ export const getFlatsDetails = async (towerId) => {
 // Service for Updating the Flat Status
 export const updateFlatStatus = async (flatId, data) => {
   try {
-    const response = await axiosInstance.put(
-      `/project/update/flat/status/${flatId}`,
-      data
-    );
+    const response = await axiosInstance.put(`/project/update/${flatId}`, data);
     return response?.data;
   } catch (error) {
     console.log("Error Updating the Flat Status", error);
@@ -115,6 +112,28 @@ export const updateFlatSqFt = async (towerId, areas) => {
     return response?.data;
   } catch (error) {
     console.log("Error while update the square foot for floors", error);
+    throw new Error(error?.response?.data?.message || "Failed to fetch");
+  }
+};
+
+// Service for get the flat details by id
+export const getFlatById = async (flatId) => {
+  try {
+    const response = await axiosInstance.get(`/project/get/${flatId}`);
+    return response?.data;
+  } catch (error) {
+    console.log("Error while Get the Flat Details", error);
+    throw new Error(error?.response?.data?.message || "Failed to fetch");
+  }
+};
+
+// Service for getting list of clients under the CR Manager
+export const getClientsByCRM = async () => {
+  try {
+    const response = await axiosInstance.get(`/user/getclientsusers`);
+    return response?.data;
+  } catch (error) {
+    console.log("Error while Get the clients under the CRM", error);
     throw new Error(error?.response?.data?.message || "Failed to fetch");
   }
 };

@@ -4,8 +4,10 @@ import { updateFlatStatusSchema } from "../../schemas/Projects/projects";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { updateFlatStatus } from "../../services/Project/projectService";
 import { useToast } from "@/hooks/use-toast";
+import { useMemo } from "react";
 
-export const useUpdateFlatStatus = (flatId, onSuccessCallback) => {
+export const useUpdateFlatStatus = (userRole, flatId, onSuccessCallback) => {
+  const schema = updateFlatStatusSchema(userRole);
   const {
     register,
     handleSubmit,
@@ -14,10 +16,12 @@ export const useUpdateFlatStatus = (flatId, onSuccessCallback) => {
     watch,
     reset,
   } = useForm({
-    resolver: zodResolver(updateFlatStatusSchema),
+    resolver: zodResolver(schema),
     defaultValues: {
       area: "",
       status: "Available",
+      clientEmail: "",
+      flatType: "",
     },
   });
 
@@ -26,7 +30,7 @@ export const useUpdateFlatStatus = (flatId, onSuccessCallback) => {
 
   const updateFlatStatusMutation = useMutation({
     mutationKey: ["updateFlatStatus"],
-    mutationFn: (formData) => updateFlatStatus(flatId, formData),
+    mutationFn: (payload) => updateFlatStatus(flatId, payload),
     onSuccess: (data) => {
       if (data) {
         toast({
@@ -60,11 +64,18 @@ export const useUpdateFlatStatus = (flatId, onSuccessCallback) => {
     },
   });
   const onSubmit = (data) => {
-    const formData = new FormData();
-    formData.append("area", `${data?.area} sq.ft.`);
-    formData.append("status", data?.status);
+    const payload = {};
 
-    updateFlatStatusMutation.mutate(formData);
+    if (userRole === "ADMIN") {
+      payload.flatSize = data.area;
+      payload.flatType = data.flatType;
+    } else {
+      payload.clientEmail = data.clientEmail;
+    }
+
+    payload.status = data.status;
+
+    updateFlatStatusMutation.mutate(payload);
   };
 
   return {

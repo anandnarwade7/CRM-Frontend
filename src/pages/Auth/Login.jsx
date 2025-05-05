@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { LoginImage } from "../../assets/index";
+import { CRMLogo, LoginImage } from "../../assets/index";
 import { Card, CardHeader, CardContent } from "@/components/ui/card.jsx";
 import {
   Select,
@@ -30,7 +30,8 @@ const Login = () => {
       >
         <Card className="w-full max-w-md bg-white shadow-xl rounded-lg px-0 py-4">
           <div className="flex justify-center">
-            <div className="w-[11rem] h-[4rem] bg-[#F8F8F8] rounded-lg"></div>
+            {/* <div className="w-[11rem] h-[4rem] bg-[#F8F8F8] rounded-lg"></div> */}
+            <img src={CRMLogo} alt="CRMLogo" className="w-[6rem]" />
           </div>
 
           <p className="text-2xl font-bold text-center text-main mt-2 mb-5">
