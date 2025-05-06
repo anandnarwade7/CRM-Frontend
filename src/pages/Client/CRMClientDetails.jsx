@@ -241,7 +241,7 @@ const CRMClientDetails = () => {
 
       {/* Event Details Section */}
       <div className="my-16">
-        <p className="mb-4 text-main-text font-medium">Event details</p>
+        <p className="mb-4 text-main-text font-medium">Payment Schedule</p>
         <div>
           <EventDetailsTable />
         </div>

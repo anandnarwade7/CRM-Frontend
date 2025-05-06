@@ -22,7 +22,7 @@ const useEventDetails = (clientId, userId) => {
       invoiceDate: "",
       dueDate: "",
       paymentDate: "",
-      paidBy: "",
+      paidBy: "self",
       receipt: null,
 
       statusReportUrl: "",
@@ -50,7 +50,7 @@ const useEventDetails = (clientId, userId) => {
         invoiceDate: "",
         dueDate: "",
         paymentDate: "",
-        paidBy: "",
+        paidBy: "self",
         receipt: null,
 
         statusReportUrl: "",
@@ -107,7 +107,7 @@ const useEventDetails = (clientId, userId) => {
       invoiceDate: new Date(row.invoiceDate).getTime() || 0,
       dueDate: new Date(row.dueDate).getTime() || 0,
       paymentDate: new Date(row.paymentDate).getTime() || 0,
-      paidByName: row.paidBy || "", // Ensure it's a string
+      paidByName: row.paidBy || "self", // Ensure it's a string
     };
 
     formData.append("eventDetails", JSON.stringify(eventDetails));
@@ -211,7 +211,7 @@ const useEventDetails = (clientId, userId) => {
             invoiceDate: event.invoiceDate ? new Date(event.invoiceDate) : "",
             dueDate: event.dueDate ? new Date(event.dueDate) : "",
             paymentDate: event.paymentDate ? new Date(event.paymentDate) : "",
-            paidBy: event.paidByName || "",
+            paidBy: event.paidByName || "self",
 
             statusReport: null,
             architectLetter: null,
@@ -243,7 +243,7 @@ const useEventDetails = (clientId, userId) => {
               invoiceDate: "",
               dueDate: "",
               paymentDate: "",
-              paidBy: "",
+              paidBy: "self",
               receipt: null,
 
               statusReportUrl: "",

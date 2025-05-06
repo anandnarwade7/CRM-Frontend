@@ -19,9 +19,6 @@ import { useGetClientsByCRM } from "../../../hooks/Projects/useGetClientsByCRM";
 const FlatDetailsDialog = ({ unit, isDialogOpen, setIsDialogOpen }) => {
   const userRole = useUserRole();
 
-  
-
-  console.log("ROle", userRole);
 
   const {
     data: clientData,

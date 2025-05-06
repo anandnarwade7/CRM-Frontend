@@ -103,6 +103,7 @@ const ClientTable = () => {
       accessorKey: "leadmobile",
     },
     { header: "Email", accessorKey: "leadEmail" },
+    { header: "CR Person", accessorKey: "crPerson" },
     { header: "Status", accessorKey: "status" },
     {
       header: "Note",

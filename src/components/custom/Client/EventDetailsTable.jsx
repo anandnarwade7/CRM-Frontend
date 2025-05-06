@@ -11,6 +11,13 @@ import { useParams } from "react-router";
 import { useToast } from "@/hooks/use-toast";
 import axiosInstance from "../../../services/axiosInstance";
 import useEventDetails from "../../../hooks/Client/useEventDetails";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../../ui/select";
 
 const columns = [
   { key: "event", label: "Event" },
@@ -94,6 +101,28 @@ const EventDetailsTable = () => {
                           handleInputChange(index, col.key, date)
                         }
                       />
+                    ) : col.key === "paidBy" ? (
+                      <>
+                        <Select
+                          value={row?.paidBy || "self"}
+                          onValueChange={(value) =>
+                            handleInputChange(index, "paidBy", value)
+                          }
+                          disabled={!row?.isEditing}
+                        >
+                          <SelectTrigger
+                            className={`w-[180px] ${
+                              row?.isEditing ? "text-black" : "text-main-grey"
+                            }`}
+                          >
+                            <SelectValue placeholder="Select payment method" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="self">Self</SelectItem>
+                            <SelectItem value="bank">Bank</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </>
                     ) : (
                       <Input
                         type="text"

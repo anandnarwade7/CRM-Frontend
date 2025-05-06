@@ -9,17 +9,29 @@ import {
   SelectValue,
 } from "../../components/ui/select";
 import { Dialog, DialogTrigger } from "../../components/ui/dialog";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import FlatDetailsDialog from "../../components/custom/Projects/FlatDetailsDialog";
 import { useGetTowerDetails } from "../../hooks/Projects/useGetTowerDetails";
 import { Loader2 } from "lucide-react";
 import { useGetFlatsDetails } from "../../hooks/Projects/useGetFlatsDetails";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "../../components/ui/tooltip";
+import { useGetFlatById } from "../../hooks/Projects/useGetFlatById";
 
 const InventoryDetails = () => {
   const { projectId } = useParams();
   const [selectedTowerId, setSelectedTowerId] = useState(null);
   const [selectedUnit, setSelectedUnit] = useState(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [hoveredFlatId, setHoveredFlatId] = useState(null);
+  // Cache for storing already fetched flat data
+  const [flatDataCache, setFlatDataCache] = useState({});
+  // Ref to track if component is still mounted
+  const isMounted = useRef(true);
 
   const {
     data: towerSelectData,
@@ -33,15 +45,34 @@ const InventoryDetails = () => {
     error: flatsError,
   } = useGetFlatsDetails(selectedTowerId);
 
-  // const units = [
-  //   ["701", "702"],
-  //   ["601", "602"],
-  //   ["501", "502"],
-  //   ["401", "402"],
-  //   ["301", "302"],
-  //   ["201", "202"],
-  //   ["101", "102"],
-  // ];
+  // Fetching the data to render the details in the tooltip
+
+  const { data: hoverFlatData, isLoading: isHoveredFlatLoading } =
+    useGetFlatById(hoveredFlatId, !!hoveredFlatId); // disabled by default
+
+  useEffect(() => {
+    if (hoverFlatData && hoveredFlatId && isMounted.current) {
+      setFlatDataCache((prev) => ({
+        ...prev,
+        [hoveredFlatId]: hoverFlatData,
+      }));
+    }
+  }, [hoverFlatData, hoveredFlatId]);
+
+  useEffect(() => {
+    return () => {
+      isMounted.current = false;
+    };
+  }, []);
+
+  const handleMouseEnter = (flatId) => {
+    setHoveredFlatId(flatId);
+  };
+
+  const handleMouseLeave = () => {
+    // setHoveredFlatId(null);
+  };
+
   return (
     <section className="w-full h-full rounded-xl bg-white px-6 py-3">
       {/* Inventory Details Header */}
@@ -87,13 +118,21 @@ const InventoryDetails = () => {
           ) : (
             flatsData?.length > 0 && (
               <div className="border rounded-md overflow-hidden w-full">
-                {flatsData?.map((row, rowIndex) => (
-                  <div key={row?.flatNumber} className="flex">
-                    {row?.map((unit, colIndex) => (
-                      <DialogTrigger key={`${rowIndex}-${colIndex}`} asChild>
-                        <div
-                          onClick={() => setSelectedUnit(unit)}
-                          className={`cursor-pointer hover:underline flex-1 p-4 text-center border-b border-r  font-semibold
+                <TooltipProvider>
+                  {flatsData?.map((row, rowIndex) => (
+                    <div key={row?.flatNumber} className="flex">
+                      {row?.map((unit, colIndex) => (
+                        <Tooltip key={`${rowIndex}-${colIndex}`}>
+                          <TooltipTrigger asChild>
+                            <DialogTrigger
+                              key={`${rowIndex}-${colIndex}`}
+                              asChild
+                            >
+                              <div
+                                onClick={() => setSelectedUnit(unit)}
+                                onMouseEnter={() => handleMouseEnter(unit?.id)}
+                                onMouseLeave={handleMouseLeave}
+                                className={`cursor-pointer hover:underline flex-1 p-4 text-center border-b border-r  font-semibold
                         ${
                           rowIndex === flatsData?.length - 1 ? "border-b-0" : ""
                         }
@@ -107,13 +146,66 @@ const InventoryDetails = () => {
                             ? "text-main-secondary"
                             : "text-main-booked"
                         }`}
-                        >
-                          {unit?.flatNumber}
-                        </div>
-                      </DialogTrigger>
-                    ))}
-                  </div>
-                ))}
+                              >
+                                {unit?.flatNumber}
+                              </div>
+                            </DialogTrigger>
+                          </TooltipTrigger>
+                          <TooltipContent className="py-3 bg-white shadow-lg">
+                            {(() => {
+                              const flatData =
+                                flatDataCache[unit?.id] ||
+                                (hoveredFlatId === unit?.id
+                                  ? hoverFlatData
+                                  : null);
+
+                              if (flatData) {
+                                return (
+                                  <ul className="grid gap-3 text-xs">
+                                    <li className="grid gap-0.5">
+                                      <span className="text-main-text">
+                                        Flat Size
+                                      </span>
+                                      <span className="text-gray-500">
+                                        {`${flatData?.flatSize} sq.ft.`}
+                                      </span>
+                                    </li>
+                                    <li className="grid gap-0.5">
+                                      <span className="text-main-text">
+                                        Flat Type
+                                      </span>
+                                      <span className="text-gray-500">
+                                        {`${flatData?.flatType} BHK`}
+                                      </span>
+                                    </li>
+                                    <li className="grid gap-0.5">
+                                      <span className="text-main-text">
+                                        Status
+                                      </span>
+                                      <span className="text-gray-500">
+                                        {flatData?.status}
+                                      </span>
+                                    </li>
+                                  </ul>
+                                );
+                              } else if (
+                                hoveredFlatId === unit?.id &&
+                                isHoveredFlatLoading
+                              ) {
+                                return (
+                                  <div className="p-2 flex items-center text-black">
+                                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                    <span>Loading...</span>
+                                  </div>
+                                );
+                              }
+                            })()}
+                          </TooltipContent>
+                        </Tooltip>
+                      ))}
+                    </div>
+                  ))}
+                </TooltipProvider>
               </div>
             )
           )}
