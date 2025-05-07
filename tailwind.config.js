@@ -70,6 +70,8 @@ export default {
           available: "hsl(var(--available-status))",
           unavailable: "hsl(var(--unavailable-status))",
           booked: "hsl(var(--booked-status))",
+          sold: "hsl(var(--sold-status))",
+          refugee: "hsl(var(--refugee-status))",
         },
       },
     },

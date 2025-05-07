@@ -19,23 +19,17 @@ import { useGetClientsByCRM } from "../../../hooks/Projects/useGetClientsByCRM";
 const FlatDetailsDialog = ({ unit, isDialogOpen, setIsDialogOpen }) => {
   const userRole = useUserRole();
 
-
   const {
     data: clientData,
     isLoading: clientLoading,
     error: clientError,
-  } = useGetClientsByCRM();
-
-  console.log("Client Data list in dialog", clientData);
+  } = useGetClientsByCRM(unit?.id, isDialogOpen && !!unit?.id);
 
   // Custom hook for get the specific flat details when clicked
-  const { data, isLoading, error, refetch } = useGetFlatById(unit?.id, false); // disabled by default
-
-  useEffect(() => {
-    if (isDialogOpen && unit?.id) {
-      refetch();
-    }
-  }, [isDialogOpen, unit?.id, refetch]);
+  const { data, isLoading, error, refetch } = useGetFlatById(
+    unit?.id,
+    isDialogOpen && !!unit?.id
+  ); // disabled by default
 
   const {
     register,
@@ -49,27 +43,43 @@ const FlatDetailsDialog = ({ unit, isDialogOpen, setIsDialogOpen }) => {
   } = useUpdateFlatStatus(userRole, unit?.id, () => setIsDialogOpen(false));
 
   useEffect(() => {
-    if (data) {
+    if (data && isDialogOpen) {
       setValue("area", data?.flatSize || "");
       setValue("flatType", (data.flatType || "").replace("sq.ft.", "").trim());
       setValue("status", data?.status);
+      if (data?.clientEmail) {
+        setValue("clientEmail", data?.clientEmail);
+      }
     }
-  }, [data, setValue]);
-
-  const statusOptions = [
-    { label: "Available", color: "bg-green-500", value: "Available" },
-    // { label: "UN-Available", color: "bg-[#FF6F00]", value: "UnAvailable" },
-    { label: "Booked", color: "bg-[#85ACFF]", value: "Booked" },
-    { label: "Refugee", color: "bg-[#E1777C]", value: "Refugee" },
-  ];
-
-  const selectedStatus = watch("status");
+  }, [data, setValue, isDialogOpen]);
 
   useEffect(() => {
     if (!isDialogOpen) {
       resetForm();
     }
   }, [isDialogOpen]);
+
+  const allStatusOptions = [
+    { label: "Available", color: "bg-green-500", value: "Available" },
+    // { label: "UN-Available", color: "bg-[#FF6F00]", value: "UnAvailable" },
+    { label: "Sold", color: "bg-[#FF0000]", value: "Sold" },
+    { label: "Booked", color: "bg-[#85ACFF]", value: "Booked" },
+    { label: "Refugee", color: "bg-[#808080]", value: "Refugee" },
+  ];
+
+  const statusOptions = useMemo(() => {
+    if (data?.status === "Sold" || data?.status === "Refugee") {
+      return allStatusOptions?.filter(
+        (option) => option?.value === data?.status
+      );
+    }
+    return allStatusOptions;
+  }, [data?.status]);
+
+  const selectedStatus = watch("status");
+
+  const shouldHideFlatType =
+    data?.status === "Refugee" || selectedStatus === "Refugee";
 
   return (
     <DialogContent>
@@ -100,27 +110,29 @@ const FlatDetailsDialog = ({ unit, isDialogOpen, setIsDialogOpen }) => {
                 </p>
               )}
             </div>
-            <div className="my-2">
-              <Label htmlFor="area" className="text-main-text font-semibold">
-                Flat Type
-              </Label>
-              <div className="relative">
-                <Input
-                  id="flatType"
-                  className="peer pe-12 border-[#CECECE]"
-                  type="text"
-                  {...register("flatType")}
-                />
-                <span className="text-muted-foreground pointer-events-none absolute inset-y-0 end-0 flex items-center justify-center pe-3 text-sm peer-disabled:opacity-50">
-                  BHK
-                </span>
+            {!shouldHideFlatType && (
+              <div className="my-2">
+                <Label htmlFor="area" className="text-main-text font-semibold">
+                  Flat Type
+                </Label>
+                <div className="relative">
+                  <Input
+                    id="flatType"
+                    className="peer pe-12 border-[#CECECE]"
+                    type="text"
+                    {...register("flatType")}
+                  />
+                  <span className="text-muted-foreground pointer-events-none absolute inset-y-0 end-0 flex items-center justify-center pe-3 text-sm peer-disabled:opacity-50">
+                    BHK
+                  </span>
+                </div>
+                {errors?.flatType && (
+                  <p className="text-red-500 text-sm mt-1">
+                    {errors?.flatType?.message}
+                  </p>
+                )}
               </div>
-              {errors?.flatType && (
-                <p className="text-red-500 text-sm mt-1">
-                  {errors?.flatType?.message}
-                </p>
-              )}
-            </div>
+            )}
           </>
         ) : (
           <div className="my-6 w-full max-w-sm">

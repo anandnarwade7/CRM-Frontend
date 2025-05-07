@@ -140,10 +140,10 @@ const InventoryDetails = () => {
                         ${
                           unit?.status === "Available"
                             ? "text-main-available"
-                            : unit?.status == "UnAvailable"
-                            ? "text-main-unavailable"
-                            : unit?.status == "Refugee"
-                            ? "text-main-secondary"
+                            : unit?.status === "Sold"
+                            ? "text-main-sold"
+                            : unit?.status === "Refugee"
+                            ? "text-main-refugee"
                             : "text-main-booked"
                         }`}
                               >
@@ -170,14 +170,16 @@ const InventoryDetails = () => {
                                         {`${flatData?.flatSize} sq.ft.`}
                                       </span>
                                     </li>
-                                    <li className="grid gap-0.5">
-                                      <span className="text-main-text">
-                                        Flat Type
-                                      </span>
-                                      <span className="text-gray-500">
-                                        {`${flatData?.flatType} BHK`}
-                                      </span>
-                                    </li>
+                                    {unit?.status !== "Refugee" && (
+                                      <li className="grid gap-0.5">
+                                        <span className="text-main-text">
+                                          Flat Type
+                                        </span>
+                                        <span className="text-gray-500">
+                                          {`${flatData?.flatType} BHK`}
+                                        </span>
+                                      </li>
+                                    )}
                                     <li className="grid gap-0.5">
                                       <span className="text-main-text">
                                         Status

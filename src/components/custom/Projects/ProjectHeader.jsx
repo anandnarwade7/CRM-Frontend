@@ -8,7 +8,9 @@ const ProjectHeader = () => {
   const navigate = useNavigate();
   const userRole = useUserRole();
 
-  const isInventoryBtnVisible = userRole === "CRM" ? false : true;
+  const isInventoryBtnVisible =
+    userRole === "CRM" || userRole === "SALES" ? false : true;
+
   return (
     <div className="flex items-center justify-between">
       <p className="font-medium text-2xl text-[#707070]">Project Details</p>

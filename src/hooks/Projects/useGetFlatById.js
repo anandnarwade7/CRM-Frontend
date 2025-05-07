@@ -5,6 +5,8 @@ export const useGetFlatById = (flatId, enabled = false) => {
   return useQuery({
     queryKey: ["flatById", flatId],
     queryFn: () => getFlatById(flatId),
-    enabled, // don't run automatically unless enabled
+    enabled: !!flatId && enabled, // don't run automatically unless enabled
+    refetchOnMount: true,
+    keepPreviousData: false,
   });
 };

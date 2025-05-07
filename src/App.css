@@ -8,4 +8,6 @@
   --available-status: 140, 100%, 40%; /* #00CC44 */
   --unavailable-status: 26, 100%, 50%; /* #FF6F00 */
   --booked-status: 221, 100%, 76%; /* #85ACFF */
+  --sold-status: 0, 100%, 50%; /* #FF0000 */
+  --refugee-status: 0, 0%, 50%; /* #808080 */
 }

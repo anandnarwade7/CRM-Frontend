@@ -57,7 +57,7 @@ const crmFields = {
 
 // Common for all roles
 const commonFields = {
-  status: z.enum(["Available", "Booked", "Refugee"], {
+  status: z.enum(["Available", "Sold", "Booked", "Refugee"], {
     errorMap: () => ({ message: "Status is required" }),
   }),
 };
