@@ -14,6 +14,18 @@ export const towerSchema = z.object({
     .int("Must be an integer")
     .positive("Must be greater than 0"),
   // .max(20, "Should be Less than 20"),
+
+  layoutImage: z.any().refine(
+    (file) => {
+      if (!file) return true;
+      return (
+        file instanceof File &&
+        file.type.startsWith("image/") &&
+        file.size <= 5 * 1024 * 1024
+      );
+    },
+    { message: "Layout image must be a valid image file under 5MB" }
+  ),
 });
 
 // Schema for whole Inventory

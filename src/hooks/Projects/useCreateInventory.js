@@ -50,7 +50,12 @@ export const useCreateInventory = (userId) => {
     if (towerCount > currentLength) {
       for (let i = currentLength; i < towerCount; i++) {
         append(
-          { towerName: "", totalFloors: 0, flatsPerFloor: 0 },
+          {
+            towerName: "",
+            totalFloors: 0,
+            flatsPerFloor: 0,
+            layoutImage: null,
+          },
           { shouldFocus: false }
         );
       }
@@ -84,6 +89,8 @@ export const useCreateInventory = (userId) => {
   const onSubmit = async (data) => {
     console.log("Inventory Details", data);
     const { address, propertyName, towers, totalTower } = data;
+    console.log("Towers OBJ", towers);
+
     try {
       const projectResponse = await createProjectMutation.mutateAsync({
         address,
@@ -96,19 +103,45 @@ export const useCreateInventory = (userId) => {
 
       if (!projectId) throw new Error("Project ID is Missing");
 
-      const towerPayload = towers?.map((tower) =>
-        JSON.stringify({
-          towerName: tower?.towerName,
-          // totalTowers: totalTower,
-          totalFloors: tower?.totalFloors,
-          flatPerFloor: tower?.flatsPerFloor,
-          project_id: String(projectId),
-        })
-      );
+      // const towerPayload = towers?.map((tower) =>
+      //   JSON.stringify({
+      //     towerName: tower?.towerName,
+      //     // totalTowers: totalTower,
+      //     totalFloors: tower?.totalFloors,
+      //     flatPerFloor: tower?.flatsPerFloor,
+      //     project_id: String(projectId),
+      //   })
+      // );
 
-      console.log(JSON.stringify(towerPayload));
+      // const formData = new FormData();
+      // formData.append("towerData", towerPayload);
 
-      const towerResponse = await createTowers(towerPayload);
+      // towers.forEach((tower) => {
+      //   const file = tower?.layoutImage;
+      //   if (file) {
+      //     formData.append("layoutImages", file);
+      //   }
+      // });
+
+      const formData = new FormData();
+
+      towers?.forEach((tower, index) => {
+        formData.append(
+          `requestData[${index}]`,
+          JSON.stringify({
+            towerName: tower?.towerName,
+            totalFloors: tower?.totalFloors,
+            flatPerFloor: tower?.flatsPerFloor,
+            project_id: String(projectId),
+          })
+        );
+        if (tower?.layoutImage) {
+          formData.append(`layoutImages[${index}]`, tower?.layoutImage);
+        }
+      });
+
+      const towerResponse = await createTowers(formData);
+
       console.log("Tower Res", towerResponse?.failed[0]);
 
       toast({
@@ -146,6 +179,7 @@ export const useCreateInventory = (userId) => {
 
   return {
     formMethods,
+    control,
     handleSubmit,
     onSubmit,
     errors,

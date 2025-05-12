@@ -27,7 +27,7 @@ export const createTowers = async (towerPayload) => {
       towerPayload,
       {
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "multipart/form-data",
         },
       }
     );
@@ -134,6 +134,20 @@ export const getClientsByCRM = async () => {
     return response?.data;
   } catch (error) {
     console.log("Error while Get the clients under the CRM", error);
+    throw new Error(error?.response?.data?.message || "Failed to fetch");
+  }
+};
+
+// Service for getting the layout Image
+export const getLayoutImage = async (towerId) => {
+  try {
+    const response = await axiosInstance.get(
+      `/project/gettowersdetails/${towerId}`
+    );
+
+    return response?.data;
+  } catch (error) {
+    console.log("Error while Get the Layout Image", error);
     throw new Error(error?.response?.data?.message || "Failed to fetch");
   }
 };
