@@ -64,7 +64,13 @@ const adminFields = {
 };
 
 const crmFields = {
-  clientEmail: z.string().email("Valid client email is required"),
+  // clientEmail: z.string().email("Valid client email is required").optional(),
+};
+
+// Added SALES role schema
+const salesFields = {
+  // clientEmail: z.string().email("Valid client email is required").optional(),
+  clientEmail: z.string(),
 };
 
 // Common for all roles
@@ -72,6 +78,7 @@ const commonFields = {
   status: z.enum(["Available", "Sold", "Booked", "Refugee"], {
     errorMap: () => ({ message: "Status is required" }),
   }),
+  flatInfo: z.string().optional(),
 };
 
 /**
@@ -89,6 +96,13 @@ export const updateFlatStatusSchema = (userRole) => {
     return z.object({
       ...commonFields,
       ...crmFields,
+    });
+  }
+
+  if (userRole === "SALES") {
+    return z.object({
+      ...commonFields,
+      ...salesFields,
     });
   }
 

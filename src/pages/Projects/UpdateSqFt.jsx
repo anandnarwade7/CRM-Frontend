@@ -6,15 +6,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../../components/ui/select";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "../../components/ui/dialog";
 import { Card, CardContent } from "../../components/ui/card";
 import { Input } from "../../components/ui/input";
 import { Button } from "../../components/ui/button";
@@ -25,7 +16,6 @@ import { useGetTowerDetails } from "../../hooks/Projects/useGetTowerDetails";
 import { Controller } from "react-hook-form";
 import { Loader2 } from "lucide-react";
 import { useAreaDetails } from "../../hooks/Projects/useAreaDetails";
-import { useGetLayoutImage } from "../../hooks/Projects/useGetLayoutImage";
 
 const AreaCard = ({ index, register, errors, flatNumber }) => {
   return (
@@ -120,14 +110,6 @@ const UpdateSqFt = () => {
   const towerId = watch("tower");
 
   const {
-    data: layoutImgData,
-    isLoading: layoutImgLoading,
-    error: layoutImgError,
-  } = useGetLayoutImage(towerId);
-
-  console.log("Layout Image data", layoutImgData);
-
-  const {
     data: areaDetails,
     isLoading: areaLoading,
     error: areaError,
@@ -168,39 +150,37 @@ const UpdateSqFt = () => {
   return (
     <section className="w-full h-full rounded-xl bg-white px-6 py-3">
       <form onSubmit={handleSubmit(onSumit)}>
-        <div className="flex items-center">
-          {towerSelectLoading ? (
-            <Loader2 className="animate-spin" size={24} />
-          ) : (
-            <div className="w-full">
-              <Label className="text-main-text my-2">Tower</Label>
-              <Controller
-                control={control}
-                name="tower"
-                render={({ field }) => (
-                  <Select onValueChange={field.onChange} value={field.value}>
-                    <SelectTrigger className="w-full max-w-[180px]">
-                      <SelectValue placeholder="Select tower" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {towerSelectData?.map((tower) => (
-                        <SelectItem key={tower?.id} value={String(tower?.id)}>
-                          {tower?.towerName}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                )}
-              />
-              {errors?.tower && (
-                <p className="text-red-500 text-sm mt-1">
-                  {errors?.tower?.message}
-                </p>
+        {towerSelectLoading ? (
+          <Loader2 className="animate-spin" size={24} />
+        ) : (
+          <div>
+            <Label className="text-main-text my-2">Tower</Label>
+            <Controller
+              control={control}
+              name="tower"
+              render={({ field }) => (
+                <Select onValueChange={field.onChange} value={field.value}>
+                  <SelectTrigger className="w-full max-w-[180px]">
+                    <SelectValue placeholder="Select tower" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {towerSelectData?.map((tower) => (
+                      <SelectItem key={tower?.id} value={String(tower?.id)}>
+                        {tower?.towerName}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               )}
-            </div>
-          )}
-          <Button className="bg-main">Layout Image</Button>
-        </div>
+            />
+            {errors?.tower && (
+              <p className="text-red-500 text-sm mt-1">
+                {errors?.tower?.message}
+              </p>
+            )}
+          </div>
+        )}
+
         {areaLoading ? (
           <Loader2 className="animate-spin" size={24} />
         ) : (

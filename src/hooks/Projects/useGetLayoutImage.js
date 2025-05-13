@@ -3,7 +3,7 @@ import { getLayoutImage } from "../../services/Project/projectservice";
 
 export const useGetLayoutImage = (towerId) => {
   const { data, isLoading, error } = useQuery({
-    queryKey: ["layoutImg"],
+    queryKey: ["layoutImg", towerId],
     queryFn: () => getLayoutImage(towerId),
     enabled: !!towerId,
   });

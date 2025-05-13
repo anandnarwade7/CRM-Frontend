@@ -14,6 +14,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../../ui/select";
+import { Textarea } from "../../ui/textarea";
 import { useGetClientsByCRM } from "../../../hooks/Projects/useGetClientsByCRM";
 
 const FlatDetailsDialog = ({ unit, isDialogOpen, setIsDialogOpen }) => {
@@ -42,6 +43,7 @@ const FlatDetailsDialog = ({ unit, isDialogOpen, setIsDialogOpen }) => {
     resetForm,
   } = useUpdateFlatStatus(userRole, unit?.id, () => setIsDialogOpen(false));
 
+  // Fetching the updated data and setting into the input fields
   useEffect(() => {
     if (data && isDialogOpen) {
       setValue("area", data?.flatSize || "");
@@ -50,6 +52,7 @@ const FlatDetailsDialog = ({ unit, isDialogOpen, setIsDialogOpen }) => {
       if (data?.clientEmail) {
         setValue("clientEmail", data?.clientEmail);
       }
+      setValue("flatInfo", data?.flatInfo);
     }
   }, [data, setValue, isDialogOpen]);
 
@@ -80,6 +83,8 @@ const FlatDetailsDialog = ({ unit, isDialogOpen, setIsDialogOpen }) => {
 
   const shouldHideFlatType =
     data?.status === "Refugee" || selectedStatus === "Refugee";
+
+  const hideUpdateBtn = userRole === "CRM";
 
   return (
     <DialogContent>
@@ -133,46 +138,71 @@ const FlatDetailsDialog = ({ unit, isDialogOpen, setIsDialogOpen }) => {
                 )}
               </div>
             )}
+            <div>
+              <Label className="text-main-text">Flat Info</Label>
+              <Textarea
+                {...register("flatInfo")}
+                disabled={userRole === "CRM"}
+              />
+            </div>
           </>
         ) : (
-          <div className="my-6 w-full max-w-sm">
-            <Label
-              htmlFor="tower"
-              className="block text-sm mb-1 text-main-text font-medium"
-            >
-              Select Clients
-            </Label>
-            <Select
-              onValueChange={(value) => setValue("clientEmail", value)}
-              value={watch("clientEmail")}
-            >
-              <SelectTrigger className="w-full border-gray-300 shadow-none">
-                <SelectValue placeholder="Select Client" />
-              </SelectTrigger>
-              <SelectContent>
-                {clientData?.map((client) => (
-                  <SelectItem key={client.id} value={client.email}>
-                    {client.name}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-            {errors?.clientEmail && (
-              <p className="text-red-500 text-sm mt-1">
-                {errors?.clientEmail?.message}
-              </p>
-            )}
-          </div>
+          <>
+            <div className="my-6 w-full max-w-sm">
+              <Label
+                htmlFor="tower"
+                className="block text-sm mb-1 text-main-text font-medium"
+              >
+                Select Clients
+              </Label>
+              <Select
+                onValueChange={(value) => setValue("clientEmail", value)}
+                value={watch("clientEmail")}
+              >
+                <SelectTrigger className="w-full border-gray-300 shadow-none">
+                  <SelectValue placeholder="Select Client" />
+                </SelectTrigger>
+                <SelectContent>
+                  {clientData?.map((client) => (
+                    <SelectItem key={client.id} value={client.email}>
+                      {client.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              {errors?.clientEmail && (
+                <p className="text-red-500 text-sm mt-1">
+                  {errors?.clientEmail?.message}
+                </p>
+              )}
+            </div>
+            <div>
+              <Label className="text-main-text">Flat Info</Label>
+              <Textarea
+                {...register("flatInfo")}
+                disabled={userRole === "CRM"}
+              />
+            </div>
+          </>
         )}
-        <div>
+
+        <div className="mt-4">
           <Label className="text-main-text font-semibold">Status</Label>
           <div className="space-y-2 mt-1">
             <input type="hidden" {...register("status")} />
             {statusOptions?.map((option) => (
               <div
                 key={option.value}
-                onClick={() => setValue("status", option.value)}
-                className="flex items-center gap-2 cursor-pointer"
+                onClick={() => {
+                  if (userRole !== "CRM") {
+                    setValue("status", option.value);
+                  }
+                }}
+                className={`flex items-center gap-2 ${
+                  userRole === "CRM"
+                    ? "pointer-events-none cursor-not-allowed opacity-50"
+                    : "cursor-pointer"
+                }`}
               >
                 <div
                   className={`w-4 h-4 rounded-full border ${
@@ -189,17 +219,19 @@ const FlatDetailsDialog = ({ unit, isDialogOpen, setIsDialogOpen }) => {
             <p className="text-red-500 text-sm">{errors?.status?.message}</p>
           )}
         </div>
-        <Button
-          className="bg-main-secondary w-full mt-4"
-          type="submit"
-          disabled={isUpdating}
-        >
-          {isUpdating ? (
-            <Loader2 className="animate-spin" size={24} />
-          ) : (
-            "Update"
-          )}
-        </Button>
+        {!hideUpdateBtn && (
+          <Button
+            className="bg-main-secondary w-full mt-4"
+            type="submit"
+            disabled={isUpdating}
+          >
+            {isUpdating ? (
+              <Loader2 className="animate-spin" size={24} />
+            ) : (
+              "Update"
+            )}
+          </Button>
+        )}
       </form>
     </DialogContent>
   );

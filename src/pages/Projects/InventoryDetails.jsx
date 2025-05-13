@@ -8,7 +8,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../../components/ui/select";
-import { Dialog, DialogTrigger } from "../../components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogTrigger,
+} from "../../components/ui/dialog";
 import { useEffect, useRef, useState } from "react";
 import FlatDetailsDialog from "../../components/custom/Projects/FlatDetailsDialog";
 import { useGetTowerDetails } from "../../hooks/Projects/useGetTowerDetails";
@@ -21,6 +25,11 @@ import {
   TooltipTrigger,
 } from "../../components/ui/tooltip";
 import { useGetFlatById } from "../../hooks/Projects/useGetFlatById";
+import { Button } from "../../components/ui/button";
+import { useGetLayoutImage } from "../../hooks/Projects/useGetLayoutImage";
+import axios from "axios";
+import LayoutImageDialog from "../../components/custom/Projects/LayoutImageDialog";
+import { useLayoutImageHandler } from "../../hooks/Projects/useLayoutImageHandler";
 
 const InventoryDetails = () => {
   const { projectId } = useParams();
@@ -44,6 +53,19 @@ const InventoryDetails = () => {
     isLoading: isFlatsLoading,
     error: flatsError,
   } = useGetFlatsDetails(selectedTowerId);
+
+  const {
+    data: layoutImgData,
+    isLoading: layoutImgLoading,
+    error: layoutImgError,
+  } = useGetLayoutImage(selectedTowerId);
+
+  const {
+    layoutImgUrl,
+    isLayoutDialogOpen,
+    setIsLayoutDialogOpen,
+    handleLayoutImg,
+  } = useLayoutImageHandler();
 
   // Fetching the data to render the details in the tooltip
 
@@ -89,25 +111,40 @@ const InventoryDetails = () => {
         {towerSelectLoading ? (
           <Loader2 className="animate-spin" size={24} />
         ) : (
-          <div className="my-6 w-full max-w-sm">
-            <Label
-              htmlFor="tower"
-              className="block text-sm mb-1 text-main-text font-medium"
-            >
-              Select Tower
-            </Label>
-            <Select onValueChange={setSelectedTowerId}>
-              <SelectTrigger className="w-full border-gray-300 shadow-none">
-                <SelectValue placeholder="Select tower" />
-              </SelectTrigger>
-              <SelectContent>
-                {towerSelectData?.map((tower) => (
-                  <SelectItem key={tower?.id} value={tower?.id}>
-                    {tower?.towerName}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+          <div className="flex items-center justify-between">
+            <div className="my-6 w-full max-w-sm">
+              <Label
+                htmlFor="tower"
+                className="block text-sm mb-1 text-main-text font-medium"
+              >
+                Select Tower
+              </Label>
+              <Select onValueChange={setSelectedTowerId}>
+                <SelectTrigger className="w-full border-gray-300 shadow-none">
+                  <SelectValue placeholder="Select tower" />
+                </SelectTrigger>
+                <SelectContent>
+                  {towerSelectData?.map((tower) => (
+                    <SelectItem key={tower?.id} value={tower?.id}>
+                      {tower?.towerName}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            {selectedTowerId && (
+              <Button
+                className="bg-main"
+                onClick={() => handleLayoutImg(layoutImgData?.layoutImage)}
+                disabled={layoutImgLoading}
+              >
+                {layoutImgLoading ? (
+                  <Loader2 className="animate-spin w-4 h-4" />
+                ) : (
+                  "Layout Image"
+                )}
+              </Button>
+            )}
           </div>
         )}
 
@@ -167,7 +204,11 @@ const InventoryDetails = () => {
                                         Flat Size
                                       </span>
                                       <span className="text-gray-500">
-                                        {`${flatData?.flatSize} sq.ft.`}
+                                        {`${
+                                          flatData?.flatSize === null
+                                            ? "-"
+                                            : flatData?.flatSize
+                                        } sq.ft.`}
                                       </span>
                                     </li>
                                     {unit?.status !== "Refugee" && (
@@ -176,7 +217,11 @@ const InventoryDetails = () => {
                                           Flat Type
                                         </span>
                                         <span className="text-gray-500">
-                                          {`${flatData?.flatType} BHK`}
+                                          {`${
+                                            flatData?.flatType === null
+                                              ? "-"
+                                              : flatData?.flatType
+                                          } BHK`}
                                         </span>
                                       </li>
                                     )}
@@ -217,6 +262,13 @@ const InventoryDetails = () => {
             setIsDialogOpen={setIsDialogOpen}
           />
         </Dialog>
+
+        {/* Layout Image Dialog */}
+        <LayoutImageDialog
+          open={isLayoutDialogOpen}
+          onOpenChange={setIsLayoutDialogOpen}
+          imageUrl={layoutImgUrl}
+        />
       </div>
     </section>
   );

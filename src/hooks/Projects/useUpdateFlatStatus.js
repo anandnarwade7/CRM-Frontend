@@ -22,6 +22,7 @@ export const useUpdateFlatStatus = (userRole, flatId, onSuccessCallback) => {
       status: "Available",
       clientEmail: "",
       flatType: "",
+      flatInfo: "",
     },
   });
 
@@ -48,7 +49,7 @@ export const useUpdateFlatStatus = (userRole, flatId, onSuccessCallback) => {
           }, 1000); // 1 second delay
         }
 
-        reset();
+        // reset();
       }
     },
     onError: (error) => {
@@ -59,18 +60,26 @@ export const useUpdateFlatStatus = (userRole, flatId, onSuccessCallback) => {
           description: "Something went wrong while updating flat status.",
           duration: 2000,
         });
-        reset();
+        // reset();
       }
     },
   });
   const onSubmit = (data) => {
     const payload = {};
+    console.log("Update Flat UI Payload", data);
 
     if (userRole === "ADMIN") {
       payload.flatSize = data.area;
       payload.flatType = data.flatType;
+      payload.flatInfo = data.flatInfo;
     } else {
-      payload.clientEmail = data.clientEmail;
+      // payload.clientEmail = data.clientEmail;
+      payload.clientEmail = "ganesh@gmail.com";
+
+      // Include flatInfo for both CRM and SALES roles
+      if (data.flatInfo) {
+        payload.flatInfo = data.flatInfo;
+      }
     }
 
     payload.status = data.status;
