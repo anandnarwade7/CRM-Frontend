@@ -13,9 +13,7 @@ export const useAddClient = () => {
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm({
-    resolver: zodResolver(userPersonWithConfirmSchema),
-  });
+  } = useForm();
 
   const { toast } = useToast();
   const navigate = useNavigate();
@@ -38,10 +36,11 @@ export const useAddClient = () => {
         navigate("/app/client");
       }, 2000);
     },
-    onError: () => {
+    onError: (err) => {
       toast({
         variant: "destructive",
         title: "Error Adding Client",
+        description: err.message || "Something went wrong",
         duration: 2000,
       });
     },
@@ -49,7 +48,7 @@ export const useAddClient = () => {
 
   const onSubmit = (formData) => {
     const { confirmPassword, ...filterData } = formData;
-    // console.log("Adding Client", filterData);
+    console.log("Adding Client", formData);
     mutation.mutate(filterData);
   };
 

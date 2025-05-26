@@ -73,8 +73,8 @@ export const useUpdateFlatStatus = (userRole, flatId, onSuccessCallback) => {
       payload.flatType = data.flatType;
       payload.flatInfo = data.flatInfo;
     } else {
-      // payload.clientEmail = data.clientEmail;
-      payload.clientEmail = "ganesh@gmail.com";
+      payload.clientEmail = data.clientEmail;
+      // payload.clientEmail = "ganesh@gmail.com";
 
       // Include flatInfo for both CRM and SALES roles
       if (data.flatInfo) {

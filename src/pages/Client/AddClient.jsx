@@ -32,16 +32,14 @@ const AddClient = () => {
     error: clientError,
   } = useGetClientById(id);
 
-  console.log("ClientData", clientData);
-
   useEffect(() => {
     if (clientData) {
       reset({
         name: clientData?.leadName || "",
         mobile: clientData?.leadmobile || "",
         email: clientData?.leadEmail || "",
-        password: "",
-        confirmPassword: "",
+        // password: "",
+        // confirmPassword: "",
       });
     }
   }, [clientData, reset]);
@@ -112,7 +110,7 @@ const AddClient = () => {
           </div>
 
           {/* Password  */}
-          <div>
+          {/* <div>
             <Label htmlFor="password" className="text-main-label">
               Set Password
             </Label>
@@ -144,9 +142,9 @@ const AddClient = () => {
             {errors.password && (
               <p className="text-red-500 text-sm">{errors.password.message}</p>
             )}
-          </div>
+          </div> */}
           {/* Confirm Password  */}
-          <div>
+          {/* <div>
             <Label htmlFor="confirmPassword" className="text-main-label">
               Confirm Password
             </Label>
@@ -180,7 +178,7 @@ const AddClient = () => {
                 {errors.confirmPassword.message}
               </p>
             )}
-          </div>
+          </div> */}
         </div>
         <div className="flex justify-end mt-3">
           <Button

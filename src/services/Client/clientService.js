@@ -60,6 +60,7 @@ export const addClient = async (id, formData) => {
     return response?.data;
   } catch (error) {
     console.log("Error while creating the Client", error);
+    throw new Error(error?.response?.data?.developermsg);
   }
 };
 

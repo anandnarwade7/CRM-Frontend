@@ -31,6 +31,7 @@ export const useCreateInventory = (userId) => {
     setValue,
     watch,
     getValues,
+    trigger,
   } = formMethods;
 
   const { fields, append, remove } = useFieldArray({
@@ -54,7 +55,11 @@ export const useCreateInventory = (userId) => {
             towerName: "",
             totalFloors: 0,
             flatsPerFloor: 0,
-            layoutImage: null,
+            // Initialize all layout image fields
+            oddImage: null,
+            evenImage: null,
+            groundImage: null,
+            customLayout: null,
           },
           { shouldFocus: false }
         );
@@ -69,29 +74,14 @@ export const useCreateInventory = (userId) => {
   const createProjectMutation = useMutation({
     mutationKey: ["createProject"],
     mutationFn: (payload) => createProject(userId, payload),
-    // onSuccess: () => {
-    //   toast({
-    //     title: "Success",
-    //     description: "Inventory successfully created.",
-    //     duration: 2000,
-    //   });
-    // },
-    // onError: () => {
-    //   toast({
-    //     variant: "destructive",
-    //     title: "Error",
-    //     description: "Something went wrong while creating inventory.",
-    //     duration: 2000,
-    //   });
-    // },
   });
 
   const onSubmit = async (data) => {
-    console.log("Inventory Details", data);
+    console.log("Inventory Details with layout images:", data);
     const { address, propertyName, towers, totalTower } = data;
-    console.log("Towers OBJ", towers);
 
     try {
+      // Create project first
       const projectResponse = await createProjectMutation.mutateAsync({
         address,
         propertyName,
@@ -103,29 +93,11 @@ export const useCreateInventory = (userId) => {
 
       if (!projectId) throw new Error("Project ID is Missing");
 
-      // const towerPayload = towers?.map((tower) =>
-      //   JSON.stringify({
-      //     towerName: tower?.towerName,
-      //     // totalTowers: totalTower,
-      //     totalFloors: tower?.totalFloors,
-      //     flatPerFloor: tower?.flatsPerFloor,
-      //     project_id: String(projectId),
-      //   })
-      // );
-
-      // const formData = new FormData();
-      // formData.append("towerData", towerPayload);
-
-      // towers.forEach((tower) => {
-      //   const file = tower?.layoutImage;
-      //   if (file) {
-      //     formData.append("layoutImages", file);
-      //   }
-      // });
-
+      // Prepare FormData with all tower data and images
       const formData = new FormData();
 
       towers?.forEach((tower, index) => {
+        // Add tower basic data
         formData.append(
           `requestData[${index}]`,
           JSON.stringify({
@@ -135,14 +107,43 @@ export const useCreateInventory = (userId) => {
             project_id: String(projectId),
           })
         );
-        if (tower?.layoutImage) {
-          formData.append(`layoutImages[${index}]`, tower?.layoutImage);
+
+        // Add layout images if they exist
+        if (tower?.oddImage) {
+          formData.append(`oddLayout[${index}]`, tower.oddImage);
+        }
+        if (tower?.evenImage) {
+          formData.append(`evenLayout[${index}]`, tower.evenImage);
+        }
+        if (tower?.groundImage) {
+          formData.append(`groundLayout[${index}]`, tower.groundImage);
+        }
+
+        // Add custom layout if it exists
+        // if (tower?.customLayout) {
+        //   formData.append(
+        //     `customLayout[${index}]`,
+        //     JSON.stringify({
+        //       name: tower.customLayout.name,
+        //     })
+        //   );
+        //   if (tower.customLayout.file) {
+        //     formData.append(
+        //       `customLayoutImages[${index}]`,
+        //       tower.customLayout.file
+        //     );
+        //   }
+        // }
+
+        if (tower.customLayout.file) {
+          formData.append(
+            `${tower?.customLayout?.name}[${index}]`,
+            tower.customLayout.file
+          );
         }
       });
 
       const towerResponse = await createTowers(formData);
-
-      console.log("Tower Res", towerResponse?.failed[0]);
 
       toast({
         title: "Success",
@@ -168,6 +169,7 @@ export const useCreateInventory = (userId) => {
         });
       }
     } catch (error) {
+      console.error("Error creating inventory:", error);
       toast({
         variant: "destructive",
         title: "Error",
@@ -187,6 +189,7 @@ export const useCreateInventory = (userId) => {
     setValue,
     getValues,
     fields,
+    trigger,
     isLoading: createProjectMutation.isPending,
   };
 };

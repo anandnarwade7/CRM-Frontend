@@ -6,49 +6,88 @@ import FormInput from "../../components/custom/FormInput";
 import { FormProvider, useForm, useFormContext } from "react-hook-form";
 import { Button } from "../../components/ui/button";
 import { useCreateInventory } from "../../hooks/Projects/useCreateInventory";
-import { useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useUserId } from "../../hooks/use-user-id";
-import { Loader2, Upload } from "lucide-react";
+import {
+  CirclePlus,
+  CircleX,
+  Edit2,
+  Loader2,
+  Upload,
+  UploadIcon,
+} from "lucide-react";
+import { Card, CardContent } from "../../components/ui/card";
+import CustomLayoutDialog from "../../components/custom/Projects/CustomLayoutDialog";
 
-const ImageUploadField = ({ index, name, label }) => {
-  const { formState, setValue, watch } = useFormContext();
-  const errors = formState.errors;
-  const imageName = watch(name);
+const UploadLayoutFile = ({
+  title,
+  onFileSelect,
+  selectedFile,
+  towerIndex,
+  layoutType,
+}) => {
+  const fileInputRef = useRef(null);
 
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
+  const handleCardClick = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
     if (file) {
-      setValue(name, file, { shouldValidate: true });
-      console.log(`Set image for ${name}:`, file);
+      // Validate file type and size
+      if (!file.type.startsWith("image/")) {
+        alert("Please select a valid image file");
+        return;
+      }
+      if (file.size > 5 * 1024 * 1024) {
+        alert("File size must be less than 5MB");
+        return;
+      }
+      onFileSelect(file, layoutType);
+    }
+  };
+
+  const handleRemoveFile = (e) => {
+    e.stopPropagation();
+    onFileSelect(null, layoutType);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
     }
   };
 
   return (
-    <div className="w-full">
-      <Label className="block text-sm font-medium text-gray-700 mb-1">
-        {label}
-      </Label>
-      <div className="flex items-center">
-        <label className="flex flex-col items-center justify-center w-full h-10 px-4 border border-gray-300 rounded-md cursor-pointer bg-white hover:bg-gray-50">
-          <div className="flex items-center space-x-2">
-            <Upload size={16} />
-            <span className="text-sm text-gray-500 truncate">
-              {imageName ? imageName?.name : "Choose layout image"}
-            </span>
-          </div>
-          <Input
-            type="file"
-            accept="image/*"
-            onChange={handleImageChange}
-            className="hidden"
-          />
-        </label>
-      </div>
-      {errors?.towers?.[index]?.layoutImage && (
-        <p className="text-red-500 text-sm mt-1">
-          {errors?.towers[index]?.layoutImage?.message}
-        </p>
-      )}
+    <div className="relative">
+      <Card
+        className="cursor-pointer border-[#B0A7A7] shadow-none h-full min-h-[170px] w-full max-w-[170px] flex flex-col items-center justify-center"
+        onClick={handleCardClick}
+      >
+        <CardContent className="flex flex-col items-center justify-center p-6 relative">
+          {selectedFile ? (
+            <>
+              <div className="flex flex-col items-center">
+                <CircleX onClick={handleRemoveFile} />
+                <span className="text-sm font-medium text-center">{title}</span>
+                <span className="text-xs text-gray-500 mt-1 text-center truncate w-full">
+                  {selectedFile.name?.slice(0, 10)}
+                </span>
+              </div>
+            </>
+          ) : (
+            <>
+              <UploadIcon className="mb-2 h-6 w-6" />
+              <span className="text-sm">{title}</span>
+            </>
+          )}
+        </CardContent>
+      </Card>
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept="image/*"
+        onChange={handleFileChange}
+        className="hidden"
+      />
     </div>
   );
 };
@@ -70,25 +109,35 @@ const CreateInventoryDetails = () => {
   const totalTower = watch("totalTower");
   const towerCount = parseInt(totalTower, 10) || 0;
 
-  // Adjust towers array length based on totalTower
-  useEffect(() => {
-    const currentTowers = getValues("towers") || [];
-    if (currentTowers.length < towerCount) {
-      const newTowers = [...currentTowers];
-      while (newTowers.length < towerCount) {
-        newTowers.push({
-          towerName: "",
-          totalFloors: 0,
-          flatsPerFloor: 0,
-          layoutImage: null,
-        });
-      }
-      setValue("towers", newTowers);
-    } else if (currentTowers.length > towerCount) {
-      const newTowers = currentTowers.slice(0, towerCount);
-      setValue("towers", newTowers);
-    }
-  }, [towerCount, getValues, setValue]);
+  const handleLayoutFileSelect = (file, layoutType, towerIndex) => {
+    // Update the form data directly instead of using separate state
+    setValue(`towers.${towerIndex}.${layoutType}Image`, file, {
+      shouldValidate: true,
+      shouldDirty: true,
+    });
+  };
+
+  const handleCustomLayoutAdd = (customLayoutData, towerIndex) => {
+    // Update the form data directly
+    setValue(`towers.${towerIndex}.customLayout`, customLayoutData, {
+      shouldValidate: true,
+      shouldDirty: true,
+    });
+  };
+
+  const getLayoutFile = (towerIndex, layoutType) => {
+    // Get the file directly from form data
+    const towers = watch("towers");
+    return towers?.[towerIndex]?.[`${layoutType}Image`] || null;
+  };
+
+  const getCustomLayout = (towerIndex) => {
+    // Get custom layout directly from form data
+    const towers = watch("towers");
+    return towers?.[towerIndex]?.customLayout || null;
+  };
+
+  console.log("Form data:", watch("towers"));
 
   return (
     <FormProvider {...formMethods}>
@@ -120,7 +169,6 @@ const CreateInventoryDetails = () => {
         </div>
 
         {/* Towers/Floors/Flats */}
-
         <div>
           <p className="text-main-text font-semibold text-xl">
             Towers/Floors/Flats
@@ -130,37 +178,7 @@ const CreateInventoryDetails = () => {
             <div className="w-full max-w-[20rem]">
               <FormInput label="Total Tower" name="totalTower" />
             </div>
-            {/* <div className="w-full max-w-lg">
-              <Label>Total Floor</Label>
-            </div>
-            <Label>Flats Per Floor</Label> */}
           </div>
-          {/* {Array.from({ length: towerCount }).map((_, index) => (
-            <div key={index} className="my-4">
-              <div className="flex flex-col gap-4 md:flex-row">
-                <div className="w-full max-w-lg">
-                  <FormInput
-                    name={`towers.${index}.towerName`}
-                    label="Tower Name"
-                  />
-                </div>
-                <div className="w-full max-w-lg">
-                  <FormInput
-                    name={`towers.${index}.totalFloors`}
-                    label="Total Floors"
-                    type="number"
-                  />
-                </div>
-                <div className="w-full max-w-lg">
-                  <FormInput
-                    name={`towers.${index}.flatsPerFloor`}
-                    label="Flats Per Floor"
-                    type="number"
-                  />
-                </div>
-              </div>
-            </div>
-          ))} */}
 
           {fields?.map((field, index) => (
             <div key={field?.id} className="my-4">
@@ -200,15 +218,42 @@ const CreateInventoryDetails = () => {
                     </p>
                   )}
                 </div>
-                <div>
-                  <div className="w-full max-w-lg">
-                    <ImageUploadField
-                      index={index}
-                      name={`towers.${index}.layoutImage`}
-                      label="Tower Layout Image"
-                    />
-                  </div>
-                </div>
+              </div>
+              <div className="flex items-center gap-16 my-10">
+                <UploadLayoutFile
+                  title="Odd layout"
+                  towerIndex={index}
+                  layoutType="odd"
+                  selectedFile={getLayoutFile(index, "odd")}
+                  onFileSelect={(file, type) =>
+                    handleLayoutFileSelect(file, type, index)
+                  }
+                />
+                <UploadLayoutFile
+                  title="Even layout"
+                  towerIndex={index}
+                  layoutType="even"
+                  selectedFile={getLayoutFile(index, "even")}
+                  onFileSelect={(file, type) =>
+                    handleLayoutFileSelect(file, type, index)
+                  }
+                />
+                <UploadLayoutFile
+                  title="Ground layout"
+                  towerIndex={index}
+                  layoutType="ground"
+                  selectedFile={getLayoutFile(index, "ground")}
+                  onFileSelect={(file, type) =>
+                    handleLayoutFileSelect(file, type, index)
+                  }
+                />
+                <CustomLayoutDialog
+                  towerIndex={index}
+                  existingCustomLayout={getCustomLayout(index)}
+                  onAddCustomLayout={(data) =>
+                    handleCustomLayoutAdd(data, index)
+                  }
+                />
               </div>
             </div>
           ))}

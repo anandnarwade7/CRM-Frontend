@@ -1,5 +1,25 @@
 import { number, z } from "zod";
 
+const fileValidation = z.any().refine(
+  (file) => {
+    if (!file) return true;
+    return (
+      file instanceof File &&
+      file.type.startsWith("image/") &&
+      file.size <= 5 * 1024 * 1024
+    );
+  },
+  { message: "Layout image must be a valid image file under 5MB" }
+);
+
+// Custom layout schema
+const customLayoutSchema = z.object({
+  name: z.string().min(1, "Custom layout name is required"),
+  file: fileValidation.refine((file) => file instanceof File, {
+    message: "Custom layout image is required",
+  }),
+});
+
 // Schema for only Tower Details
 export const towerSchema = z.object({
   towerName: z.string().min(1, "Tower name is required"),
@@ -7,25 +27,20 @@ export const towerSchema = z.object({
     .number({ required_error: "Total Floors is required" })
     .int("Must be an integer")
     .positive("Must be greater than 0"),
-  // .max(20, "Should be Less than 20"),
 
   flatsPerFloor: z.coerce
     .number({ required_error: "Flats Per Floor is required" })
     .int("Must be an integer")
     .positive("Must be greater than 0"),
-  // .max(20, "Should be Less than 20"),
 
-  layoutImage: z.any().refine(
-    (file) => {
-      if (!file) return true;
-      return (
-        file instanceof File &&
-        file.type.startsWith("image/") &&
-        file.size <= 5 * 1024 * 1024
-      );
-    },
-    { message: "Layout image must be a valid image file under 5MB" }
-  ),
+  // Layout image fields
+  oddImage: fileValidation.optional(),
+  evenImage: fileValidation.optional(),
+  groundImage: fileValidation.optional(),
+  customLayout: customLayoutSchema.optional(),
+
+  // Legacy field for backward compatibility
+  layoutImage: fileValidation.optional(),
 });
 
 // Schema for whole Inventory
@@ -40,19 +55,6 @@ export const createInventorySchema = z.object({
   towers: z.array(towerSchema),
 });
 
-// Schema for updating the flat status
-// export const updateFlatStatusSchema = z.object({
-//   area: z.string().refine((val) => /^\d+$/.test(val) && parseInt(val) > 0, {
-//     message: "Area Must be Postive Number",
-//   }),
-//   flatType: z.string().refine((val) => /^\d+$/.test(val) && parseInt(val) > 0, {
-//     message: "Flat Type Must be Postive Number",
-//   }),
-//   status: z.enum(["Available", "Booked", "Refugee"], {
-//     errorMap: () => ({ message: "Status is required" }),
-//   }),
-// });
-
 // Reusable schema fields
 const adminFields = {
   area: z.string().refine((val) => /^\d+$/.test(val) && parseInt(val) > 0, {
@@ -64,12 +66,11 @@ const adminFields = {
 };
 
 const crmFields = {
-  // clientEmail: z.string().email("Valid client email is required").optional(),
+  clientEmail: z.string(),
 };
 
 // Added SALES role schema
 const salesFields = {
-  // clientEmail: z.string().email("Valid client email is required").optional(),
   clientEmail: z.string(),
 };
 

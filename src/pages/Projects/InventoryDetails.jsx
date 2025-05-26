@@ -67,6 +67,8 @@ const InventoryDetails = () => {
     handleLayoutImg,
   } = useLayoutImageHandler();
 
+  console.log("Img Layout Data", layoutImgData);
+
   // Fetching the data to render the details in the tooltip
 
   const { data: hoverFlatData, isLoading: isHoveredFlatLoading } =
@@ -132,18 +134,93 @@ const InventoryDetails = () => {
                 </SelectContent>
               </Select>
             </div>
-            {selectedTowerId && (
-              <Button
-                className="bg-main"
-                onClick={() => handleLayoutImg(layoutImgData?.layoutImage)}
-                disabled={layoutImgLoading}
-              >
-                {layoutImgLoading ? (
-                  <Loader2 className="animate-spin w-4 h-4" />
-                ) : (
-                  "Layout Image"
-                )}
-              </Button>
+            {/* {selectedTowerId && (
+              <div className="grid grid-cols-2 gap-3">
+                <Button
+                  className="bg-main"
+                  onClick={() =>
+                    handleLayoutImg(layoutImgData?.customLayouts?.oddLayout)
+                  }
+                  disabled={layoutImgLoading}
+                >
+                  {layoutImgLoading ? (
+                    <Loader2 className="animate-spin w-4 h-4" />
+                  ) : (
+                    "Odd Layout"
+                  )}
+                </Button>
+                <Button
+                  className="bg-main"
+                  onClick={() =>
+                    handleLayoutImg(layoutImgData?.customLayouts?.evenLayout)
+                  }
+                  disabled={layoutImgLoading}
+                >
+                  {layoutImgLoading ? (
+                    <Loader2 className="animate-spin w-4 h-4" />
+                  ) : (
+                    "Even Layout"
+                  )}
+                </Button>
+                <Button
+                  className="bg-main"
+                  onClick={() =>
+                    handleLayoutImg(layoutImgData?.customLayouts?.groundLayout)
+                  }
+                  disabled={layoutImgLoading}
+                >
+                  {layoutImgLoading ? (
+                    <Loader2 className="animate-spin w-4 h-4" />
+                  ) : (
+                    "Ground Layout"
+                  )}
+                </Button>
+                {Object.entries(layoutImgData?.customLayouts)
+                  ?.filter(
+                    (key) =>
+                      !["oddLayout", "evenLayout", "groundLayout"].includes(key)
+                  )
+                  ?.map(([layoutName, layoutUrl]) => (
+                    <Button
+                      className="bg-main"
+                      onClick={() => handleLayoutImg(layoutUrl)}
+                      disabled={layoutImgLoading}
+                    >
+                      {layoutImgLoading ? (
+                        <Loader2 className="animate-spin w-4 h-4" />
+                      ) : (
+                        layoutName
+                          .replace(/([a-z])([A-Z])/g, "$1 $2")
+                          .replace(/^\w/, (c) => c.toUpperCase())
+                      )}
+                    </Button>
+                  ))}
+              </div>
+            )} */}
+            {selectedTowerId && layoutImgData?.customLayouts && (
+              <div className="grid grid-cols-2 gap-3 mt-4">
+                {Object.entries(layoutImgData.customLayouts)
+                  .filter(([, value]) => value !== null) // Only non-null layouts
+                  .map(([layoutName, layoutUrl]) => (
+                    <Button
+                      key={layoutName}
+                      className="bg-main"
+                      onClick={() => handleLayoutImg(layoutUrl)}
+                      disabled={layoutImgLoading}
+                    >
+                      {layoutImgLoading ? (
+                        <Loader2 className="animate-spin w-4 h-4" />
+                      ) : (
+                        layoutName
+                          .replace(/([a-z])([A-Z])/g, "$1 $2") // camelCase to spaced
+                          .replace(/^\w/, (c) => c.toUpperCase()) // capitalize first letter
+                          .replace(/([A-Z])/g, " $1") // extra handling for keys like "top Layout"
+                          .replace(/\s+/g, " ") // normalize spaces
+                          .trim()
+                      )}
+                    </Button>
+                  ))}
+              </div>
             )}
           </div>
         )}
