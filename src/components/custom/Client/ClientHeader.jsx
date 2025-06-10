@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router";
-import { Notification } from "../../../assets";
+import { NotificationIcon } from "../../../assets";
 import { Button } from "../../ui/button";
 import { Plus } from "lucide-react";
 import { useUserRole } from "../../../hooks/use-userrole";
@@ -13,7 +13,7 @@ const ClientHeader = () => {
       <div className="flex items-center justify-between">
         <p className="font-medium text-2xl text-[#707070]">Client Details</p>
         <Button className="bg-white shadow-none">
-          <img src={Notification} alt="notification" />
+          <img src={NotificationIcon} alt="notification" />
         </Button>
       </div>
       {/* Lower Header */}

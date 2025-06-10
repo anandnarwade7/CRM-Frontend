@@ -37,6 +37,7 @@ const ProjectTableContainer = () => {
   if (isLoading) {
     return <p>Loading....</p>;
   }
+  if (projectData?.length === 0) return <p>No Data Available</p>;
 
   return (
     <div className="my-4">

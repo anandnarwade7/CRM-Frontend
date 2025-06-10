@@ -61,8 +61,8 @@ export const usePostSalesLeads = (leadId, data, isStatusOpen) => {
 
   const onSubmit = (data) => {
     // Before Submitting the Data we process the data and then send via formData.
-    const key = data?.customFields?.map((item) => item?.label) || [];
-    const value = data?.customFields?.map((item) => item?.value) || [];
+    console.log("CUSTOM FIELDS", data?.customFields);
+
     const comment = data?.note;
     const status = data?.status;
     const dueDate = data?.dueDate ? new Date(data?.dueDate).getTime() : 0;
@@ -71,12 +71,15 @@ export const usePostSalesLeads = (leadId, data, isStatusOpen) => {
     formData?.append("comment", comment);
     formData?.append("dueDate", dueDate);
 
+    if (data?.customFields?.length > 0) {
+      const key = data?.customFields?.map((item) => item?.label) || [];
+      const value = data?.customFields?.map((item) => item?.value) || [];
+      formData?.append("key", key);
+      formData?.append("value", value);
+    }
     if (status) {
       formData?.append("status", status);
     }
-
-    formData?.append("key", key);
-    formData?.append("value", value);
 
     mutation.mutate(formData, {
       onSuccess: (response) => {

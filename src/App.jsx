@@ -4,6 +4,7 @@ import {
   AdminDetails,
   AssignClientLead,
   AssignLead,
+  BookedFlats,
   Client,
   ClientActivities,
   ClientsDetails,
@@ -21,6 +22,7 @@ import {
   Projects,
   SalesLeadsDetails,
   SalesPerson,
+  Support,
   UpdateSqFt,
 } from "./pages";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -147,6 +149,16 @@ const router = createBrowserRouter([
           {
             path: "/app/update-sqft",
             element: <UpdateSqFt />,
+          },
+          // Support
+          {
+            path: "/app/support",
+            element: <Support />,
+          },
+          // Booked Flats
+          {
+            path: "/app/bookedflats",
+            element: <BookedFlats />,
           },
           {
             path: "*",

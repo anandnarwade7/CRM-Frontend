@@ -38,6 +38,12 @@ import AdminDetails from "./Admin/AdminDetails";
 // Not Found
 import NotFound from "./NotFound/NotFound";
 
+// Support
+import Support from "./Support/Support";
+
+// Booked Flat
+import BookedFlats from "./Booked Flats/BookedFlats";
+
 export {
   Login,
   Dashboard,
@@ -62,4 +68,6 @@ export {
   ClientActivities,
   ClientShowEventDetails,
   NotFound,
+  Support,
+  BookedFlats,
 };

@@ -35,11 +35,14 @@ import SupportBg from "./Icons/supportBg.svg";
 import Logout from "./Icons/logout.svg";
 
 // Global
-import Notification from "./Icons/notification.svg";
+import NotificationIcon from "./Icons/notification.svg";
 
 // Leads
 import Back from "./Icons/back.svg";
 import Link from "./Icons/link.svg";
+
+import ConfirmedBooking from "./Icons/confirmedBooking.svg";
+import ConfirmedBookingBg from "./Icons/confirmedBookingBg.svg";
 
 export {
   LoginImage,
@@ -63,7 +66,7 @@ export {
   Support,
   SupportBg,
   Logout,
-  Notification,
+  NotificationIcon,
   Back,
   Link,
   DashboardSales,
@@ -73,4 +76,6 @@ export {
   DashboardInvoice,
   DashboardUserAdmin,
   CRMLogo,
+  ConfirmedBooking,
+  ConfirmedBookingBg,
 };

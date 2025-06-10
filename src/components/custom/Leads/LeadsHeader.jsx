@@ -1,5 +1,5 @@
 import { Button } from "../../ui/button";
-import { Notification } from "../../../assets";
+import { NotificationIcon } from "../../../assets";
 import { Plus } from "lucide-react";
 import { useNavigate } from "react-router";
 import {
@@ -28,7 +28,7 @@ const LeadsHeader = () => {
       <div className="flex items-center justify-between">
         <p className="font-medium text-2xl text-[#707070]">Leads</p>
         <Button className="bg-white text-black shadow-none">
-          <img src={Notification} alt="notification" />
+          <img src={NotificationIcon} alt="notification" />
         </Button>
       </div>
       {/* Lower Header */}

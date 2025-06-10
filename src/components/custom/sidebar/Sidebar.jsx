@@ -22,6 +22,8 @@ import {
   SupportBg,
   Logout,
   Admin,
+  ConfirmedBooking,
+  ConfirmedBookingBg,
 } from "../../../assets/index";
 import { useUserRole } from "../../../hooks/use-userrole";
 import { Button } from "../../ui/button";
@@ -98,19 +100,26 @@ const Sidebar = () => {
     //   activeImg: MoneyBg,
     //   roles: ["SUPER ADMIN", "ADMIN", "CRM"],
     // },
-    {
-      name: "Support",
-      path: "/support",
-      img: Support,
-      activeImg: SupportBg,
-      roles: ["ADMIN", "SALES", "CRM"],
-    },
+    // {
+    //   name: "Support",
+    //   path: "/app/support",
+    //   img: Support,
+    //   activeImg: SupportBg,
+    //   roles: ["ADMIN", "SALES", "CRM"],
+    // },
     {
       name: "Activities",
       path: "/app/activities",
       img: Client,
       activeImg: ClientBg,
       roles: ["CLIENT"],
+    },
+    {
+      name: "Confirmed Bookings",
+      path: "/app/bookedflats",
+      img: ConfirmedBooking,
+      activeImg: ConfirmedBookingBg,
+      roles: ["ADMIN", "SALES", "CRM"],
     },
     // {
     //   name: "Clients List",
