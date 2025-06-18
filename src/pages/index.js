@@ -40,6 +40,7 @@ import NotFound from "./NotFound/NotFound";
 
 // Support
 import Support from "./Support/Support";
+import SalesSupportRequest from "./Support/SalesSupportRequest";
 
 // Booked Flat
 import BookedFlats from "./Booked Flats/BookedFlats";
@@ -69,5 +70,6 @@ export {
   ClientShowEventDetails,
   NotFound,
   Support,
+  SalesSupportRequest,
   BookedFlats,
 };

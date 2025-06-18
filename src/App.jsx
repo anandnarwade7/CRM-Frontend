@@ -22,6 +22,7 @@ import {
   Projects,
   SalesLeadsDetails,
   SalesPerson,
+  SalesSupportRequest,
   Support,
   UpdateSqFt,
 } from "./pages";
@@ -154,6 +155,10 @@ const router = createBrowserRouter([
           {
             path: "/app/support",
             element: <Support />,
+          },
+          {
+            path: "/app/support-raise",
+            element: <SalesSupportRequest />,
           },
           // Booked Flats
           {

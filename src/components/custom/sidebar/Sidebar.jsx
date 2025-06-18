@@ -100,13 +100,13 @@ const Sidebar = () => {
     //   activeImg: MoneyBg,
     //   roles: ["SUPER ADMIN", "ADMIN", "CRM"],
     // },
-    // {
-    //   name: "Support",
-    //   path: "/app/support",
-    //   img: Support,
-    //   activeImg: SupportBg,
-    //   roles: ["ADMIN", "SALES", "CRM"],
-    // },
+    {
+      name: "Support",
+      path: "/app/support",
+      img: Support,
+      activeImg: SupportBg,
+      roles: ["ADMIN", "SALES", "CRM"],
+    },
     {
       name: "Activities",
       path: "/app/activities",
