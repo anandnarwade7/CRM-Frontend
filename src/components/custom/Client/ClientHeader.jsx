@@ -24,7 +24,7 @@ const ClientHeader = () => {
             className="bg-main shadow-none"
           >
             <Plus size={18} />
-            Assign Leads
+            Assign Clients
           </Button>
         </div>
       )}

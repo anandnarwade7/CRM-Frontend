@@ -18,6 +18,9 @@ export const useSalesPerson = (role) => {
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
+  // Rolename for rendering in the toast dynamically
+  const roleName = role === "CRM" ? "CRM Person" : "Sales Person";
+
   // Calling Custom hook for getting userId
   const userId = useUserId();
 
@@ -27,8 +30,8 @@ export const useSalesPerson = (role) => {
       addSalesPerson(userId, { ...formData, role: role }),
     onSuccess: () => {
       toast({
-        title: "Sales Person Added",
-        description: "The new sales person has been successfully added.",
+        title: `${roleName} Added`,
+        description: `The new ${roleName.toLowerCase()} has been successfully added.`,
         duration: 2000,
       });
       reset();

@@ -18,7 +18,7 @@ export const salesLeadsSchema = (status, isStatusOpen) => {
   // });
 
   const baseSchema = {
-    note: z.string().min(5, "Note Must be least 5 Characters"),
+    // note: z.string().min(5, "Note Must be least 5 Characters"),
     dueDate: z.date({ required_error: "Reminder Date is Required" }).optional(),
     customFields: z
       .array(

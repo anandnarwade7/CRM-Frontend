@@ -30,7 +30,14 @@ const columns = [
   { key: "paidBy", label: "Paid By" },
 ];
 
-const fileFields = ["statusReport", "architectLetter", "invoice", "receipt"];
+// const fileFields = ["statusReport", "architectLetter", "invoice", "receipt"];
+
+const fileFields = [
+  { key: "statusReport", label: "Status Report" },
+  { key: "architectLetter", label: "Architect Letter" },
+  { key: "invoice", label: "Invoice" },
+  { key: "receipt", label: "Receipt" },
+];
 
 const EventDetailsTable = () => {
   const userId = useUserId();
@@ -70,10 +77,10 @@ const EventDetailsTable = () => {
               ))}
               {fileFields.map((field) => (
                 <th
-                  key={field}
+                  key={field?.key}
                   className="py-4 px-6 text-left text-xs font-medium text-main-text"
                 >
-                  {field}
+                  {field?.label}
                 </th>
               ))}
               <th className="py-4 px-6 text-left text-xs font-medium text-main-text">
@@ -140,7 +147,7 @@ const EventDetailsTable = () => {
                 ))}
                 {fileFields.map((field) => (
                   <td
-                    key={field}
+                    key={field?.key}
                     className="py-3 px-2 border-b border-gray-200"
                   >
                     {row?.isEditing ? (
@@ -149,29 +156,33 @@ const EventDetailsTable = () => {
                           <File size={18} color="#757575" />
                           <input
                             type="file"
-                            id={`${field}-${index}`}
+                            id={`${field?.key}-${index}`}
                             className="hidden"
                             accept="application/pdf"
                             onChange={(e) =>
-                              handleFileUpload(index, field, e.target.files[0])
+                              handleFileUpload(
+                                index,
+                                field?.key,
+                                e.target.files[0]
+                              )
                             }
                             disabled={!row?.isEditing}
                           />
                         </label>
-                        {row[field] && (
+                        {row[field?.key] && (
                           <span className="text-sm text-gray-600">
-                            {truncateName(row[field].name)}
+                            {truncateName(row[field?.key].name)}
                           </span>
                         )}
                       </>
                     ) : (
-                      row[getUrlFieldName(field)] && (
+                      row[getUrlFieldName(field?.key)] && (
                         <div className="flex flex-col items-center">
                           <Button
                             onClick={() =>
                               handleDownloadFile(
-                                row[getUrlFieldName(field)],
-                                field
+                                row[getUrlFieldName(field?.key)],
+                                field?.key
                               )
                             }
                             variant="outline"

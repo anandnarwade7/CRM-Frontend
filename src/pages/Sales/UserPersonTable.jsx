@@ -39,7 +39,7 @@ const UserPersonTable = () => {
 
   const columns = [
     {
-      header: "Id",
+      header: "Sr. No",
       cell: ({ row }) => row.index + 1,
     },
     { header: "Name", accessorKey: "name" },
@@ -63,7 +63,7 @@ const UserPersonTable = () => {
       header: "Action",
       cell: ({ row }) => {
         const currentAction = row?.original?.action;
-        const status = currentAction === "BLOCK" ? "unblock" : "block";
+        const status = currentAction === "BLOCK" ? "UNBLOCK" : "BLOCK";
 
         return (
           <div>

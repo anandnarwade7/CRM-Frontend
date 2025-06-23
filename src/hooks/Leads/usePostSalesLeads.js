@@ -6,6 +6,7 @@ import axios from "axios";
 import { useToast } from "@/hooks/use-toast";
 import { BASE_URL } from "../../utils/constant";
 import axiosInstance from "../../services/axiosInstance";
+import { useNavigate } from "react-router";
 
 export const usePostSalesLeads = (leadId, data, isStatusOpen) => {
   const schema = salesLeadsSchema(data?.status, isStatusOpen);
@@ -36,6 +37,7 @@ export const usePostSalesLeads = (leadId, data, isStatusOpen) => {
   });
 
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   const postLead = async (formData) => {
     try {
@@ -68,8 +70,6 @@ export const usePostSalesLeads = (leadId, data, isStatusOpen) => {
     const dueDate = data?.dueDate ? new Date(data?.dueDate).getTime() : 0;
 
     const formData = new FormData();
-    formData?.append("comment", comment);
-    formData?.append("dueDate", dueDate);
 
     if (data?.customFields?.length > 0) {
       const key = data?.customFields?.map((item) => item?.label) || [];
@@ -77,27 +77,42 @@ export const usePostSalesLeads = (leadId, data, isStatusOpen) => {
       formData?.append("key", key);
       formData?.append("value", value);
     }
+    if (data?.note?.length > 0) {
+      formData?.append("comment", comment);
+    }
+    if (data?.dueDate) {
+      formData?.append("dueDate", dueDate);
+    }
     if (status) {
       formData?.append("status", status);
     }
 
     mutation.mutate(formData, {
       onSuccess: (response) => {
+        const status = response?.status;
+        let titleMessage = "Leads detail updated successfully";
+        if (status == "CONVERTED") {
+          titleMessage = "Lead converted successfully";
+        }
+
         queryClient.invalidateQueries(["leadById", leadId]); // Invalidate specific query based on leadId
         reset({
           ...getValues(),
           note: "",
         });
         toast({
-          title: "Convert Lead Successfully",
+          title: titleMessage,
           duration: 2000,
         });
+        setTimeout(() => {
+          navigate("/app/leads");
+        }, 2000);
       },
       onError: (error) => {
         console.log("API ERROR", error);
         toast({
           variant: "destructive",
-          title: "Not Converted Leads",
+          title: "Leads detail not updated",
           duration: 2000,
         });
       },

@@ -36,10 +36,11 @@ export const useLoginForm = () => {
       }
     },
     onError: (error) => {
-      const errorMessage = error?.response?.data?.msg || "Something went wrong";
+      const errorMessage =
+        error?.response?.data?.developermsg || "Something went wrong";
       toast({
         variant: "destructive",
-        title: "Invalid request.",
+        title: error?.response?.data?.msg,
         description: errorMessage,
         duration: 2000,
       });

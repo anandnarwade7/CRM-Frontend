@@ -53,7 +53,11 @@ const SpecificLead = ({
           </Label>
           <div>
             <Select>
-              <SelectTrigger className="shadow-none focus:ring-0">
+              <SelectTrigger
+                className={`shadow-none focus:ring-0 ${
+                  errors.salesPerson ? "border-red-500" : ""
+                }`}
+              >
                 <SelectValue
                   placeholder={
                     selectedSalesPersons?.length > 0
@@ -102,8 +106,8 @@ const SpecificLead = ({
               </SelectContent>
             </Select>
           </div>
-          {errors.crManager && (
-            <p className="text-red-500 mt-2">{errors.crManager}</p>
+          {errors.salesPerson && (
+            <p className="text-red-500 mt-2">{errors.salesPerson}</p>
           )}
         </div>
 

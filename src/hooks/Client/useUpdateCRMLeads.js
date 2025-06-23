@@ -6,8 +6,9 @@ import axios from "axios";
 import { BASE_URL } from "../../utils/constant";
 import { useToast } from "@/hooks/use-toast";
 import axiosInstance from "../../services/axiosInstance";
+import { useNavigate } from "react-router";
 
-export const useUpdateCRMLeads = (clientId) => {
+export const useUpdateCRMLeads = (clientId, status) => {
   // Validation for updating the leads through CRM
   const {
     register,
@@ -30,6 +31,7 @@ export const useUpdateCRMLeads = (clientId) => {
 
   const queryClient = useQueryClient();
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   const { append, remove, fields } = useFieldArray({
     control,
@@ -81,16 +83,25 @@ export const useUpdateCRMLeads = (clientId) => {
       formData?.append("value", value);
     }
 
-    formData.append("comment", comment);
+    if (comment?.length > 0) {
+      formData.append("comment", comment);
+    }
 
     mutation.mutate(formData, {
       onSuccess: (response) => {
         if (response) {
+          let titleMessage = "Lead detail updated successfully";
+          if (status == "CONVERTED") {
+            titleMessage = "Lead converted successfully";
+          }
           queryClient.invalidateQueries(["clientById", clientId]);
           toast({
-            title: "Convert Lead Successfully",
+            title: titleMessage,
             duration: 2000,
           });
+          setTimeout(() => {
+            navigate("/app/client");
+          }, 2000);
         }
       },
       onError: (error) => {

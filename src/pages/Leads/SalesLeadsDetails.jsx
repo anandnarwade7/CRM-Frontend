@@ -47,7 +47,12 @@ const SalesLeadsDetails = () => {
   // Fetching the Data and set the values in the form
   useEffect(() => {
     if (data) {
-      setValue("status", data?.status || "COLD");
+      const statusValue =
+        data?.status &&
+        ["COLD", "HOT", "CONVERTED", "REJECTED"].includes(data?.status)
+          ? data?.status
+          : "";
+      setValue("status", statusValue);
 
       // const lastComment =
       //   data?.conversationLogs?.length > 0
@@ -149,7 +154,7 @@ const SalesLeadsDetails = () => {
                     onValueChange={(value) => {
                       field.onChange(value);
                     }}
-                    value={field.value}
+                    value={field.value || ""}
                   >
                     <SelectTrigger
                       className="focus-visible:ring-0 shadow-none border-[1px] border-[#B0A7A7] text-[#757575]"
@@ -180,22 +185,29 @@ const SalesLeadsDetails = () => {
             >
               Note
             </Label>
+
             <div className="w-full max-w-[20%]">
-              <Controller
-                control={control}
-                name="dueDate"
-                render={({ field }) => (
-                  <DatePicker
-                    value={field.value}
-                    onChange={(date) => field.onChange(date)}
-                  />
+              <Label className="text-[#233A48] text-sm font-normal">
+                Select Reminder Date
+              </Label>
+              <div className="mt-1">
+                <Controller
+                  control={control}
+                  name="dueDate"
+                  render={({ field }) => (
+                    <DatePicker
+                      value={field.value}
+                      onChange={(date) => field.onChange(date)}
+                      // placeholder="Select Reminder Date"
+                    />
+                  )}
+                />
+                {errors?.dueDate && (
+                  <p className="text-red-500 text-sm mt-1">
+                    {errors?.dueDate?.message}
+                  </p>
                 )}
-              />
-              {errors?.dueDate && (
-                <p className="text-red-500 text-sm mt-1">
-                  {errors?.dueDate?.message}
-                </p>
-              )}
+              </div>
             </div>
           </div>
           <Textarea

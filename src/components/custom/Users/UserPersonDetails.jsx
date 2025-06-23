@@ -11,6 +11,8 @@ const UserPersonDetails = () => {
   const [isVisible, setIsVisible] = useState(false);
   const toggleVisibility = () => setIsVisible((prevState) => !prevState);
   const { state } = useLocation();
+  console.log("State from useLocation", state);
+
   const { detailTitle, role } = state;
   const navigate = useNavigate();
 

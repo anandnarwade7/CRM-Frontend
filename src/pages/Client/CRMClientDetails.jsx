@@ -21,16 +21,15 @@ import { Input } from "../../components/ui/input";
 import EventDetailsTable from "../../components/custom/Client/EventDetailsTable";
 import DatePicker from "../../components/custom/DatePicker";
 import { useUploadDocs } from "../../hooks/Client/useUploadDocs";
-import { formatDate } from "../../utils/utilityFunction";
+import { downloadFile, formatDate } from "../../utils/utilityFunction";
 import Table from "../../components/custom/Table";
+import FileDownloadCard from "../../components/custom/FileDownloadCard";
 
 const CRMClientDetails = () => {
   // Geting the ID from the URL
   const { clientId } = useParams();
   // Fetching Data as per Id
   const { data, isLoading, error } = useGetClientById(clientId);
-
-  console.log(data);
 
   // Form Handling with Validation
   const {
@@ -43,7 +42,7 @@ const CRMClientDetails = () => {
     remove,
     fields,
     onSubmit,
-  } = useUpdateCRMLeads(clientId);
+  } = useUpdateCRMLeads(clientId, data?.status);
 
   const {
     setValue,
@@ -180,62 +179,97 @@ const CRMClientDetails = () => {
           </Button>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-20">
-          <div>
-            <FileUpload
-              title="Upload Agreement "
-              name="agreementFile"
-              control={control}
-              setValue={setValue}
-              trigger={trigger}
+          {data?.agreement ? (
+            <FileDownloadCard
+              title="Download Agreement"
+              onClick={() => downloadFile(data?.agreement, "Agreement.pdf")}
             />
-            {filesErrors?.agreementFile && (
-              <p className="text-red-500 text-sm">
-                {filesErrors?.agreementFile?.message}
-              </p>
-            )}
-          </div>
-          <div>
-            <FileUpload
-              title="Upload Stamp duty"
-              name="stampDutyFile"
-              control={control}
-              setValue={setValue}
-              trigger={trigger}
+          ) : (
+            <div>
+              <FileUpload
+                title="Upload Agreement "
+                name="agreementFile"
+                control={control}
+                setValue={setValue}
+                trigger={trigger}
+              />
+              {filesErrors?.agreementFile && (
+                <p className="text-red-500 text-sm">
+                  {filesErrors?.agreementFile?.message}
+                </p>
+              )}
+            </div>
+          )}
+
+          {data?.stampDuty ? (
+            <FileDownloadCard
+              title="Download Stamp duty"
+              onClick={() =>
+                downloadFile(data?.stampDuty, "Stamp Duty Document.pdf")
+              }
             />
-            {filesErrors?.stampDutyFile && (
-              <p className="text-red-500 text-sm">
-                {filesErrors?.stampDutyFile?.message}
-              </p>
-            )}
-          </div>
-          <div>
-            <FileUpload
-              title="Upload TDS Document"
-              name="tdsDocFile"
-              control={control}
-              setValue={setValue}
-              trigger={trigger}
+          ) : (
+            <div>
+              <FileUpload
+                title="Upload Stamp duty"
+                name="stampDutyFile"
+                control={control}
+                setValue={setValue}
+                trigger={trigger}
+              />
+              {filesErrors?.stampDutyFile && (
+                <p className="text-red-500 text-sm">
+                  {filesErrors?.stampDutyFile?.message}
+                </p>
+              )}
+            </div>
+          )}
+
+          {data?.tdsDoc ? (
+            <FileDownloadCard
+              title="Download TDS Document"
+              onClick={() => downloadFile(data?.tdsDoc, "TDS Document.pdf")}
             />
-            {filesErrors?.tdsDocFile && (
-              <p className="text-red-500 text-sm">
-                {filesErrors?.tdsDocFile?.message}
-              </p>
-            )}
-          </div>
-          <div>
-            <FileUpload
-              title="Upload Bank Sanction"
-              name="bankSanctionFile"
-              control={control}
-              setValue={setValue}
-              trigger={trigger}
+          ) : (
+            <div>
+              <FileUpload
+                title="Upload TDS Document"
+                name="tdsDocFile"
+                control={control}
+                setValue={setValue}
+                trigger={trigger}
+              />
+              {filesErrors?.tdsDocFile && (
+                <p className="text-red-500 text-sm">
+                  {filesErrors?.tdsDocFile?.message}
+                </p>
+              )}
+            </div>
+          )}
+
+          {data?.bankSanction ? (
+            <FileDownloadCard
+              title="Download Bank Sanction"
+              onClick={() =>
+                downloadFile(data?.bankSanction, "Bank Sanction.pdf")
+              }
             />
-            {filesErrors?.bankSanctionFile && (
-              <p className="text-red-500 text-sm">
-                {filesErrors?.bankSanctionFile?.message}
-              </p>
-            )}
-          </div>
+          ) : (
+            <div>
+              <FileUpload
+                title="Upload Bank Sanction"
+                name="bankSanctionFile"
+                control={control}
+                setValue={setValue}
+                trigger={trigger}
+              />
+              {filesErrors?.bankSanctionFile && (
+                <p className="text-red-500 text-sm">
+                  {filesErrors?.bankSanctionFile?.message}
+                </p>
+              )}
+            </div>
+          )}
         </div>
       </div>
 
@@ -253,22 +287,27 @@ const CRMClientDetails = () => {
           <Label htmlFor="note" className="text-[#233A48] text-sm font-normal">
             Note
           </Label>
-          <div className="w-full max-w-[20%] mb-3">
-            <Controller
-              control={updateCRMControl}
-              name="dueDate"
-              render={({ field }) => (
-                <DatePicker
-                  value={field.value}
-                  onChange={(date) => field.onChange(date)}
-                />
+          <div className="w-full max-w-[20%]">
+            <Label className="text-[#233A48] text-sm font-normal">
+              Select Reminder Date
+            </Label>
+            <div className="mt-1 mb-3">
+              <Controller
+                control={updateCRMControl}
+                name="dueDate"
+                render={({ field }) => (
+                  <DatePicker
+                    value={field.value}
+                    onChange={(date) => field.onChange(date)}
+                  />
+                )}
+              />
+              {errors?.dueDate && (
+                <p className="text-red-500 text-sm mt-1">
+                  {errors?.dueDate?.message}
+                </p>
               )}
-            />
-            {errors?.dueDate && (
-              <p className="text-red-500 text-sm mt-1">
-                {errors?.dueDate?.message}
-              </p>
-            )}
+            </div>
           </div>
         </div>
         <Textarea

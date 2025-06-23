@@ -6,7 +6,7 @@ const BookedFlats = () => {
   console.log("BOOKED FLATS", data, error);
 
   const columns = [
-    { header: "Id", cell: ({ row }) => row.index + 1 },
+    { header: "Sr. No", cell: ({ row }) => row.index + 1 },
     { header: "Client Name", accessorKey: "clientName" },
     {
       header: "Sales Person",

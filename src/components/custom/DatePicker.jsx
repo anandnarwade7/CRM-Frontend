@@ -4,16 +4,22 @@ import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { format } from "date-fns";
 import { Calendar } from "../ui/calendar";
 import { cn } from "../../lib/utils";
-import { forwardRef } from "react";
+import { forwardRef, useState } from "react";
 const DatePicker = forwardRef(({ value, onChange }, ref) => {
+  const [open, setOpen] = useState(false);
   // Safely format the date only if it's a valid date
   const formattedDate =
     value && !isNaN(new Date(value).getTime())
       ? format(new Date(value), "PPP")
       : null;
+
+  const handleDateSelect = (date) => {
+    onChange(date);
+    setOpen(false);
+  };
   return (
     <>
-      <Popover>
+      <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <Button
             ref={ref}
@@ -23,7 +29,7 @@ const DatePicker = forwardRef(({ value, onChange }, ref) => {
               !formattedDate && "text-muted-foreground"
             )}
           >
-            {formattedDate ? formattedDate : <span>Pick a date</span>}
+            {formattedDate ? formattedDate : <span>Pick date</span>}
             <CalendarIcon className="mr-2 h-4 w-4" />
           </Button>
         </PopoverTrigger>
@@ -39,7 +45,7 @@ const DatePicker = forwardRef(({ value, onChange }, ref) => {
                 ? new Date(value)
                 : undefined
             }
-            onSelect={onChange}
+            onSelect={handleDateSelect}
             initialFocus
           />
         </PopoverContent>

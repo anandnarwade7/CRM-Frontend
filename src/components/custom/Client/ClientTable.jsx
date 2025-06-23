@@ -96,14 +96,14 @@ const ClientTable = () => {
   // ];
 
   const baseColumns = [
-    { header: "Id", cell: ({ row }) => row.index + 1 },
+    { header: "Sr. No", cell: ({ row }) => row.index + 1 },
     { header: "Lead Name", accessorKey: "leadName" },
     {
       header: "Mobile Number",
       accessorKey: "leadmobile",
     },
     { header: "Email", accessorKey: "leadEmail" },
-    { header: "CR Person", accessorKey: "crPerson" },
+    { header: "CR Person (Assigned to)", accessorKey: "crPerson" },
     { header: "Status", accessorKey: "status" },
     {
       header: "Note",

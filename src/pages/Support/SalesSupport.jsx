@@ -46,7 +46,7 @@ const SalesSupport = () => {
 
   const columns = [
     {
-      header: "Id",
+      header: "Sr. No",
       cell: ({ row }) => row.index + 1,
     },
     { accessorKey: "type", header: "Type" },

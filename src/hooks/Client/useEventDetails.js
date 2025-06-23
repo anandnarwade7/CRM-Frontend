@@ -79,9 +79,13 @@ const useEventDetails = (clientId, userId) => {
     setRows(updatedRows);
   };
 
-  const handleFileUpload = (index, field, file) => {
+  const handleFileUpload = (index, fieldKey, file) => {
+    if (!file) {
+      console.log("No file selected");
+      return;
+    }
     const updatedRows = [...rows];
-    updatedRows[index][field] = file;
+    updatedRows[index][fieldKey] = file;
     setRows(updatedRows);
   };
 

@@ -117,10 +117,17 @@ export const useSpecificAssignLeads = () => {
     onSuccess: (data) => {
       console.log("Assign Leads Success:", data);
       if (data) {
-        toast({
-          title: "Assign the Leads Successfully",
-          duration: 2000,
-        });
+        const match = data?.match(/Processed:\s*(\d+),\s*Skipped:\s*(\d+)/);
+
+        if (match) {
+          const processed = parseInt(match[1], 10);
+          const skipped = parseInt(match[2], 10);
+          const message = `File processed successfully. ✅ ${processed} items processed, ⚠️ ${skipped} items skipped (already assigned or used).`;
+          toast({
+            title: message,
+            duration: 2000,
+          });
+        }
         setSelectedSalesPersons([]);
         setFile(null);
         setErrors({

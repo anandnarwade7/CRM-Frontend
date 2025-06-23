@@ -40,7 +40,7 @@ const SalesTable = () => {
   ];
 
   const salesColumns = [
-    { header: "Id", cell: ({ row }) => row.index + 1 },
+    { header: "Sr. No", cell: ({ row }) => row.index + 1 },
     { header: "Name", accessorKey: "name" },
     {
       header: "Phone Number",

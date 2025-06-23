@@ -4,8 +4,8 @@ export const updateCRMLeadSchema = z.object({
   status: z.enum(["COLD", "HOT", "CONVERTED", "REJECTED"], {
     message: "Status is Required",
   }),
-  note: z.string().min(5, "Note Must be least 5 Characters"),
-  dueDate: z.date({ required_error: "Reminder Date is Required" }).optional(),
+  // note: z.string().min(5, "Note Must be least 5 Characters"),
+  dueDate: z.date({ required_error: "Reminder Date is Required" }),
   customFields: z
     .array(
       z.object({

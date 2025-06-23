@@ -32,7 +32,7 @@ const LeadsTable = () => {
         <table className="min-w-full bg-white shadow-md rounded-lg text-sm my-4">
           <thead className="bg-gray-100">
             <tr>
-              <th className="p-2 text-left font-medium">Id</th>
+              <th className="p-2 text-left font-medium">Sr. No</th>
               <th className="p-2 text-left font-medium">Lead Name</th>
               <th className="p-2 text-left font-medium">Phone Number</th>
               <th className="p-2 text-left font-medium">Email</th>
@@ -54,8 +54,12 @@ const LeadsTable = () => {
                 <td className="p-3 text-main-text">
                   {lead?.status === "ASSIGNED"
                     ? "Assigned"
-                    : lead?.status === "COMPLETED"
+                    : lead?.status === "CONVERTED"
                     ? "Completed"
+                    : lead?.status === "HOT"
+                    ? "Hot"
+                    : lead?.status === "COLD"
+                    ? "Cold"
                     : lead?.status}
                 </td>
                 {status !== "COMPLETED" && (

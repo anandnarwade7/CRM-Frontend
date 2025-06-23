@@ -18,7 +18,7 @@ const AdminTableContainer = () => {
 
   const columns = [
     {
-      header: "ID",
+      header: "Sr. No",
       cell: ({ row }) => row?.index + 1,
     },
     {

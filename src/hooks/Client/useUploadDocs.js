@@ -1,4 +1,4 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { uploadDocs } from "../../services/Client/clientService";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -25,6 +25,7 @@ export const useUploadDocs = (clientId) => {
   });
 
   const { toast } = useToast();
+  const queryClient = useQueryClient();
 
   //  uploading the docs
   const mutation = useMutation({
@@ -37,6 +38,7 @@ export const useUploadDocs = (clientId) => {
           description: "Files Upload Successfully",
           duration: 2000,
         });
+        queryClient.invalidateQueries({ queryKey: ["clientById"] });
       }
     },
   });

@@ -13,7 +13,7 @@ const ProjectTableContainer = () => {
   const { projectData, totalPages, isLoading, error } = useGetProjects(page);
 
   const columns = [
-    // { accessorKey: "id", header: "ID" },
+    { header: "Sr. No", cell: ({ row }) => row.index + 1 },
     { accessorKey: "propertyName", header: "Property Name" },
     { accessorKey: "address", header: "Address" },
     { accessorKey: "totalTowers", header: "Total Towers" },
