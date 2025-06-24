@@ -28,21 +28,21 @@ const SuperAdminDashboard = () => {
           {/* Sales Person */}
           <DashboardCard
             title="Admins"
-            data={data?.admins || "-"}
+            data={data?.admins || "0"}
             img={DashboardUserAdmin}
           />
 
           {/* CRM Manager */}
           <DashboardCard
             title="CRM Managers"
-            data={data?.crm || "-"}
+            data={data?.crm || "0"}
             img={DashboardTime}
           />
 
           {/* Total Leads */}
           <DashboardCard
             title="Sales Persons"
-            data={data?.sales || "-"}
+            data={data?.sales || "0"}
             img={DashboardList}
           />
         </div>
@@ -50,19 +50,19 @@ const SuperAdminDashboard = () => {
           {/* Total Invoice Raised */}
           <DashboardCard
             title="Total Invoice Raised"
-            data={"-"}
+            data={"0"}
             img={DashboardLineUp}
           />
           {/* Total Amount Paid */}
           <DashboardCard
             title="Total Invoice Amount"
-            data={"-"}
+            data={"0"}
             img={DashboardInvoice}
           />
           {/* Total Amount Paid */}
           <DashboardCard
             title="Total Paid Amount"
-            data={"-"}
+            data={"0"}
             img={DashboardInvoice}
           />
         </div>

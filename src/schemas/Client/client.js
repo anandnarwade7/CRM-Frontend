@@ -62,3 +62,34 @@ export const fileUploadSchema = z.object({
       message: "Bank Sanction file size must be less than 5MB",
     }),
 });
+
+export const eventRowSchema = z.object({
+  event: z.string().min(1, "Event name is required"),
+  percentage: z.string().refine((val) => !isNaN(val) && parseFloat(val) >= 0, {
+    message: "Percentage must be a valid positive number",
+  }),
+  basePrice: z.string().refine((val) => /^\d+$/.test(val), {
+    message: "Base Price must be an integer",
+  }),
+  gst: z.string().refine((val) => !isNaN(val) && parseFloat(val) >= 0, {
+    message: "GST must be a valid positive number",
+  }),
+
+  invoiceDate: z.date({ required_error: "Invoice Date is required" }),
+  dueDate: z.date({ required_error: "Due Date is required" }),
+  paymentDate: z.date({ required_error: "Payment Date is required" }),
+  paidBy: z.enum(["self", "bank"]),
+
+  statusReport: z.any().refine((file) => !!file, {
+    message: "Status Report file is required",
+  }),
+  architectLetter: z.any().refine((file) => !!file, {
+    message: "Architect Letter file is required",
+  }),
+  invoice: z.any().refine((file) => !!file, {
+    message: "Invoice file is required",
+  }),
+  receipt: z.any().refine((file) => !!file, {
+    message: "Receipt file is required",
+  }),
+});

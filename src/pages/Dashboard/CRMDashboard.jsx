@@ -82,17 +82,17 @@ const CRMDashboard = () => {
           {/* Sales Person */}
           <DashboardCard
             title="Total Client"
-            data={data?.convertedLeads}
+            data={data?.convertedLeads || "0"}
             img={DashboardSales}
           />
 
           {/* Target */}
-          <DashboardCard title="Target" data={"-"} img={DashboardTime} />
+          <DashboardCard title="Target" data={"0"} img={DashboardTime} />
 
           {/* Total Leads */}
           <DashboardCard
             title="Total Leads"
-            data={data?.totalLeads || "-"}
+            data={data?.totalLeads || "0"}
             img={DashboardList}
           />
         </div>
@@ -100,19 +100,19 @@ const CRMDashboard = () => {
           {/* Total Invoice Raised */}
           <DashboardCard
             title="Total Invoice Raised"
-            data={"-"}
+            data={"0"}
             img={DashboardLineUp}
           />
           {/* Total Amount Paid */}
           <DashboardCard
             title="Total Amount Paid"
-            data={"-"}
+            data={"0"}
             img={DashboardInvoice}
           />
           {/* Total Amount Paid */}
           <DashboardCard
             title="Total Unpaid Amount"
-            data={"-"}
+            data={"0"}
             img={DashboardInvoice}
           />
         </div>

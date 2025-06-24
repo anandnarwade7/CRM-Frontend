@@ -3,6 +3,7 @@ import { Card } from "../ui/card";
 import { Label } from "../ui/label";
 import { UploadIcon } from "lucide-react";
 import { useController } from "react-hook-form";
+import { truncateName } from "../../utils/utilityFunction";
 
 const FileUpload = ({ title, name, control, setValue, trigger }) => {
   const { field } = useController({ name, control });
@@ -84,7 +85,7 @@ const FileUpload = ({ title, name, control, setValue, trigger }) => {
             <div className="flex flex-col items-center justify-center space-y-2">
               <UploadIcon className="w-8 h-8 text-main-secondary" />
               <span className="text-xs text-muted-foreground text-center">
-                {field.value.name}
+                {truncateName(field.value.name, 20)}
               </span>
             </div>
           ) : (

@@ -2,6 +2,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useEffect, useState } from "react";
 import axiosInstance from "../../services/axiosInstance";
 import axios from "axios";
+import { eventRowSchema } from "../../schemas/Client/client";
 
 const useEventDetails = (clientId, userId) => {
   const { toast } = useToast();
@@ -31,6 +32,7 @@ const useEventDetails = (clientId, userId) => {
       receiptUrl: "",
 
       isEditing: true,
+      errors: {},
     },
   ]);
 
@@ -59,6 +61,7 @@ const useEventDetails = (clientId, userId) => {
         receiptUrl: "",
 
         isEditing: true,
+        errors: {},
       },
     ]);
   };
@@ -89,7 +92,35 @@ const useEventDetails = (clientId, userId) => {
     setRows(updatedRows);
   };
 
-  const handleSubmitData = async (row) => {
+  const handleSubmitData = async (row, index) => {
+    const dataToValidate = {
+      ...row,
+      percentage: row.percentage.toString(),
+      basePrice: row.basePrice.toString(),
+      gst: row.gst.toString(),
+      invoiceDate: new Date(row.invoiceDate),
+      dueDate: new Date(row.dueDate),
+      paymentDate: new Date(row.paymentDate),
+    };
+
+    const result = eventRowSchema.safeParse(dataToValidate);
+
+    if (!result.success) {
+      const fieldErrors = result.error.flatten().fieldErrors;
+
+      const updatedRows = [...rows];
+      updatedRows[index].errors = fieldErrors;
+      setRows(updatedRows);
+
+      toast({
+        variant: "destructive",
+        title: "Validation Error",
+        description: "Please correct the errors before saving.",
+      });
+
+      return;
+    }
+
     const formData = new FormData();
 
     // Attach files
@@ -228,6 +259,8 @@ const useEventDetails = (clientId, userId) => {
             receiptUrl: event.receipt?.url || "",
 
             isEditing: false,
+
+            errors: {},
           }));
 
           setRows(mappedRows);
@@ -306,6 +339,15 @@ const useEventDetails = (clientId, userId) => {
     return `${field}Url`;
   };
 
+  // Clearing the errors if user enters valid input
+  const clearZodError = (index, field) => {
+    const updatedRows = [...rows];
+    if (updatedRows[index]?.errors?.[field]) {
+      delete updatedRows[index].errors[field];
+      setRows(updatedRows);
+    }
+  };
+
   return {
     rows,
     setRows,
@@ -318,6 +360,7 @@ const useEventDetails = (clientId, userId) => {
     handleEventDelete,
     handleDownloadFile,
     getUrlFieldName,
+    clearZodError,
     isSaving,
     isDeleting,
   };

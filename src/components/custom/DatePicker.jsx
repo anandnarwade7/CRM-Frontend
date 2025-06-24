@@ -5,7 +5,7 @@ import { format } from "date-fns";
 import { Calendar } from "../ui/calendar";
 import { cn } from "../../lib/utils";
 import { forwardRef, useState } from "react";
-const DatePicker = forwardRef(({ value, onChange }, ref) => {
+const DatePicker = forwardRef(({ value, onChange, disabled }, ref) => {
   const [open, setOpen] = useState(false);
   // Safely format the date only if it's a valid date
   const formattedDate =
@@ -19,14 +19,15 @@ const DatePicker = forwardRef(({ value, onChange }, ref) => {
   };
   return (
     <>
-      <Popover open={open} onOpenChange={setOpen}>
+      <Popover open={open} onOpenChange={(val) => !disabled && setOpen(val)}>
         <PopoverTrigger asChild>
           <Button
             ref={ref}
             variant={"outline"}
             className={cn(
               "w-full max-w-lg p-5 justify-between text-left font-normal",
-              !formattedDate && "text-muted-foreground"
+              !formattedDate && "text-muted-foreground",
+              disabled && "opacity-50 cursor-not-allowed"
             )}
           >
             {formattedDate ? formattedDate : <span>Pick date</span>}
@@ -47,6 +48,7 @@ const DatePicker = forwardRef(({ value, onChange }, ref) => {
             }
             onSelect={handleDateSelect}
             initialFocus
+            disabled={disabled}
           />
         </PopoverContent>
       </Popover>

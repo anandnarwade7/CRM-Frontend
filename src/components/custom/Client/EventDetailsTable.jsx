@@ -1,4 +1,4 @@
-import { Download, File, Loader2, Minus, Plus } from "lucide-react";
+import { Download, File, Loader2, Minus, Plus, Upload } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Input } from "../../ui/input";
 import { truncateName } from "../../../utils/utilityFunction";
@@ -54,9 +54,12 @@ const EventDetailsTable = () => {
     handleEventDelete,
     handleDownloadFile,
     getUrlFieldName,
+    clearZodError,
     isSaving,
     isDeleting,
   } = useEventDetails(clientId, userId);
+
+  console.log("Event Detail Single Row", rows);
 
   return (
     <>
@@ -102,12 +105,22 @@ const EventDetailsTable = () => {
                     {col.key === "invoiceDate" ||
                     col.key === "dueDate" ||
                     col.key === "paymentDate" ? (
-                      <DatePicker
-                        value={row[col.key]}
-                        onChange={(date) =>
-                          handleInputChange(index, col.key, date)
-                        }
-                      />
+                      <div
+                        className={`rounded-md border ${
+                          row?.errors?.[col.key]
+                            ? "border-red-500"
+                            : "border-gray-300"
+                        }`}
+                      >
+                        <DatePicker
+                          value={row[col.key]}
+                          onChange={(date) => {
+                            handleInputChange(index, col.key, date);
+                            clearZodError(index, col.key);
+                          }}
+                          disabled={!row?.isEditing}
+                        />
+                      </div>
                     ) : col.key === "paidBy" ? (
                       <>
                         <Select
@@ -120,6 +133,8 @@ const EventDetailsTable = () => {
                           <SelectTrigger
                             className={`w-[180px] ${
                               row?.isEditing ? "text-black" : "text-main-grey"
+                            } ${
+                              row?.errors?.["paidBy"] ? "border-red-500" : ""
                             }`}
                           >
                             <SelectValue placeholder="Select payment method" />
@@ -131,17 +146,20 @@ const EventDetailsTable = () => {
                         </Select>
                       </>
                     ) : (
-                      <Input
-                        type="text"
-                        className={`w-full shadow-none focus-visible:ring-0 border-gray-300 p-1 ${
-                          row?.isEditing ? "text-black" : "text-main-grey"
-                        }`}
-                        disabled={!row?.isEditing}
-                        value={row[col.key]}
-                        onChange={(e) =>
-                          handleInputChange(index, col.key, e.target.value)
-                        }
-                      />
+                      <>
+                        <Input
+                          type="text"
+                          className={`w-full shadow-none focus-visible:ring-0 border-gray-300 p-1 ${
+                            row?.isEditing ? "text-black" : "text-main-grey"
+                          } ${row?.errors?.[col.key] ? "border-red-500" : ""}`}
+                          disabled={!row?.isEditing}
+                          value={row[col.key]}
+                          onChange={(e) => {
+                            handleInputChange(index, col.key, e.target.value);
+                            clearZodError(index, col.key);
+                          }}
+                        />
+                      </>
                     )}
                   </td>
                 ))}
@@ -152,20 +170,28 @@ const EventDetailsTable = () => {
                   >
                     {row?.isEditing ? (
                       <>
-                        <label className="cursor-pointer flex items-center justify-center">
-                          <File size={18} color="#757575" />
+                        <label
+                          className={`cursor-pointer flex items-center justify-center rounded-md p-2.5 border ${
+                            row?.errors?.[field.key]
+                              ? "border-red-500"
+                              : "border-gray-300"
+                          }`}
+                        >
+                          {/* <File size={18} color="#757575" /> */}
+                          <Upload size={18} color="#757575" />
                           <input
                             type="file"
                             id={`${field?.key}-${index}`}
                             className="hidden"
                             accept="application/pdf"
-                            onChange={(e) =>
+                            onChange={(e) => {
                               handleFileUpload(
                                 index,
                                 field?.key,
                                 e.target.files[0]
-                              )
-                            }
+                              );
+                              clearZodError(index, field.key);
+                            }}
                             disabled={!row?.isEditing}
                           />
                         </label>
@@ -198,7 +224,7 @@ const EventDetailsTable = () => {
                 <td className="py-4 px-2 border-b border-gray-200 flex items-center gap-1">
                   {row?.isEditing ? (
                     <Button
-                      onClick={() => handleSubmitData(row)}
+                      onClick={() => handleSubmitData(row, index)}
                       type="button"
                       className="text-main-secondary bg-white"
                       disabled={isSaving || isDeleting}
@@ -220,18 +246,20 @@ const EventDetailsTable = () => {
                     </Button>
                   )}
 
-                  <Button
-                    onClick={() => handleEventDelete(row?.eventId)}
-                    type="button"
-                    className="text-main-grey bg-white"
-                    disabled={isSaving || isDeleting}
-                  >
-                    {isDeleting ? (
-                      <Loader2 className="animate-spin" size={24} />
-                    ) : (
-                      "Delete"
-                    )}
-                  </Button>
+                  {row?.eventId !== null && (
+                    <Button
+                      onClick={() => handleEventDelete(row?.eventId)}
+                      type="button"
+                      className="text-main-grey bg-white"
+                      disabled={isSaving || isDeleting}
+                    >
+                      {isDeleting ? (
+                        <Loader2 className="animate-spin" size={24} />
+                      ) : (
+                        "Delete"
+                      )}
+                    </Button>
+                  )}
                 </td>
               </tr>
             ))}

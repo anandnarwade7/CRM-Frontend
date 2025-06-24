@@ -25,21 +25,21 @@ const AdminDashboard = () => {
         {/* Sales Person */}
         <DashboardCard
           title="Sales Persons"
-          data={data?.sales || "-"}
+          data={data?.sales || "0"}
           img={DashboardSales}
         />
 
         {/* CRM Manager */}
         <DashboardCard
           title="CRM Managers"
-          data={data?.crm || "-"}
+          data={data?.crm || "0"}
           img={DashboardTime}
         />
 
         {/* Total Leads */}
         <DashboardCard
           title="Total Leads"
-          data={data?.leads || "-"}
+          data={data?.leads || "0"}
           img={DashboardList}
         />
       </div>
@@ -47,19 +47,19 @@ const AdminDashboard = () => {
         {/* Total Invoice Raised */}
         <DashboardCard
           title="Total Invoice Raised"
-          data={"-"}
+          data={"0"}
           img={DashboardLineUp}
         />
         {/* Total Amount Paid */}
         <DashboardCard
           title="Total Amount Paid"
-          data={"-"}
+          data={"0"}
           img={DashboardInvoice}
         />
         {/* Total Amount Paid */}
         <DashboardCard
           title="Total Unpaid Amount"
-          data={"-"}
+          data={"0"}
           img={DashboardInvoice}
         />
       </div>

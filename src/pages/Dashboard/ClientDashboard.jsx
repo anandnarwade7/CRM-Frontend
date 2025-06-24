@@ -8,12 +8,12 @@ const ClientDashboard = () => {
       {/* Total Paid Amount */}
       <DashboardCard
         title="Total Paid Amount"
-        data={"-"}
+        data={"0"}
         img={DashboardSales}
       />
 
       {/* Total Due Amount */}
-      <DashboardCard title="Total Due Amount" data={"-"} img={DashboardTime} />
+      <DashboardCard title="Total Due Amount" data={"0"} img={DashboardTime} />
     </div>
   );
 };

@@ -35,6 +35,13 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "../../ui/dialog";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "../../ui/tooltip";
+import { truncateName } from "../../../utils/utilityFunction";
 
 const Sidebar = () => {
   const location = useLocation();
@@ -153,6 +160,9 @@ const Sidebar = () => {
     navigate("/");
   };
 
+  // Getting the userName from the session storage
+  const userName = sessionStorage.getItem("userName");
+
   return (
     <>
       <aside className="w-64 h-screen bg-white fixed top-0 left-0 flex flex-col">
@@ -162,9 +172,20 @@ const Sidebar = () => {
         <Separator className="mb-4" />
 
         <div className="mx-4">
-          <Badge className="bg-main text-white px-4 py-2 text-base rounded-xl shadow-none hover:bg-main">
-            {user}
-          </Badge>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger>
+                <Badge className="bg-main text-white px-4 py-2 text-base rounded-xl shadow-none hover:bg-main text-start">
+                  {user} : {truncateName(userName)}
+                </Badge>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>
+                  {user} : {userName}
+                </p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
         </div>
 
         {/* Navigation Menu */}

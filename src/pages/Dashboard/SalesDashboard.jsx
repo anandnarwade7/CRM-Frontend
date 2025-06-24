@@ -15,7 +15,7 @@ const SalesDashboard = () => {
     <div className="flex items-center gap-4">
       {/* Sales Person */}
       <DashboardCard
-        data={data?.convertedLeads || "-"}
+        data={data?.convertedLeads || "0"}
         img={DashboardSales}
         title="Converted Leads"
       />
@@ -34,7 +34,7 @@ const SalesDashboard = () => {
       {/* Total Leads */}
 
       <DashboardCard
-        data={data?.totalLeads || "-"}
+        data={data?.totalLeads || "0"}
         img={DashboardList}
         title="Total Leads"
       />

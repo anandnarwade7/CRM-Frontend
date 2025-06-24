@@ -32,6 +32,8 @@ const FlatDetailsDialog = ({ unit, isDialogOpen, setIsDialogOpen }) => {
     isDialogOpen && !!unit?.id
   ); // disabled by default
 
+  console.log("Getting data of flat", data);
+
   const {
     register,
     handleSubmit,
@@ -46,7 +48,11 @@ const FlatDetailsDialog = ({ unit, isDialogOpen, setIsDialogOpen }) => {
   // Fetching the updated data and setting into the input fields
   useEffect(() => {
     if (data && isDialogOpen) {
-      setValue("area", data?.flatSize || "");
+      const removeSqFt = (data?.flatSize || "")
+        ?.replace(/sq\.?\s*ft\.?/gi, "")
+        ?.trim();
+      // setValue("area", data?.flatSize || "");
+      setValue("area", removeSqFt);
       setValue("flatType", (data.flatType || "").replace("sq.ft.", "").trim());
       setValue("status", data?.status);
       if (data?.clientEmail) {

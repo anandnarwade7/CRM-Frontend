@@ -30,7 +30,7 @@ export const formatDate = (milliseconds) => {
 
 // Function for adding ... at the end of the string
 export const truncateName = (str, maxLength = 10) => {
-  return str.length > maxLength ? str.slice(0, maxLength - 1) + "..." : str;
+  return str?.length > maxLength ? str?.slice(0, maxLength - 1) + "..." : str;
 };
 
 // Function for downloading the file
