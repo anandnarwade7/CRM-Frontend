@@ -1,5 +1,5 @@
 import { Download } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
+import { Card } from "../ui/card";
 
 const FileDownloadCard = ({ title, onClick }) => {
   return (

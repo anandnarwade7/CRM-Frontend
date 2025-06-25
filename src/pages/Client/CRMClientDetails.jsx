@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router";
 import { Back } from "../../assets";
 import { Controller, useForm } from "react-hook-form";
@@ -30,6 +30,21 @@ const CRMClientDetails = () => {
   const { clientId } = useParams();
   // Fetching Data as per Id
   const { data, isLoading, error } = useGetClientById(clientId);
+
+  // Re-uploading Feature
+  // const [reUploadFields, setReUploadFields] = useState({
+  //   agreementFile: false,
+  //   stampDutyFile: false,
+  //   tdsDocumentFile: false,
+  //   bankSanctionFile: false,
+  // });
+
+  // const toggleReUpload = (field) => {
+  //   setReUploadFields((prev) => ({
+  //     ...prev,
+  //     [field]: !prev[field],
+  //   }));
+  // };
 
   // Form Handling with Validation
   const {
@@ -180,10 +195,19 @@ const CRMClientDetails = () => {
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-20">
           {data?.agreement ? (
-            <FileDownloadCard
-              title="Download Agreement"
-              onClick={() => downloadFile(data?.agreement, "Agreement.pdf")}
-            />
+            <div>
+              <FileDownloadCard
+                title="Download Agreement"
+                onClick={() => downloadFile(data?.agreement, "Agreement.pdf")}
+              />
+              {/* <Button
+                className="mt-2 bg-main w-full"
+                onClick={() => toggleReUpload("agreementFile")}
+                type="button"
+              >
+                Re-Upload
+              </Button> */}
+            </div>
           ) : (
             <div>
               <FileUpload

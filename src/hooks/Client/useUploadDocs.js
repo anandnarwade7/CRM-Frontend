@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { uploadDocs } from "../../services/Client/clientService";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { fileUploadSchema } from "../../schemas/Client/client";
+// import { fileUploadSchema } from "../../schemas/Client/client";
 import { useToast } from "@/hooks/use-toast";
 
 export const useUploadDocs = (clientId) => {
@@ -15,7 +15,8 @@ export const useUploadDocs = (clientId) => {
     formState: { errors },
     reset,
   } = useForm({
-    resolver: zodResolver(fileUploadSchema),
+    // resolver: zodResolver(fileUploadSchema),
+    // resolver: zodResolver(),
     defaultValues: {
       agreementFile: undefined,
       stampDutyFile: undefined,

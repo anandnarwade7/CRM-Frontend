@@ -3,65 +3,66 @@ import SupportHeader from "../../components/custom/Support/SupportHeader";
 import { Button } from "../../components/ui/button";
 import Table from "../../components/custom/Table";
 import { useNavigate } from "react-router";
+import { useGetSupport } from "../../hooks/Support/useGetSupport";
+import TablePagination from "../../components/custom/TablePagination/TablePagination";
+import { useState } from "react";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "../../components/ui/tooltip";
+import { truncateName } from "../../utils/utilityFunction";
 
 const SalesSupport = () => {
+  const [page, setPage] = useState(1);
   const navigate = useNavigate();
-  const sampleData = [
-    {
-      id: 1,
-      type: "Subscription",
-      title: "Transaction Failed",
-      description: "Lorem ipsum...",
-      status: "Pending",
-    },
-    {
-      id: 2,
-      type: "Subscription",
-      title: "Transaction Failed",
-      description: "Lorem ipsum...",
-      status: "Pending",
-    },
-    {
-      id: 3,
-      type: "Subscription",
-      title: "Transaction Failed",
-      description: "Lorem ipsum...",
-      status: "Pending",
-    },
-    {
-      id: 4,
-      type: "Subscription",
-      title: "Transaction Failed",
-      description: "Lorem ipsum...",
-      status: "Pending",
-    },
-    {
-      id: 5,
-      type: "Subscription",
-      title: "Transaction Failed",
-      description: "Lorem ipsum...",
-      status: "Pending",
-    },
-  ];
+
+  const { supportData, totalPages, isLoading, error } = useGetSupport(page);
 
   const columns = [
     {
       header: "Sr. No",
       cell: ({ row }) => row.index + 1,
     },
-    { accessorKey: "type", header: "Type" },
-    { accessorKey: "title", header: "Title" },
-    { accessorKey: "description", header: "Description" },
+    { accessorKey: "name", header: "Name" },
+    { accessorKey: "email", header: "Email" },
+    { accessorKey: "phone", header: "Phone Number" },
+    { accessorKey: "department", header: "Department" },
     {
-      header: "Screenshot",
-      cell: ({ row }) => (
-        <Button size="icon" className="bg-gray-400 shadow-none">
-          <File />
-        </Button>
-      ),
+      // accessorKey: "query",
+      header: "Query",
+      cell: ({ row }) => {
+        return (
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger>
+                <p>{truncateName(row?.original?.query)}</p>
+              </TooltipTrigger>
+              <TooltipContent className="bg-gray-400 text-black max-w-xs break-words">
+                <p>{row?.original?.query}</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        );
+      },
     },
-    { accessorKey: "status", header: "Status" },
+    {
+      // accessorKey: "status",
+      header: "Status",
+      cell: ({ row }) => {
+        const status = row?.original?.status;
+        const lowerStatus = status == "PENDING" ? "Pending" : status;
+        return <p>{lowerStatus}</p>;
+      },
+    },
   ];
+
+  if (isLoading) return <p>Loading....</p>;
+
+  if (error)
+    return <p className="text-red-500">Failed to fetch : {error?.message}</p>;
+
   return (
     <>
       <div className="flex items-center justify-between">
@@ -74,8 +75,9 @@ const SalesSupport = () => {
         </Button>
       </div>
       <div>
-        <Table data={sampleData} columns={columns} />
+        <Table data={supportData} columns={columns} />
       </div>
+      <TablePagination totalPages={totalPages} page={page} setPage={setPage} />
     </>
   );
 };
