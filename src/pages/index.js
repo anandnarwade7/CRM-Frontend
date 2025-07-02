@@ -41,6 +41,7 @@ import NotFound from "./NotFound/NotFound";
 // Support
 import Support from "./Support/Support";
 import SalesSupportRequest from "./Support/SalesSupportRequest";
+import SupportChat from "./Support/SupportChat";
 
 // Booked Flat
 import BookedFlats from "./Booked Flats/BookedFlats";
@@ -72,4 +73,5 @@ export {
   Support,
   SalesSupportRequest,
   BookedFlats,
+  SupportChat,
 };

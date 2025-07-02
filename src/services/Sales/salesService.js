@@ -1,6 +1,7 @@
 import axios from "axios";
 import { BASE_URL } from "../../utils/constant";
 import axiosInstance from "../axiosInstance";
+import { data } from "react-router";
 
 // Service for add the new User.
 export const addSalesPerson = async (userId, formData) => {
@@ -25,6 +26,8 @@ export const fetchUsers = async (role, page = 1) => {
         page,
       },
     });
+    console.log("USERS DATA",response?.data);
+
     return response?.data;
   } catch (error) {
     console.log("Error Fetching Users", error);
@@ -40,6 +43,7 @@ export const fetchUserPageCount = async (role) => {
   try {
     const response = await axiosInstance.get(`/user/getCountByRole/${role}`);
 
+    console.log("PAGE COUNT", response?.data);
     return response?.data;
   } catch (error) {
     console.log("Error while fetching the page size of the user", error);

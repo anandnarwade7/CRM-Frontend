@@ -17,11 +17,13 @@ import {
 import { useUserRole } from "../../../hooks/use-userrole";
 import Table from "../Table";
 import TablePagination from "../TablePagination/TablePagination";
+import { getTableIndex } from "../../../utils/utilityFunction";
 
 const ClientTable = () => {
   const navigate = useNavigate();
   const userRole = useUserRole();
   const [page, setPage] = useState(1);
+  const { startingIndex } = getTableIndex(page);
 
   // const columns = [
   //   { header: "Id", cell: ({ row }) => row.index + 1 },
@@ -96,7 +98,7 @@ const ClientTable = () => {
   // ];
 
   const baseColumns = [
-    { header: "Sr. No", cell: ({ row }) => row.index + 1 },
+    { header: "Sr. No", cell: ({ row }) => startingIndex + row?.index + 1 },
     { header: "Lead Name", accessorKey: "leadName" },
     {
       header: "Mobile Number",

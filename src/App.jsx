@@ -24,6 +24,7 @@ import {
   SalesPerson,
   SalesSupportRequest,
   Support,
+  SupportChat,
   UpdateSqFt,
 } from "./pages";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -159,6 +160,10 @@ const router = createBrowserRouter([
           {
             path: "/app/support-raise",
             element: <SalesSupportRequest />,
+          },
+          {
+            path: "/app/chat",
+            element: <SupportChat />,
           },
           // Booked Flats
           {

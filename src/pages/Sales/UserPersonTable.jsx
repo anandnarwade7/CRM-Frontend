@@ -1,4 +1,4 @@
-import { Pencil } from "lucide-react";
+import { Loader2, Pencil } from "lucide-react";
 import { Button } from "../../components/ui/button";
 import { useState } from "react";
 import UserTable from "../../components/custom/Users/UserTable";
@@ -8,12 +8,13 @@ import { useActionUser } from "../../hooks/Sales/useActionUser";
 import UserPagination from "../../components/custom/Users/UserPagination";
 import { useLastPathSegment } from "../../hooks/use-lastpathsegment";
 import Table from "../../components/custom/Table";
+import TablePagination from "../../components/custom/TablePagination/TablePagination";
+import { getTableIndex } from "../../utils/utilityFunction";
 
 const UserPersonTable = () => {
   const [page, setPage] = useState(1);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedData, setSelectedRowData] = useState(null);
-  const pageSize = 1;
 
   // Custom Hook for Extracting the last part of the url
   const lastSegment = useLastPathSegment();
@@ -21,18 +22,10 @@ const UserPersonTable = () => {
   const user = lastSegment === "sales-person" ? "SALES" : "CRM";
 
   // Custom Hook for getting users data
-  const {
-    isLoading,
-    isError,
-    data,
-    error,
-    totalCount,
-    isCountLoading,
-    isCountError,
-  } = useGetUsers(user, page);
+  const { isLoading, data, error, totalCount, isCountLoading, isCountError } =
+    useGetUsers(user, page);
 
-  // Calculating total number of pages
-  const totalPages = totalCount ? Math.ceil(totalCount / pageSize) : 0;
+  const { startingIndex } = getTableIndex(page);
 
   // Custom Hook for handling Action (Block and UnBlock)
   const { handleAction } = useActionUser();
@@ -40,7 +33,7 @@ const UserPersonTable = () => {
   const columns = [
     {
       header: "Sr. No",
-      cell: ({ row }) => row.index + 1,
+      cell: ({ row }) => startingIndex + row?.index + 1,
     },
     { header: "Name", accessorKey: "name" },
     { header: "Phone Number", accessorKey: "mobile" },
@@ -79,19 +72,27 @@ const UserPersonTable = () => {
     },
   ];
 
-  const handleNextPage = () => {
-    if (page < totalPages) setPage((prev) => prev + 1);
-  };
+  // const handleNextPage = () => {
+  //   if (page < totalPages) setPage((prev) => prev + 1);
+  // };
 
-  const handlePreviousPage = () => {
-    if (page > 1) setPage((prev) => prev - 1);
-  };
+  // const handlePreviousPage = () => {
+  //   if (page > 1) setPage((prev) => prev - 1);
+  // };
 
   if (
     data === "No users found for the role: CRM" ||
     data === "No users found for the role: SALES"
   ) {
     return <p className="text-center my-4 ">No Users Found</p>;
+  }
+
+  if (data?.length === 0) {
+    return <p>No Users Found</p>;
+  }
+
+  if (isLoading) {
+    return <Loader2 className="w-6 h-6 animate-spin" />;
   }
 
   if (error) {
@@ -107,12 +108,13 @@ const UserPersonTable = () => {
         data={data || []}
       /> */}
       <Table columns={columns} data={data || []} />
-      <UserPagination
+      {/* <UserPagination
         handlePreviousPage={handlePreviousPage}
         handleNextPage={handleNextPage}
         page={page}
         totalPages={totalPages}
-      />
+      /> */}
+      <TablePagination totalPages={totalCount} page={page} setPage={setPage} />
       <UserUpdateDialog
         open={dialogOpen}
         onClose={setDialogOpen}

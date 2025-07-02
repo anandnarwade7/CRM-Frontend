@@ -6,14 +6,17 @@ import { useNavigate } from "react-router";
 import Table from "../Table";
 import { useGetProjects } from "../../../hooks/Projects/useGetProjects";
 import TablePagination from "../TablePagination/TablePagination";
+import { getTableIndex } from "../../../utils/utilityFunction";
 
 const ProjectTableContainer = () => {
   const navigate = useNavigate();
   const [page, setPage] = useState(1);
   const { projectData, totalPages, isLoading, error } = useGetProjects(page);
+  // Fetching the indexing
+  const { startingIndex } = getTableIndex(page);
 
   const columns = [
-    { header: "Sr. No", cell: ({ row }) => row.index + 1 },
+    { header: "Sr. No", cell: ({ row }) => startingIndex + row?.index + 1 },
     { accessorKey: "propertyName", header: "Property Name" },
     { accessorKey: "address", header: "Address" },
     { accessorKey: "totalTowers", header: "Total Towers" },

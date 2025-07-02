@@ -12,18 +12,25 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "../../components/ui/tooltip";
-import { truncateName } from "../../utils/utilityFunction";
+import { getTableIndex, truncateName } from "../../utils/utilityFunction";
+import { ChatIcon } from "../../assets";
 
-const SalesSupport = () => {
+const SalesCRMSupport = () => {
   const [page, setPage] = useState(1);
   const navigate = useNavigate();
 
+  const { startingIndex } = getTableIndex(page);
+
   const { supportData, totalPages, isLoading, error } = useGetSupport(page);
+
+  function handleChatClick(supportId, name) {
+    navigate("/app/chat", { state: { supportId, name } });
+  }
 
   const columns = [
     {
       header: "Sr. No",
-      cell: ({ row }) => row.index + 1,
+      cell: ({ row }) => startingIndex + row?.index + 1,
     },
     { accessorKey: "name", header: "Name" },
     { accessorKey: "email", header: "Email" },
@@ -56,6 +63,26 @@ const SalesSupport = () => {
         return <p>{lowerStatus}</p>;
       },
     },
+    {
+      header: "Chat",
+      cell: ({ row }) => {
+        return (
+          // <Link to={`/app/chat/${row?.original?.userId}`}>
+          //   <img src={ChatIcon} alt="chatIcon" />
+          // </Link>
+          <Button
+            variant="secondary"
+            size="icon"
+            className="size-8"
+            onClick={() =>
+              handleChatClick(row?.original?.id, row?.original?.name)
+            }
+          >
+            <img src={ChatIcon} alt="chatIcon" />
+          </Button>
+        );
+      },
+    },
   ];
 
   if (isLoading) return <p>Loading....</p>;
@@ -74,12 +101,22 @@ const SalesSupport = () => {
           Add Request
         </Button>
       </div>
-      <div>
-        <Table data={supportData} columns={columns} />
-      </div>
-      <TablePagination totalPages={totalPages} page={page} setPage={setPage} />
+      {supportData?.length === 0 ? (
+        <p>No Data Available</p>
+      ) : (
+        <>
+          <div>
+            <Table data={supportData} columns={columns} />
+          </div>
+          <TablePagination
+            totalPages={totalPages}
+            page={page}
+            setPage={setPage}
+          />
+        </>
+      )}
     </>
   );
 };
 
-export default SalesSupport;
+export default SalesCRMSupport;

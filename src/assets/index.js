@@ -41,8 +41,12 @@ import NotificationIcon from "./Icons/notification.svg";
 import Back from "./Icons/back.svg";
 import Link from "./Icons/link.svg";
 
+// Confirmation booking
 import ConfirmedBooking from "./Icons/confirmedBooking.svg";
 import ConfirmedBookingBg from "./Icons/confirmedBookingBg.svg";
+
+// Support
+import ChatIcon from "./Icons/chat.svg";
 
 export {
   LoginImage,
@@ -78,4 +82,5 @@ export {
   CRMLogo,
   ConfirmedBooking,
   ConfirmedBookingBg,
+  ChatIcon,
 };

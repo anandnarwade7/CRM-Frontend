@@ -8,6 +8,7 @@ import { useUserRole } from "../../../hooks/use-userrole";
 import { useGetSalesLeads } from "../../../hooks/Leads/useGetSalesLeads";
 import { useUserId } from "../../../hooks/use-user-id";
 import TablePagination from "../TablePagination/TablePagination";
+import { getTableIndex } from "../../../utils/utilityFunction";
 
 const LeadsTable = () => {
   const [page, setPage] = useState(1);
@@ -19,6 +20,8 @@ const LeadsTable = () => {
     userRole === "ADMIN"
       ? useGetLeads(page, status)
       : useGetSalesLeads(userId, 1);
+
+  const { startingIndex } = getTableIndex(page);
 
   console.log("STatus in the Redux", status);
 
@@ -46,7 +49,7 @@ const LeadsTable = () => {
           <tbody>
             {leadsData.map((lead, index) => (
               <tr key={lead.id} className="border-b text-[#757575]">
-                <td className="p-3">{index + 1}</td>
+                <td className="p-3">{startingIndex + index + 1}</td>
                 <td className="p-3">{lead?.name}</td>
                 <td className="p-3">{lead?.mobileNumber}</td>
                 <td className="p-3">{lead?.email}</td>

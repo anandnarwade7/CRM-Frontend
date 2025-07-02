@@ -51,3 +51,11 @@ export const downloadFile = async (fileUrl, fileName) => {
     console.log("Error Download File", error);
   }
 };
+
+// Showing Correct Table Index
+export const getTableIndex = (page) => {
+  const pageSize = 10;
+  const startingIndex = (page - 1) * pageSize;
+
+  return { startingIndex };
+};

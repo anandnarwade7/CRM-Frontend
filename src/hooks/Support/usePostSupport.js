@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { supportSchema } from "../../schemas/Support/support";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { salesRaiseSupport } from "../../services/Support/supportService";
 import { useToast } from "@/hooks/use-toast";
 import { useNavigate } from "react-router";
@@ -19,11 +19,16 @@ export const usePostSupport = (userId) => {
 
   const { toast } = useToast();
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
   const mutation = useMutation({
     mutationFn: (data) => salesRaiseSupport(data, userId),
     onSuccess: (data) => {
       if (data) {
+        // Invalidate all queries with the key "getAdminSupport" to refresh both Sales and CRM tables
+        queryClient.invalidateQueries({
+          queryKey: ["getAdminSupport"],
+        });
         toast({
           title: "Success!",
           description: "Support request submitted successfully.",
