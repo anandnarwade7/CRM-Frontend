@@ -23,6 +23,7 @@
     "@radix-ui/react-toast": "^1.2.5",
     "@radix-ui/react-tooltip": "^1.1.8",
     "@reduxjs/toolkit": "^2.5.1",
+    "@stomp/stompjs": "^7.0.0-beta3",
     "@tanstack/react-query": "^5.66.0",
     "@tanstack/react-table": "^8.20.6",
     "axios": "^1.7.9",
@@ -39,7 +40,10 @@
     "react-hook-form": "^7.54.2",
     "react-redux": "^9.2.0",
     "react-router": "^7.1.5",
+    "react-stomp": "^5.1.0",
     "socket.io-client": "^2.4.0",
+    "sockjs": "^0.3.24",
+    "sockjs-client": "^1.6.1",
     "tailwind-merge": "^3.0.2",
     "tailwindcss-animate": "^1.0.7",
     "zod": "^3.24.1"

@@ -1,21 +1,25 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Input } from "../../ui/input";
 import { Button } from "../../ui/button";
-import { Paperclip, Send } from "lucide-react";
-import io from "socket.io-client";
+import { Send } from "lucide-react";
+// import io from "socket.io-client";
 import { useUserId } from "../../../hooks/use-user-id";
 import { useToast } from "@/hooks/use-toast";
-const socket = io("http://localhost:9092");
+import useChatSocket from "../../../hooks/Support/useChatSocket";
+// const socket = io("http://localhost:9092");
 
 const SupportChatMain = ({ supportId }) => {
   const [message, setMessage] = useState("");
-  const messageEndRef = useRef(null);
-  const [chat, setChat] = useState([]);
   const { toast } = useToast();
+  const chatContainerRef = useRef(null);
+  // const [chat, setChat] = useState([]);
+  // const messageEndRef = useRef(null);
 
   const userId = useUserId();
 
-  const socketRef = useRef(null);
+  const { messages, sendMessage } = useChatSocket(supportId);
+
+  // const socketRef = useRef(null);
 
   // 1 st comment
   // useEffect(() => {
@@ -58,33 +62,33 @@ const SupportChatMain = ({ supportId }) => {
   // }, []);
 
   // 2nd comment
-  useEffect(() => {
-    socket.connect();
+  // useEffect(() => {
+  //   socket.connect();
 
-    socket.on("connect", () => {
-      console.log("Socet Connected");
+  //   socket.on("connect", () => {
+  //     console.log("Socet Connected");
 
-      socket.emit("getChatsBySupportId", { supportId });
-    });
+  //     socket.emit("getChatsBySupportId", { supportId });
+  //   });
 
-    socket.on(`chat-${supportId}`, (receivedMessages) => {
-      console.log("Get MSG", receivedMessages);
-      setChat(receivedMessages || []);
-    });
+  //   socket.on(`chat-${supportId}`, (receivedMessages) => {
+  //     console.log("Get MSG", receivedMessages);
+  //     setChat(receivedMessages || []);
+  //   });
 
-    socket.on(`new-chat-${supportId}`, (newMessage) => {
-      console.log("New chat received", newMessage); // ✅ must log
-      setChat([...newMessage]);
-    });
+  //   socket.on(`new-chat-${supportId}`, (newMessage) => {
+  //     console.log("New chat received", newMessage); // ✅ must log
+  //     setChat([...newMessage]);
+  //   });
 
-    socket.on("disconnect", () => {
-      console.warn("Socket disconnected");
-    });
+  //   socket.on("disconnect", () => {
+  //     console.warn("Socket disconnected");
+  //   });
 
-    return () => {
-      socket.disconnect(); // clean up on unmount
-    };
-  }, [supportId]);
+  //   return () => {
+  //     socket.disconnect(); // clean up on unmount
+  //   };
+  // }, [supportId]);
 
   // 3 rd comment
   // useEffect(() => {
@@ -136,18 +140,28 @@ const SupportChatMain = ({ supportId }) => {
       };
       console.log("ACTUAL DATA", data);
 
-      socket.emit("addChat", data);
+      // socket.emit("addChat", data);
       // socket.emit("chat-");
+      sendMessage(data);
       setMessage("");
       // settimeStamp(timestamps);
     }
   };
 
+  // useEffect(() => {
+  //   if (messageEndRef?.current) {
+  //     messageEndRef.current.scrollTop = messageEndRef.current.scrollHeight;
+  //   }
+  // }, [message]);
+
   useEffect(() => {
-    if (messageEndRef?.current) {
-      messageEndRef.current.scrollTop = messageEndRef.current.scrollHeight;
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTo({
+        top: chatContainerRef.current.scrollHeight,
+        behavior: "smooth",
+      });
     }
-  }, [chat]);
+  }, [messages]);
 
   const handleKeyPress = (e) => {
     if (e.key === "Enter") {
@@ -155,16 +169,14 @@ const SupportChatMain = ({ supportId }) => {
     }
   };
 
-  console.log("Frontend Chat msg", chat);
-
   return (
     <div>
       {/* Message Area */}
       <div
         className="flex flex-col gap-4 overflow-y-scroll mt-4 p-4 h-[66vh]"
-        ref={messageEndRef}
+        ref={chatContainerRef}
       >
-        {chat?.map((msg) => (
+        {messages?.map((msg) => (
           <div
             className={`flex ${
               msg?.userId == userId ? "justify-end" : "justify-start"
@@ -177,7 +189,7 @@ const SupportChatMain = ({ supportId }) => {
                   : "bg-white text-gray-800 rounded-bl-none shadow-sm"
               }`}
             >
-              <p className="text-sm leading-relaxed">{msg.chat}</p>
+              <p className="text-sm leading-relaxed">{msg.massages}</p>
             </div>
           </div>
         ))}

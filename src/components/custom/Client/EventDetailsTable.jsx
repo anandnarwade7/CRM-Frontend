@@ -18,17 +18,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../../ui/select";
-
-const columns = [
-  { key: "event", label: "Event" },
-  { key: "percentage", label: "Percentage" },
-  { key: "basePrice", label: "Base Price" },
-  { key: "gst", label: "GST" },
-  { key: "invoiceDate", label: "Invoice Date" },
-  { key: "dueDate", label: "Due Date" },
-  { key: "paymentDate", label: "Payment Date" },
-  { key: "paidBy", label: "Paid By" },
-];
+import { useSendMail } from "../../../hooks/Support/useSendMail";
 
 // const fileFields = ["statusReport", "architectLetter", "invoice", "receipt"];
 
@@ -58,6 +48,26 @@ const EventDetailsTable = () => {
     isSaving,
     isDeleting,
   } = useEventDetails(clientId, userId);
+
+  const showNotificationColumn = rows?.some(
+    (row) => row?.eventId !== null && row?.eventId !== undefined
+  );
+
+  const columns = [
+    { key: "event", label: "Event" },
+    { key: "percentage", label: "Percentage" },
+    { key: "basePrice", label: "Base Price" },
+    { key: "gst", label: "GST" },
+    { key: "invoiceDate", label: "Invoice Date" },
+    { key: "dueDate", label: "Due Date" },
+    { key: "paymentDate", label: "Payment Date" },
+    { key: "paidBy", label: "Paid By" },
+    ...(showNotificationColumn
+      ? [{ key: "notification", label: "Notification" }]
+      : []),
+  ];
+
+  const { handleSendMail, isSending } = useSendMail();
 
   console.log("Event Detail Single Row", rows);
 
@@ -145,6 +155,20 @@ const EventDetailsTable = () => {
                           </SelectContent>
                         </Select>
                       </>
+                    ) : showNotificationColumn && col.key === "notification" ? (
+                      <>
+                        <Button
+                          className="bg-main"
+                          onClick={() => handleSendMail(row?.eventId, clientId)}
+                          disabled={isSending}
+                        >
+                          {isSending ? (
+                            <Loader2 className="animate-spin" size={6} />
+                          ) : (
+                            "Send Email"
+                          )}
+                        </Button>
+                      </>
                     ) : (
                       <>
                         <Input
@@ -163,6 +187,7 @@ const EventDetailsTable = () => {
                     )}
                   </td>
                 ))}
+
                 {fileFields.map((field) => (
                   <td
                     key={field?.key}

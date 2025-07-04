@@ -66,6 +66,8 @@ export const usePostSalesLeads = (leadId, data, isStatusOpen) => {
     console.log("CUSTOM FIELDS", data?.customFields);
 
     const comment = data?.note;
+    console.log("Data Note", data?.note);
+
     const status = data?.status;
     const dueDate = data?.dueDate ? new Date(data?.dueDate).getTime() : 0;
 

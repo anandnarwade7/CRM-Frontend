@@ -37,3 +37,16 @@ export const fetchUserDetails = async () => {
     throw new Error(error);
   }
 };
+
+// Service for sending mail
+export const sendMail = async (eventId, clientId) => {
+  try {
+    const response = await axiosInstance.post(
+      `/event/sendMailToClient/${eventId}/${clientId}`
+    );
+    console.log("Mail Send Successfully");
+    return response?.data;
+  } catch (error) {
+    throw new Error(error);
+  }
+};

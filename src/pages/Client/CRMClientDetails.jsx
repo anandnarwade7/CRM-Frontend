@@ -32,19 +32,19 @@ const CRMClientDetails = () => {
   const { data, isLoading, error } = useGetClientById(clientId);
 
   // Re-uploading Feature
-  // const [reUploadFields, setReUploadFields] = useState({
-  //   agreementFile: false,
-  //   stampDutyFile: false,
-  //   tdsDocumentFile: false,
-  //   bankSanctionFile: false,
-  // });
+  const [reUploadFields, setReUploadFields] = useState({
+    agreementFile: false,
+    stampDutyFile: false,
+    tdsDocumentFile: false,
+    bankSanctionFile: false,
+  });
 
-  // const toggleReUpload = (field) => {
-  //   setReUploadFields((prev) => ({
-  //     ...prev,
-  //     [field]: !prev[field],
-  //   }));
-  // };
+  const toggleReUpload = (field) => {
+    setReUploadFields((prev) => ({
+      ...prev,
+      [field]: !prev[field],
+    }));
+  };
 
   // Form Handling with Validation
   const {
@@ -194,19 +194,19 @@ const CRMClientDetails = () => {
           </Button>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-20">
-          {data?.agreement ? (
+          {data?.agreement && !reUploadFields.agreementFile ? (
             <div>
               <FileDownloadCard
                 title="Download Agreement"
                 onClick={() => downloadFile(data?.agreement, "Agreement.pdf")}
               />
-              {/* <Button
+              <Button
                 className="mt-2 bg-main w-full"
                 onClick={() => toggleReUpload("agreementFile")}
                 type="button"
               >
                 Re-Upload
-              </Button> */}
+              </Button>
             </div>
           ) : (
             <div>
@@ -222,16 +222,35 @@ const CRMClientDetails = () => {
                   {filesErrors?.agreementFile?.message}
                 </p>
               )}
+              {data?.agreement && (
+                <Button
+                  className="mt-2 text-sm text-gray-600 underline"
+                  variant="ghost"
+                  onClick={() => toggleReUpload("agreementFile")}
+                  type="button"
+                >
+                  Cancel Re-Upload
+                </Button>
+              )}
             </div>
           )}
 
-          {data?.stampDuty ? (
-            <FileDownloadCard
-              title="Download Stamp duty"
-              onClick={() =>
-                downloadFile(data?.stampDuty, "Stamp Duty Document.pdf")
-              }
-            />
+          {data?.stampDuty && !reUploadFields.stampDutyFile ? (
+            <div>
+              <FileDownloadCard
+                title="Download Stamp duty"
+                onClick={() =>
+                  downloadFile(data?.stampDuty, "Stamp Duty Document.pdf")
+                }
+              />
+              <Button
+                className="mt-2 bg-main w-full"
+                onClick={() => toggleReUpload("stampDutyFile")}
+                type="button"
+              >
+                Re-Upload
+              </Button>
+            </div>
           ) : (
             <div>
               <FileUpload
@@ -246,14 +265,33 @@ const CRMClientDetails = () => {
                   {filesErrors?.stampDutyFile?.message}
                 </p>
               )}
+              {data?.stampDuty && (
+                <Button
+                  className="mt-2 text-sm text-gray-600 underline"
+                  variant="ghost"
+                  onClick={() => toggleReUpload("stampDutyFile")}
+                  type="button"
+                >
+                  Cancel Re-Upload
+                </Button>
+              )}
             </div>
           )}
 
-          {data?.tdsDoc ? (
-            <FileDownloadCard
-              title="Download TDS Document"
-              onClick={() => downloadFile(data?.tdsDoc, "TDS Document.pdf")}
-            />
+          {data?.tdsDoc && !reUploadFields.tdsDocumentFile ? (
+            <div>
+              <FileDownloadCard
+                title="Download TDS Document"
+                onClick={() => downloadFile(data?.tdsDoc, "TDS Document.pdf")}
+              />
+              <Button
+                className="mt-2 bg-main w-full"
+                onClick={() => toggleReUpload("tdsDocumentFile")}
+                type="button"
+              >
+                Re-Upload
+              </Button>
+            </div>
           ) : (
             <div>
               <FileUpload
@@ -268,16 +306,35 @@ const CRMClientDetails = () => {
                   {filesErrors?.tdsDocFile?.message}
                 </p>
               )}
+              {data?.tdsDoc && (
+                <Button
+                  className="mt-2 text-sm text-gray-600 underline"
+                  variant="ghost"
+                  onClick={() => toggleReUpload("tdsDocumentFile")}
+                  type="button"
+                >
+                  Cancel Re-Upload
+                </Button>
+              )}
             </div>
           )}
 
-          {data?.bankSanction ? (
-            <FileDownloadCard
-              title="Download Bank Sanction"
-              onClick={() =>
-                downloadFile(data?.bankSanction, "Bank Sanction.pdf")
-              }
-            />
+          {data?.bankSanction && !reUploadFields.bankSanctionFile ? (
+            <div>
+              <FileDownloadCard
+                title="Download Bank Sanction"
+                onClick={() =>
+                  downloadFile(data?.bankSanction, "Bank Sanction.pdf")
+                }
+              />
+              <Button
+                className="mt-2 bg-main w-full"
+                onClick={() => toggleReUpload("bankSanctionFile")}
+                type="button"
+              >
+                Re-Upload
+              </Button>
+            </div>
           ) : (
             <div>
               <FileUpload
@@ -291,6 +348,16 @@ const CRMClientDetails = () => {
                 <p className="text-red-500 text-sm">
                   {filesErrors?.bankSanctionFile?.message}
                 </p>
+              )}
+              {data?.bankSanction && (
+                <Button
+                  className="mt-2 text-sm text-gray-600 underline"
+                  variant="ghost"
+                  onClick={() => toggleReUpload("bankSanctionFile")}
+                  type="button"
+                >
+                  Cancel Re-Upload
+                </Button>
               )}
             </div>
           )}

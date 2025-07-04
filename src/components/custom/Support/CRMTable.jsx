@@ -9,15 +9,24 @@ import {
   TooltipTrigger,
 } from "../../ui/tooltip";
 import { truncateName } from "../../../utils/utilityFunction";
+import { Button } from "../../ui/button";
+import { ChatIcon } from "../../../assets";
+import { useNavigate } from "react-router";
 
 const CRMTable = () => {
   const [page, setPage] = useState(1);
   const { otherSupportData, otherTotalPages, isLoading, error } =
     useGetAdminSupport(page);
 
+  const navigate = useNavigate();
+
   // Filtering out the CRM Data separataly
 
   const crmData = otherSupportData?.filter((item) => item?.role === "CRM");
+
+  function handleChatClick(supportId, name) {
+    navigate("/app/chat", { state: { supportId, name } });
+  }
 
   const crmColumns = [
     { header: "Sr. No", cell: ({ row }) => row.index + 1 },
@@ -47,6 +56,26 @@ const CRMTable = () => {
       },
     },
     { header: "Status", accessorKey: "status" },
+    {
+      header: "Chat",
+      cell: ({ row }) => {
+        return (
+          // <Link to={`/app/chat/${row?.original?.userId}`}>
+          //   <img src={ChatIcon} alt="chatIcon" />
+          // </Link>
+          <Button
+            variant="secondary"
+            size="icon"
+            className="size-8"
+            onClick={() =>
+              handleChatClick(row?.original?.id, row?.original?.name)
+            }
+          >
+            <img src={ChatIcon} alt="chatIcon" />
+          </Button>
+        );
+      },
+    },
   ];
 
   if (isLoading) <p>Loading...</p>;
