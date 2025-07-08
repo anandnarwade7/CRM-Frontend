@@ -76,7 +76,7 @@ const CRMDashboard = () => {
   return (
     <>
       <>
-        {/* <Notification styles={"mr-6"} /> */}
+        <Notification styles={"mr-6"} />
 
         <div className="flex items-center gap-4 mt-4">
           {/* Sales Person */}

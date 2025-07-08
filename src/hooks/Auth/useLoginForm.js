@@ -33,6 +33,7 @@ export const useLoginForm = () => {
         sessionStorage.setItem("role", data?.role);
         sessionStorage.setItem("token", data?.token);
         sessionStorage.setItem("userName", data?.name);
+        sessionStorage.setItem("email", data?.email);
         navigate("/app/dashboard");
       }
     },

@@ -2,11 +2,11 @@ import {
   DashboardInvoice,
   DashboardLineUp,
   DashboardList,
-  DashboardSales,
   DashboardTime,
   DashboardUserAdmin,
 } from "../../assets";
 import DashboardCard from "../../components/custom/DashboardCard";
+import Notification from "../../components/custom/Notification";
 import { useAdminDashboard } from "../../hooks/Dashboard/useAdminDashboard";
 
 const SuperAdminDashboard = () => {
@@ -24,6 +24,8 @@ const SuperAdminDashboard = () => {
   return (
     <>
       <>
+        <Notification styles="mr-6 mb-4" />
+
         <div className="flex items-center gap-4">
           {/* Sales Person */}
           <DashboardCard

@@ -7,6 +7,7 @@ import {
 } from "../../assets/index";
 import { useAdminDashboard } from "../../hooks/Dashboard/useAdminDashboard";
 import DashboardCard from "../../components/custom/DashboardCard";
+import Notification from "../../components/custom/Notification";
 
 const AdminDashboard = () => {
   const { isLoading, isError, data, error } = useAdminDashboard();
@@ -21,6 +22,8 @@ const AdminDashboard = () => {
 
   return (
     <section>
+      <Notification styles="mr-6 mb-4" />
+
       <div className="flex items-center gap-4">
         {/* Sales Person */}
         <DashboardCard
