@@ -49,6 +49,8 @@ const EventDetailsTable = () => {
     isDeleting,
   } = useEventDetails(clientId, userId);
 
+  console.log("EVENT ROWS", rows);
+
   const showNotificationColumn = rows?.some(
     (row) => row?.eventId !== null && row?.eventId !== undefined
   );
@@ -156,19 +158,25 @@ const EventDetailsTable = () => {
                         </Select>
                       </>
                     ) : showNotificationColumn && col.key === "notification" ? (
-                      <>
-                        <Button
-                          className="bg-main"
-                          onClick={() => handleSendMail(row?.eventId, clientId)}
-                          disabled={isSending}
-                        >
-                          {isSending ? (
-                            <Loader2 className="animate-spin" size={6} />
-                          ) : (
-                            "Send Email"
-                          )}
-                        </Button>
-                      </>
+                      row?.eventId === null ? (
+                        <span>-</span>
+                      ) : (
+                        <>
+                          <Button
+                            className="bg-main"
+                            onClick={() =>
+                              handleSendMail(row?.eventId, clientId)
+                            }
+                            disabled={isSending}
+                          >
+                            {isSending ? (
+                              <Loader2 className="animate-spin" size={6} />
+                            ) : (
+                              "Send Email"
+                            )}
+                          </Button>
+                        </>
+                      )
                     ) : (
                       <>
                         <Input

@@ -57,7 +57,7 @@ const Login = () => {
                       <SelectItem value="ADMIN">Admin</SelectItem>
                       <SelectItem value="SALES">Sales Person</SelectItem>
                       <SelectItem value="CRM">CR Manager</SelectItem>
-                      <SelectItem value="CLIENT">Client</SelectItem>
+                      {/* <SelectItem value="CLIENT">Client</SelectItem> */}
                     </SelectContent>
                   </Select>
                   {errors.role && (

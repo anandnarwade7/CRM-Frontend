@@ -19,6 +19,7 @@ export const useCreateInventory = (userId) => {
       totalTower: "",
       towers: [],
     },
+    mode: "onChange",
   });
   const { toast } = useToast();
   const navigate = useNavigate();
@@ -32,7 +33,10 @@ export const useCreateInventory = (userId) => {
     watch,
     getValues,
     trigger,
+    clearErrors,
   } = formMethods;
+
+  console.log("Inventory Errors", errors);
 
   const { fields, append, remove } = useFieldArray({
     control,
@@ -74,6 +78,11 @@ export const useCreateInventory = (userId) => {
   const createProjectMutation = useMutation({
     mutationKey: ["createProject"],
     mutationFn: (payload) => createProject(userId, payload),
+  });
+
+  const createTowerMutation = useMutation({
+    mutationKey: ["createTower"],
+    mutationFn: (payload) => createTowers(payload),
   });
 
   const onSubmit = async (data) => {
@@ -135,6 +144,7 @@ export const useCreateInventory = (userId) => {
         //   }
         // }
 
+        // Add custom layout if it exists
         if (tower.customLayout.file) {
           formData.append(
             `${tower?.customLayout?.name}[${index}]`,
@@ -143,7 +153,7 @@ export const useCreateInventory = (userId) => {
         }
       });
 
-      const towerResponse = await createTowers(formData);
+      const towerResponse = await createTowerMutation.mutateAsync(formData);
 
       toast({
         title: "Success",
@@ -190,6 +200,7 @@ export const useCreateInventory = (userId) => {
     getValues,
     fields,
     trigger,
-    isLoading: createProjectMutation.isPending,
+    clearErrors,
+    isLoading: createProjectMutation.isPending || createTowerMutation.isPending,
   };
 };

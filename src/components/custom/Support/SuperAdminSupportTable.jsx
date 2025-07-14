@@ -1,7 +1,7 @@
-import { useState } from "react";
 import Table from "../Table";
 import { useGetAdminSupport } from "../../../hooks/Support/useGetAdminSupport";
-import TablePagination from "../TablePagination/TablePagination";
+import { useState } from "react";
+import { useNavigate } from "react-router";
 import {
   Tooltip,
   TooltipContent,
@@ -11,28 +11,24 @@ import {
 import { truncateName } from "../../../utils/utilityFunction";
 import { Button } from "../../ui/button";
 import { ChatIcon } from "../../../assets";
-import { useNavigate } from "react-router";
-import { useSupportAction } from "../../../hooks/Support/useSupportAction";
 import { Loader2 } from "lucide-react";
+import TablePagination from "../TablePagination/TablePagination";
+import { useSupportAction } from "../../../hooks/Support/useSupportAction";
 
-const CRMTable = () => {
+const SuperAdminSupportTable = () => {
   const [page, setPage] = useState(1);
-  const { otherSupportData, otherTotalPages, isLoading, error } =
+  const { superAdminSupportData, superAdminTotalPages, isLoading, error } =
     useGetAdminSupport(page);
 
   const { handleSupportAction, loadingAction } = useSupportAction();
 
   const navigate = useNavigate();
 
-  // Filtering out the CRM Data separataly
-
-  const crmData = otherSupportData?.filter((item) => item?.role === "CRM");
-
   function handleChatClick(supportId, name) {
     navigate("/app/chat", { state: { supportId, name } });
   }
 
-  const crmColumns = [
+  const columns = [
     { header: "Sr. No", cell: ({ row }) => row.index + 1 },
     { header: "Name", accessorKey: "name" },
     {
@@ -64,9 +60,6 @@ const CRMTable = () => {
       header: "Chat",
       cell: ({ row }) => {
         return (
-          // <Link to={`/app/chat/${row?.original?.userId}`}>
-          //   <img src={ChatIcon} alt="chatIcon" />
-          // </Link>
           <Button
             variant="secondary"
             size="icon"
@@ -126,27 +119,29 @@ const CRMTable = () => {
     },
   ];
 
-  if (isLoading) <p>Loading...</p>;
+  if (isLoading) {
+    return <Loader2 className="animate-spin" size={6} />;
+  }
 
-  if (error) <p>Error fetching data</p>;
+  if (error) return <p className="text-red-500 text-sm">Error Loading Data</p>;
 
   return (
     <div>
-      {crmData?.length == 0 ? (
+      {superAdminSupportData?.length == 0 ? (
         <p>No support request are available</p>
       ) : (
-        <div className="w-full max-w-[62rem]">
-          <Table data={crmData || []} columns={crmColumns} />
+        <div className="max-w-full w-[63rem]">
+          <Table data={superAdminSupportData || []} columns={columns} />
         </div>
       )}
 
-      {/* <TablePagination
-        totalPages={otherTotalPages}
+      <TablePagination
+        totalPages={superAdminTotalPages}
         page={page}
         setPage={setPage}
-      /> */}
+      />
     </div>
   );
 };
 
-export default CRMTable;
+export default SuperAdminSupportTable;

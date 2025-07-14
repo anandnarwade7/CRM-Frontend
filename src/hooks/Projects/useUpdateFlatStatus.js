@@ -15,6 +15,8 @@ export const useUpdateFlatStatus = (userRole, flatId, onSuccessCallback) => {
     setValue,
     watch,
     reset,
+    trigger,
+    control,
   } = useForm({
     resolver: zodResolver(schema),
     defaultValues: {
@@ -24,6 +26,7 @@ export const useUpdateFlatStatus = (userRole, flatId, onSuccessCallback) => {
       flatType: "",
       flatInfo: "",
     },
+    mode: "onchange",
   });
 
   const { toast } = useToast();
@@ -64,27 +67,27 @@ export const useUpdateFlatStatus = (userRole, flatId, onSuccessCallback) => {
       }
     },
   });
-  const onSubmit = (data) => {
-    const payload = {};
-    console.log("Update Flat UI Payload", data);
+  const onSubmit = async (data) => {
+    try {
+      console.log("Update Flat UI Payload", data);
+      console.log("Submission errors", errors);
 
-    if (userRole === "ADMIN") {
-      payload.flatSize = data.area;
-      payload.flatType = data.flatType;
-      payload.flatInfo = data.flatInfo;
-    } else {
-      payload.clientEmail = data.clientEmail;
-      // payload.clientEmail = "ganesh@gmail.com";
+      const payload = {
+        status: data.status,
+        flatInfo: data.flatInfo || "",
+      };
 
-      // Include flatInfo for both CRM and SALES roles
-      if (data.flatInfo) {
-        payload.flatInfo = data.flatInfo;
+      if (userRole === "ADMIN") {
+        payload.flatSize = data.area;
+        payload.flatType = data.flatType;
+      } else if (userRole === "CRM" || userRole === "SALES") {
+        payload.clientEmail = data.clientEmail;
       }
+
+      await updateFlatStatusMutation.mutateAsync(payload);
+    } catch (error) {
+      console.error("Submission error:", error);
     }
-
-    payload.status = data.status;
-
-    updateFlatStatusMutation.mutate(payload);
   };
 
   return {
@@ -96,5 +99,7 @@ export const useUpdateFlatStatus = (userRole, flatId, onSuccessCallback) => {
     watch,
     isUpdating: updateFlatStatusMutation.isPending,
     resetForm: () => reset(),
+    trigger,
+    control,
   };
 };

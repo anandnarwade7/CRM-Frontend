@@ -38,6 +38,17 @@ export const fetchUserDetails = async () => {
   }
 };
 
+// Service for update the action support
+export const updateSupportAction = async (id, action) => {
+  try {
+    const response = await axiosInstance.put(`/support/update/${id}/${action}`);
+    console.log("Support Action", response?.data);
+    return response?.data;
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+
 // Service for sending mail
 export const sendMail = async (eventId, clientId) => {
   try {

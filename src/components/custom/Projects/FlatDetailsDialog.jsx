@@ -16,15 +16,20 @@ import {
 } from "../../ui/select";
 import { Textarea } from "../../ui/textarea";
 import { useGetClientsByCRM } from "../../../hooks/Projects/useGetClientsByCRM";
+import { Controller } from "react-hook-form";
+import { useToast } from "@/hooks/use-toast";
 
 const FlatDetailsDialog = ({ unit, isDialogOpen, setIsDialogOpen }) => {
   const userRole = useUserRole();
+  const { toast } = useToast();
 
   const {
     data: clientData,
     isLoading: clientLoading,
     error: clientError,
   } = useGetClientsByCRM(unit?.id, isDialogOpen && !!unit?.id);
+
+  console.log("Client Data", clientData);
 
   // Custom hook for get the specific flat details when clicked
   const { data, isLoading, error, refetch } = useGetFlatById(
@@ -43,6 +48,8 @@ const FlatDetailsDialog = ({ unit, isDialogOpen, setIsDialogOpen }) => {
     watch,
     isUpdating,
     resetForm,
+    trigger,
+    control,
   } = useUpdateFlatStatus(userRole, unit?.id, () => setIsDialogOpen(false));
 
   // Fetching the updated data and setting into the input fields
@@ -58,7 +65,15 @@ const FlatDetailsDialog = ({ unit, isDialogOpen, setIsDialogOpen }) => {
       if (data?.clientEmail) {
         setValue("clientEmail", data?.clientEmail);
       }
-      setValue("flatInfo", data?.flatInfo);
+      // setValue("flatInfo", data?.flatInfo == "null" ? "" : data?.flatInfo);
+      // Handle flatInfo - ensure it's always a string
+      const flatInfoValue =
+        data?.flatInfo === null ||
+        data?.flatInfo === "null" ||
+        data?.flatInfo === undefined
+          ? ""
+          : String(data?.flatInfo);
+      setValue("flatInfo", flatInfoValue);
     }
   }, [data, setValue, isDialogOpen]);
 
@@ -82,16 +97,68 @@ const FlatDetailsDialog = ({ unit, isDialogOpen, setIsDialogOpen }) => {
         (option) => option?.value === data?.status
       );
     }
+
+    if (userRole == "SALES") {
+      return allStatusOptions.filter((option) =>
+        ["Available", "Booked", "Refugee"].includes(option.value)
+      );
+    }
+
+    if (userRole == "CRM") {
+      return allStatusOptions.filter((option) =>
+        ["Booked", "Sold"].includes(option.value)
+      );
+    }
     return allStatusOptions;
   }, [data?.status]);
 
   const selectedStatus = watch("status");
+  const selectedClientEmail = watch("clientEmail");
+
+  // Check if client email matches - this is the key logic
+  const isClientEmailMatched = useMemo(() => {
+    if (userRole !== "CRM") return true; // Non-CRM users can always update
+
+    // If no client is assigned to the flat, allow selection
+    if (!data?.clientEmail) return true;
+
+    // Check if selected email matches the existing client email
+    return data?.clientEmail === selectedClientEmail;
+  }, [data?.clientEmail, selectedClientEmail, userRole]);
+
+  // Determine if status options should be disabled
+  const isStatusDisabled = userRole === "CRM" && !isClientEmailMatched;
+
+  // Determine if update button should be disabled
+  const isUpdateButtonDisabled =
+    isUpdating ||
+    data?.status === "Sold" ||
+    (userRole === "CRM" && !isClientEmailMatched);
 
   const shouldHideFlatType =
     data?.status === "Refugee" || selectedStatus === "Refugee";
 
   const hideUpdateBtn = userRole === "CRM";
 
+  const handleClientSelect = (value) => {
+    setValue("clientEmail", value);
+    trigger("clientEmail");
+  };
+
+  const handleStatusSelect = (optionValue) => {
+    if (userRole === "CRM") {
+      if (!isClientEmailMatched) {
+        toast({
+          variant: "destructive",
+          description:
+            "Please select the correct client email to change status.",
+          duration: 3000,
+        });
+        return;
+      }
+    }
+    setValue("status", optionValue);
+  };
   return (
     <DialogContent>
       <DialogHeader>
@@ -144,13 +211,20 @@ const FlatDetailsDialog = ({ unit, isDialogOpen, setIsDialogOpen }) => {
                 )}
               </div>
             )}
-            <div>
+            {/* <div>
               <Label className="text-main-text">Flat Info</Label>
-              <Textarea
-                {...register("flatInfo")}
-                disabled={userRole === "CRM"}
+              <Controller
+                name="flatInfo"
+                control={control}
+                render={({ field }) => (
+                  <Textarea
+                    {...field}
+                    // {...register("flatInfo")}
+                    // disabled={userRole === "CRM"}
+                  />
+                )}
               />
-            </div>
+            </div> */}
           </>
         ) : (
           <>
@@ -162,13 +236,14 @@ const FlatDetailsDialog = ({ unit, isDialogOpen, setIsDialogOpen }) => {
                 Select Clients
               </Label>
               <Select
-                onValueChange={(value) => setValue("clientEmail", value)}
-                value={watch("clientEmail")}
+                onValueChange={handleClientSelect}
+                value={watch("clientEmail") || ""}
               >
                 <SelectTrigger className="w-full border-gray-300 shadow-none">
                   <SelectValue placeholder="Select Client" />
                 </SelectTrigger>
                 <SelectContent>
+                  {clientData?.length === 0 && <p>No client is present</p>}
                   {clientData?.map((client) => (
                     <SelectItem key={client.id} value={client.email}>
                       {client.name}
@@ -181,16 +256,26 @@ const FlatDetailsDialog = ({ unit, isDialogOpen, setIsDialogOpen }) => {
                   {errors?.clientEmail?.message}
                 </p>
               )}
-            </div>
-            <div>
-              <Label className="text-main-text">Flat Info</Label>
-              <Textarea
-                {...register("flatInfo")}
-                disabled={userRole === "CRM"}
-              />
+
+              {/* Show warning if email doesn't match */}
+              {userRole === "CRM" &&
+                !isClientEmailMatched &&
+                data?.clientEmail && (
+                  <p className="text-orange-500 text-sm mt-1">
+                    ⚠️ This flat ({data?.flatNumber}) is already booked by :{" "}
+                    {data.clientEmail}
+                  </p>
+                )}
             </div>
           </>
         )}
+        <div>
+          <Label className="text-main-text">Flat Info</Label>
+          <Textarea
+            {...register("flatInfo")}
+            // disabled={userRole === "CRM"}
+          />
+        </div>
 
         <div className="mt-4">
           <Label className="text-main-text font-semibold">Status</Label>
@@ -199,13 +284,9 @@ const FlatDetailsDialog = ({ unit, isDialogOpen, setIsDialogOpen }) => {
             {statusOptions?.map((option) => (
               <div
                 key={option.value}
-                onClick={() => {
-                  if (userRole !== "CRM") {
-                    setValue("status", option.value);
-                  }
-                }}
+                onClick={() => handleStatusSelect(option.value)}
                 className={`flex items-center gap-2 ${
-                  userRole === "CRM"
+                  isStatusDisabled
                     ? "pointer-events-none cursor-not-allowed opacity-50"
                     : "cursor-pointer"
                 }`}
@@ -225,11 +306,11 @@ const FlatDetailsDialog = ({ unit, isDialogOpen, setIsDialogOpen }) => {
             <p className="text-red-500 text-sm">{errors?.status?.message}</p>
           )}
         </div>
-        {!hideUpdateBtn && (
+        {/* {!hideUpdateBtn && (
           <Button
             className="bg-main-secondary w-full mt-4"
             type="submit"
-            disabled={isUpdating}
+            disabled={isUpdating || data?.status == "Sold"}
           >
             {isUpdating ? (
               <Loader2 className="animate-spin" size={24} />
@@ -237,7 +318,19 @@ const FlatDetailsDialog = ({ unit, isDialogOpen, setIsDialogOpen }) => {
               "Update"
             )}
           </Button>
-        )}
+        )} */}
+        <Button
+          className="bg-main-secondary w-full mt-4"
+          type="submit"
+          // disabled={isUpdating || data?.status == "Sold" || isBlocked}
+          disabled={isUpdateButtonDisabled}
+        >
+          {isUpdating ? (
+            <Loader2 className="animate-spin" size={24} />
+          ) : (
+            "Update"
+          )}
+        </Button>
       </form>
     </DialogContent>
   );

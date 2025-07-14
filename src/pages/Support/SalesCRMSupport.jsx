@@ -1,4 +1,4 @@
-import { File } from "lucide-react";
+import { File, Loader2 } from "lucide-react";
 import SupportHeader from "../../components/custom/Support/SupportHeader";
 import { Button } from "../../components/ui/button";
 import Table from "../../components/custom/Table";
@@ -14,6 +14,7 @@ import {
 } from "../../components/ui/tooltip";
 import { getTableIndex, truncateName } from "../../utils/utilityFunction";
 import { ChatIcon } from "../../assets";
+import { useSupportAction } from "../../hooks/Support/useSupportAction";
 
 const SalesCRMSupport = () => {
   const [page, setPage] = useState(1);
@@ -26,6 +27,8 @@ const SalesCRMSupport = () => {
   function handleChatClick(supportId, name) {
     navigate("/app/chat", { state: { supportId, name } });
   }
+
+  // const { handleSupportAction, loadingAction } = useSupportAction();
 
   const columns = [
     {
@@ -59,7 +62,14 @@ const SalesCRMSupport = () => {
       header: "Status",
       cell: ({ row }) => {
         const status = row?.original?.status;
-        const lowerStatus = status == "PENDING" ? "Pending" : status;
+        const lowerStatus =
+          status == "PENDING"
+            ? "Pending"
+            : status == "REJECTED"
+            ? "Rejected"
+            : status == "SOLVED"
+            ? "Solved"
+            : status;
         return <p>{lowerStatus}</p>;
       },
     },
@@ -83,6 +93,50 @@ const SalesCRMSupport = () => {
         );
       },
     },
+    // {
+    //   header: "Action",
+    //   cell: ({ row }) => {
+    //     const isLoadingRow = loadingAction?.id === row?.original?.id;
+    //     return (
+    //       <>
+    //         {row?.original?.status == "SOLVED" ? (
+    //           <p className="text-main text-sm text-center">Approved</p>
+    //         ) : row?.original?.status == "REJECTED" ? (
+    //           <p className="text-[#EE747A] text-sm text-center">Rejected</p>
+    //         ) : (
+    //           <div className="flex items-center gap-3">
+    //             <Button
+    //               className="bg-main text-white rounded-lg"
+    //               onClick={() => {
+    //                 handleSupportAction(row?.original?.id, "solve");
+    //               }}
+    //               disabled={isLoadingRow}
+    //             >
+    //               {isLoadingRow && loadingAction.action === "solve" ? (
+    //                 <Loader2 className="animate-spin" size={8} />
+    //               ) : (
+    //                 "Approve"
+    //               )}
+    //             </Button>
+    //             <Button
+    //               className="text-main-text bg-transparent border-2 border-main rounded-lg"
+    //               onClick={() => {
+    //                 handleSupportAction(row?.original?.id, "reject");
+    //               }}
+    //               disabled={isLoadingRow}
+    //             >
+    //               {isLoadingRow && loadingAction.action === "reject" ? (
+    //                 <Loader2 className="animate-spin" size={8} />
+    //               ) : (
+    //                 "Reject"
+    //               )}
+    //             </Button>
+    //           </div>
+    //         )}
+    //       </>
+    //     );
+    //   },
+    // },
   ];
 
   if (isLoading) return <p>Loading....</p>;
@@ -105,7 +159,7 @@ const SalesCRMSupport = () => {
         <p>No Data Available</p>
       ) : (
         <>
-          <div>
+          <div className="w-full max-w-[62rem]">
             <Table data={supportData} columns={columns} />
           </div>
           <TablePagination

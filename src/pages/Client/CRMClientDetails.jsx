@@ -72,6 +72,14 @@ const CRMClientDetails = () => {
   useEffect(() => {
     if (data) {
       updateCRMSetValue("status", data?.status || "");
+
+      if (data?.dynamicFields?.length > 0) {
+        const transformedFields = data.dynamicFields.map((item) => {
+          const [label, value] = Object.entries(item)[0];
+          return { label, value };
+        });
+        updateCRMSetValue("customFields", transformedFields);
+      }
     }
   }, [data, clientId, updateCRMSetValue]);
 
@@ -108,6 +116,14 @@ const CRMClientDetails = () => {
       ),
     },
   ];
+
+  if (isLoading) {
+    return <Loader2 className="animate-spin" size={6} />;
+  }
+
+  if (error) {
+    return <p className="text-red-500">Something Went Wrong!</p>;
+  }
 
   return (
     <div className="w-full rounded-xl bg-white h-full px-6 py-3">
@@ -154,6 +170,7 @@ const CRMClientDetails = () => {
                   field.onChange(value);
                 }}
                 value={field.value}
+                disabled={true}
               >
                 <SelectTrigger
                   className="focus-visible:ring-0 shadow-none border-[1px] border-[#B0A7A7] text-[#757575]"

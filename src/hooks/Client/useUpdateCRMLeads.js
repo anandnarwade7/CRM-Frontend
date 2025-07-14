@@ -64,11 +64,13 @@ export const useUpdateCRMLeads = (clientId, status) => {
     // Before Submitting the Data we process the data and then send via formData.
     const comment = data?.note;
     const status = data?.status;
-    const dueDate = data?.dueDate ? new Date(data?.dueDate).getTime() : 0;
+    const dueDate = data?.dueDate
+      ? new Date(data?.dueDate).getTime()
+      : Date?.now();
 
     const formData = new FormData();
 
-    if (dueDate) {
+    if (dueDate || dueDate == undefined) {
       formData?.append("dueDate", dueDate);
     }
 
@@ -76,7 +78,7 @@ export const useUpdateCRMLeads = (clientId, status) => {
       formData?.append("status", status);
     }
 
-    if (data?.customFields > 0) {
+    if (data?.customFields?.length > 0) {
       const key = data?.customFields?.map((item) => item?.label) || [];
       const value = data?.customFields?.map((item) => item?.value) || [];
       formData?.append("key", key);
@@ -92,7 +94,8 @@ export const useUpdateCRMLeads = (clientId, status) => {
         if (response) {
           let titleMessage = "Lead detail updated successfully";
           if (status == "CONVERTED") {
-            titleMessage = "Lead converted successfully";
+            // titleMessage = "Lead converted successfully";
+            titleMessage = "Lead detail updated successfully";
           }
           queryClient.invalidateQueries(["clientById", clientId]);
           toast({

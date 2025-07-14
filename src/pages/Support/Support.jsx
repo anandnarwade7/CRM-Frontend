@@ -1,6 +1,7 @@
 import { useUserRole } from "../../hooks/use-userrole";
 import AdminSupport from "./AdminSupport";
 import SalesCRMSupport from "./SalesCRMSupport";
+import SuperAdminSupport from "./SuperAdminSupport";
 
 const Support = () => {
   const role = useUserRole();
@@ -11,8 +12,10 @@ const Support = () => {
         <AdminSupport />
       ) : role == "SALES" ? (
         <SalesCRMSupport />
-      ) : (
+      ) : role == "CRM" ? (
         <SalesCRMSupport />
+      ) : (
+        <SuperAdminSupport />
       )}
     </section>
   );

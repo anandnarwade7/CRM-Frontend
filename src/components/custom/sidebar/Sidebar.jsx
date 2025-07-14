@@ -112,7 +112,7 @@ const Sidebar = () => {
       path: "/app/support",
       img: Support,
       activeImg: SupportBg,
-      roles: ["ADMIN", "SALES", "CRM"],
+      roles: ["SUPER ADMIN", "ADMIN", "SALES", "CRM"],
     },
     {
       name: "Activities",

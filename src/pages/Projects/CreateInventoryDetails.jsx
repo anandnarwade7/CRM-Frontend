@@ -25,6 +25,7 @@ const UploadLayoutFile = ({
   selectedFile,
   towerIndex,
   layoutType,
+  error,
 }) => {
   const fileInputRef = useRef(null);
 
@@ -88,6 +89,11 @@ const UploadLayoutFile = ({
         onChange={handleFileChange}
         className="hidden"
       />
+      {error && (
+        <p className="text-red-500 text-xs mt-1 text-center">
+          {error?.message}
+        </p>
+      )}
     </div>
   );
 };
@@ -103,26 +109,39 @@ const CreateInventoryDetails = () => {
     setValue,
     getValues,
     fields,
+    trigger,
+    clearErrors,
     isLoading,
   } = useCreateInventory(userId);
 
   const totalTower = watch("totalTower");
   const towerCount = parseInt(totalTower, 10) || 0;
 
-  const handleLayoutFileSelect = (file, layoutType, towerIndex) => {
+  const handleLayoutFileSelect = async (file, layoutType, towerIndex) => {
+    // Clear any existing errors for this field
+    clearErrors(`towers.${towerIndex}.${layoutType}Image`);
     // Update the form data directly instead of using separate state
     setValue(`towers.${towerIndex}.${layoutType}Image`, file, {
       shouldValidate: true,
       shouldDirty: true,
     });
+
+    // Trigger validation for the specific field
+    await trigger(`towers.${towerIndex}.${layoutType}Image`);
   };
 
-  const handleCustomLayoutAdd = (customLayoutData, towerIndex) => {
+  const handleCustomLayoutAdd = async (customLayoutData, towerIndex) => {
+    // Clear any existing errors for this field
+    clearErrors(`towers.${towerIndex}.customLayout`);
+
     // Update the form data directly
     setValue(`towers.${towerIndex}.customLayout`, customLayoutData, {
       shouldValidate: true,
       shouldDirty: true,
     });
+
+    // Trigger validation for the specific field
+    await trigger(`towers.${towerIndex}.customLayout`);
   };
 
   const getLayoutFile = (towerIndex, layoutType) => {
@@ -135,6 +154,14 @@ const CreateInventoryDetails = () => {
     // Get custom layout directly from form data
     const towers = watch("towers");
     return towers?.[towerIndex]?.customLayout || null;
+  };
+
+  const getLayoutError = (towerIndex, layoutType) => {
+    return errors?.towers?.[towerIndex]?.[`${layoutType}Image`];
+  };
+
+  const getCustomLayoutError = (towerIndex) => {
+    return errors?.towers?.[towerIndex]?.customLayout;
   };
 
   console.log("Form data:", watch("towers"));
@@ -228,6 +255,7 @@ const CreateInventoryDetails = () => {
                   onFileSelect={(file, type) =>
                     handleLayoutFileSelect(file, type, index)
                   }
+                  error={getLayoutError(index, "odd")}
                 />
                 <UploadLayoutFile
                   title="Even layout"
@@ -237,6 +265,7 @@ const CreateInventoryDetails = () => {
                   onFileSelect={(file, type) =>
                     handleLayoutFileSelect(file, type, index)
                   }
+                  error={getLayoutError(index, "even")}
                 />
                 <UploadLayoutFile
                   title="Ground layout"
@@ -246,6 +275,7 @@ const CreateInventoryDetails = () => {
                   onFileSelect={(file, type) =>
                     handleLayoutFileSelect(file, type, index)
                   }
+                  error={getLayoutError(index, "ground")}
                 />
                 <CustomLayoutDialog
                   towerIndex={index}
@@ -254,6 +284,13 @@ const CreateInventoryDetails = () => {
                     handleCustomLayoutAdd(data, index)
                   }
                 />
+                {getCustomLayoutError(index) && (
+                  <p className="text-red-500 text-xs mt-1">
+                    {getCustomLayoutError(index)?.message ||
+                      getCustomLayoutError(index)?.file?.message ||
+                      getCustomLayoutError(index)?.name?.message}
+                  </p>
+                )}
               </div>
             </div>
           ))}

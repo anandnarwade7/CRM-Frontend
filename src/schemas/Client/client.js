@@ -5,7 +5,7 @@ export const updateCRMLeadSchema = z.object({
     message: "Status is Required",
   }),
   note: z.string().optional(),
-  dueDate: z.date({ required_error: "Reminder Date is Required" }),
+  dueDate: z.date({ required_error: "Reminder Date is Required" }).optional(),
   customFields: z
     .array(
       z.object({

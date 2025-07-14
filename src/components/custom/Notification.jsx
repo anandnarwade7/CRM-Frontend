@@ -32,11 +32,11 @@ const NotificationCard = ({ data, handleDeleteNotification }) => {
           </Button>
         </div>
       </div>
-      <div className="flex justify-end">
+      {/* <div className="flex justify-end">
         <Button className="bg-main-secondary mt-2 text-white max-w-full w-28">
           View
         </Button>
-      </div>
+      </div> */}
     </div>
   );
 };

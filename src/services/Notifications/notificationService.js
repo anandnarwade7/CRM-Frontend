@@ -1,9 +1,9 @@
 import axiosInstance from "../axiosInstance";
 
 // Service for getting all notifications
-export const fetchNotifications = async (userEmail) => {
+export const fetchNotifications = async () => {
   try {
-    const response = await axiosInstance.get(`/notifications/${userEmail}`);
+    const response = await axiosInstance.get(`/notifications/all`);
     console.log("NOtification", response?.data);
 
     return response?.data;

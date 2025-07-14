@@ -13,12 +13,28 @@ const fileValidation = z.any().refine(
 );
 
 // Custom layout schema
-const customLayoutSchema = z.object({
-  name: z.string().min(1, "Custom layout name is required"),
-  file: fileValidation.refine((file) => file instanceof File, {
-    message: "Custom layout image is required",
-  }),
-});
+const customLayoutSchema = z
+  .object({
+    name: z.string().min(1, "Custom layout name is required"),
+    // file: fileValidation.refine((file) => file instanceof File, {
+    //   message: "Custom layout image is required",
+    // }),
+    file: z.any().refine(
+      (file) => {
+        if (!file) return false;
+        return (
+          file instanceof File &&
+          file.type.startsWith("image/") &&
+          file.size <= 5 * 1024 * 1024
+        );
+      },
+      {
+        message: "Custom layout image is required and must be under 5MB",
+      }
+    ),
+  })
+  .nullable()
+  .optional();
 
 // Schema for only Tower Details
 export const towerSchema = z.object({
@@ -34,13 +50,13 @@ export const towerSchema = z.object({
     .positive("Must be greater than 0"),
 
   // Layout image fields
-  oddImage: fileValidation.optional(),
-  evenImage: fileValidation.optional(),
-  groundImage: fileValidation.optional(),
-  customLayout: customLayoutSchema.optional(),
+  oddImage: fileValidation,
+  evenImage: fileValidation,
+  groundImage: fileValidation,
+  customLayout: customLayoutSchema,
 
   // Legacy field for backward compatibility
-  layoutImage: fileValidation.optional(),
+  layoutImage: fileValidation.nullable().optional(),
 });
 
 // Schema for whole Inventory
@@ -66,12 +82,12 @@ const adminFields = {
 };
 
 const crmFields = {
-  clientEmail: z.string(),
+  clientEmail: z.string().min(1, "Please select a client"),
 };
 
 // Added SALES role schema
 const salesFields = {
-  clientEmail: z.string(),
+  clientEmail: z.string().min(1, "Please select a client"),
 };
 
 // Common for all roles

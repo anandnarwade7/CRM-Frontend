@@ -19,11 +19,11 @@ export const salesLeadsSchema = (status, isStatusOpen) => {
 
   const baseSchema = {
     note: z.string().optional(),
-    dueDate: z.date({ required_error: "Reminder Date is Required" }),
+    dueDate: z.date({ required_error: "Reminder Date is Required" }).optional(),
     customFields: z
       .array(
         z.object({
-          label: z.string().min(1, "Label is Required"),  
+          label: z.string().min(1, "Label is Required"),
           value: z.string().min(1, "Value is Required"),
         })
       )

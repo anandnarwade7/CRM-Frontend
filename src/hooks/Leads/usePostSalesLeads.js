@@ -66,10 +66,12 @@ export const usePostSalesLeads = (leadId, data, isStatusOpen) => {
     console.log("CUSTOM FIELDS", data?.customFields);
 
     const comment = data?.note;
-    console.log("Data Note", data?.note);
+    console.log("Due Date", data?.dueDate);
 
     const status = data?.status;
-    const dueDate = data?.dueDate ? new Date(data?.dueDate).getTime() : 0;
+    const dueDate = data?.dueDate
+      ? new Date(data?.dueDate).getTime()
+      : Date.now();
 
     const formData = new FormData();
 
@@ -82,7 +84,7 @@ export const usePostSalesLeads = (leadId, data, isStatusOpen) => {
     if (data?.note?.length > 0) {
       formData?.append("comment", comment);
     }
-    if (data?.dueDate) {
+    if (data?.dueDate || data?.dueDate == undefined) {
       formData?.append("dueDate", dueDate);
     }
     if (status) {
