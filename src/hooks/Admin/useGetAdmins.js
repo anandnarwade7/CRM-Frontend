@@ -1,12 +1,19 @@
 import { useQuery } from "@tanstack/react-query";
 import { getAdmins } from "../../services/Admin/adminService";
 
-export const useGetAdmins = () => {
+export const useGetAdmins = (page) => {
   const { data, isLoading, error } = useQuery({
-    queryKey: ["admins"],
-    queryFn: getAdmins,
+    queryKey: ["admins", page],
+    queryFn: () => getAdmins(page),
     retry: false,
   });
 
-  return { data, isLoading, error };
+  console.log("ADMIN DATA", data);
+
+  return {
+    adminData: data?.content,
+    totalPages: data?.totalPages,
+    isLoading,
+    error,
+  };
 };

@@ -20,9 +20,9 @@ export const createAdmin = async (formData) => {
 
 // service for getting all admins list
 
-export const getAdmins = async () => {
+export const getAdmins = async (page) => {
   try {
-    const response = await axiosInstance.get(`/user/getadmins?page=1`);
+    const response = await axiosInstance.get(`/user/getadmins?page=${page}`);
     return response?.data;
   } catch (error) {
     console.log("Error Fetching Admins", error);

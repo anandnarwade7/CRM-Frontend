@@ -1,17 +1,18 @@
 import React, { useState } from "react";
 import { useGetAdminSupport } from "../../../hooks/Support/useGetAdminSupport";
-import { useNavigate } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from "../../ui/tooltip";
-import { ChatIcon } from "../../../assets";
+import { Back, ChatIcon } from "../../../assets";
 import Table from "../Table";
 import { Loader2 } from "lucide-react";
 import { Button } from "../../ui/button";
 import { truncateName } from "../../../utils/utilityFunction";
+import SupportHeader from "./SupportHeader";
 
 const AdminTable = () => {
   const [page, setPage] = useState(1);
@@ -23,7 +24,9 @@ const AdminTable = () => {
   const navigate = useNavigate();
 
   function handleChatClick(supportId, name) {
-    navigate("/app/chat", { state: { supportId, name } });
+    navigate("/app/chat", {
+      state: { supportId, name, from: "/app/support-admin" },
+    });
   }
 
   const columns = [
@@ -83,19 +86,30 @@ const AdminTable = () => {
   if (error) return <p className="text-red-500 text-sm">Error Loading Data</p>;
 
   return (
-    <div>
-      {adminSupportData?.length === 0 ? (
-        <p>No support request are available</p>
-      ) : (
-        <Table data={adminSupportData || []} columns={columns} />
-      )}
+    <section className="w-full rounded-xl bg-white h-full px-6 py-3">
+      <div>
+        {/* <SupportHeader label="Admin Tickets" /> */}
+        <Link className="flex items-center gap-6" to="/app/support">
+          <img src={Back} alt="backicon" />
+          <span className="font-medium text-[#707070] text-2xl">
+            Admin Tickets
+          </span>
+        </Link>
+      </div>
+      <div>
+        {adminSupportData?.length === 0 ? (
+          <p>No support request are available</p>
+        ) : (
+          <Table data={adminSupportData || []} columns={columns} />
+        )}
 
-      {/* <TablePagination
+        {/* <TablePagination
           totalPages={adminTotalPage}
           page={page}
           setPage={setPage}
-        /> */}
-    </div>
+          /> */}
+      </div>
+    </section>
   );
 };
 

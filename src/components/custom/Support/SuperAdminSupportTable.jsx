@@ -128,18 +128,19 @@ const SuperAdminSupportTable = () => {
   return (
     <div>
       {superAdminSupportData?.length == 0 ? (
-        <p>No support request are available</p>
+        <p className="mt-3">No support request are available</p>
       ) : (
-        <div className="max-w-full w-[63rem]">
-          <Table data={superAdminSupportData || []} columns={columns} />
-        </div>
+        <>
+          <div className="max-w-full w-[62rem]">
+            <Table data={superAdminSupportData || []} columns={columns} />
+          </div>
+          <TablePagination
+            totalPages={superAdminTotalPages}
+            page={page}
+            setPage={setPage}
+          />
+        </>
       )}
-
-      <TablePagination
-        totalPages={superAdminTotalPages}
-        page={page}
-        setPage={setPage}
-      />
     </div>
   );
 };

@@ -30,6 +30,7 @@ const AdminDashboard = () => {
           title="Sales Persons"
           data={data?.sales || "0"}
           img={DashboardSales}
+          redirect={"/app/sales-person"}
         />
 
         {/* CRM Manager */}
@@ -37,6 +38,7 @@ const AdminDashboard = () => {
           title="CRM Managers"
           data={data?.crm || "0"}
           img={DashboardTime}
+          redirect={"/app/cr-manager"}
         />
 
         {/* Total Leads */}
@@ -44,6 +46,7 @@ const AdminDashboard = () => {
           title="Total Leads"
           data={data?.leads || "0"}
           img={DashboardList}
+          redirect={"/app/leads"}
         />
       </div>
       <div className="flex items-center gap-4 my-4">

@@ -6,8 +6,10 @@ import { eventRowSchema } from "../../schemas/Client/client";
 
 const useEventDetails = (clientId, userId) => {
   const { toast } = useToast();
-  const [isSaving, setIsSaving] = useState(false);
-  const [isDeleting, setIsDeleting] = useState(false);
+  // const [isSaving, setIsSaving] = useState(false);
+  // const [isDeleting, setIsDeleting] = useState(false);
+  const [savingRowIndex, setSavingRowIndex] = useState(null);
+  const [deleteRowIndex, setDeleteRowIndex] = useState(null);
 
   const [rows, setRows] = useState([
     {
@@ -151,7 +153,8 @@ const useEventDetails = (clientId, userId) => {
       ? `/event/updateEvent/${row?.eventId}/${userId}`
       : `/event/addEventDetails/${userId}`;
 
-    setIsSaving(true);
+    // setIsSaving(true);
+    setSavingRowIndex(index);
     try {
       // const response = await axios.post(
       //   `${BASE_URL}/event/addEventDetails/${userId}`,
@@ -184,7 +187,8 @@ const useEventDetails = (clientId, userId) => {
         });
         // ✅ Fetch updated event details after successful save
         fetchEventDetails();
-        setIsSaving(false);
+        // setIsSaving(false);
+        setSavingRowIndex(null);
       }
     } catch (error) {
       if (error) {
@@ -194,18 +198,24 @@ const useEventDetails = (clientId, userId) => {
           variant: "destructive",
           duration: 2000,
         });
-        setIsSaving(false);
+        // setIsSaving(false);
+        setSavingRowIndex(null);
       }
+    } finally {
+      setSavingRowIndex(null);
     }
   };
 
   // delete event by ID
-  const handleEventDelete = async (eventId) => {
-    setIsDeleting(true);
+  const handleEventDelete = async (eventId, index) => {
+    // setIsDeleting(true);
+    setDeleteRowIndex(index);
     try {
       const response = await axiosInstance.delete(
         `/event/deleteEventById/${eventId}`
       );
+      console.log("DELETE API RESPONSE", response?.data);
+
       if (response?.data) {
         toast({
           title: "Success",
@@ -214,9 +224,12 @@ const useEventDetails = (clientId, userId) => {
         });
         // ✅ Fetch updated event details after successful save
         fetchEventDetails();
-        setIsDeleting(false);
+        // setIsDeleting(false);
+        setDeleteRowIndex(null);
       }
     } catch (error) {
+      console.log("DELETE API ERROR", error);
+
       if (error) {
         toast({
           title: "Error",
@@ -224,8 +237,11 @@ const useEventDetails = (clientId, userId) => {
           variant: "destructive",
           duration: 2000,
         });
-        setIsDeleting(false);
+        // setIsDeleting(false);
+        setDeleteRowIndex(null);
       }
+    } finally {
+      setDeleteRowIndex(null);
     }
   };
 
@@ -361,8 +377,10 @@ const useEventDetails = (clientId, userId) => {
     handleDownloadFile,
     getUrlFieldName,
     clearZodError,
-    isSaving,
-    isDeleting,
+    // isSaving,
+    // isDeleting,
+    savingRowIndex,
+    deleteRowIndex,
   };
 };
 export default useEventDetails;

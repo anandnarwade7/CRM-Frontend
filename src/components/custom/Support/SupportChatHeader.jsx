@@ -3,10 +3,13 @@ import { Back } from "../../../assets";
 import { Button } from "../../ui/button";
 import { Card } from "../../ui/card";
 import Placeholder from "../Placeholder";
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 
 const SupportChatHeader = ({ userName }) => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const from = location?.state?.from || "/app/support";
+
   return (
     <div>
       <Card className="w-full p-3">
@@ -15,7 +18,7 @@ const SupportChatHeader = ({ userName }) => {
             variant="secondary"
             size="icon"
             className="size-8"
-            onClick={() => navigate("/app/support")}
+            onClick={() => navigate(from)}
           >
             <MoveLeft />
           </Button>

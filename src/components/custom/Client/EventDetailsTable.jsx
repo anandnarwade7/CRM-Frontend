@@ -19,6 +19,21 @@ import {
   SelectValue,
 } from "../../ui/select";
 import { useSendMail } from "../../../hooks/Support/useSendMail";
+import { ToWords } from "to-words";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "../../ui/tooltip";
+
+const toWords = new ToWords({
+  localeCode: "en-IN",
+  converterOptions: {
+    currency: false,
+    ignoreDecimal: true,
+  },
+});
 
 // const fileFields = ["statusReport", "architectLetter", "invoice", "receipt"];
 
@@ -45,8 +60,10 @@ const EventDetailsTable = () => {
     handleDownloadFile,
     getUrlFieldName,
     clearZodError,
-    isSaving,
-    isDeleting,
+    // isSaving,
+    // isDeleting,
+    savingRowIndex,
+    deleteRowIndex,
   } = useEventDetails(clientId, userId);
 
   console.log("EVENT ROWS", rows);
@@ -177,6 +194,37 @@ const EventDetailsTable = () => {
                           </Button>
                         </>
                       )
+                    ) : col.key === "basePrice" ? (
+                      <TooltipProvider>
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <Input
+                              type="text"
+                              className={`w-full shadow-none focus-visible:ring-0 border-gray-300 p-1 ${
+                                row?.isEditing ? "text-black" : "text-main-grey"
+                              } ${
+                                row?.errors?.[col.key] ? "border-red-500" : ""
+                              }`}
+                              disabled={!row?.isEditing}
+                              value={row[col.key]}
+                              onChange={(e) => {
+                                handleInputChange(
+                                  index,
+                                  col.key,
+                                  e.target.value
+                                );
+                                clearZodError(index, col.key);
+                              }}
+                            />
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            {row[col.key]
+                              ? toWords.convert(+row[col.key]) ||
+                                "Invalid number"
+                              : "No value"}
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
                     ) : (
                       <>
                         <Input
@@ -260,9 +308,12 @@ const EventDetailsTable = () => {
                       onClick={() => handleSubmitData(row, index)}
                       type="button"
                       className="text-main-secondary bg-white"
-                      disabled={isSaving || isDeleting}
+                      // disabled={isSaving || isDeleting}
+                      disabled={
+                        savingRowIndex === index || deleteRowIndex === index
+                      }
                     >
-                      {isSaving ? (
+                      {savingRowIndex === index ? (
                         <Loader2 className="animate-spin" size={24} />
                       ) : (
                         "Save"
@@ -273,7 +324,7 @@ const EventDetailsTable = () => {
                       onClick={() => toggleEditMode(index)}
                       type="button"
                       className="text-main-secondary bg-white"
-                      disabled={isDeleting}
+                      disabled={deleteRowIndex === index}
                     >
                       Edit
                     </Button>
@@ -281,12 +332,15 @@ const EventDetailsTable = () => {
 
                   {row?.eventId !== null && (
                     <Button
-                      onClick={() => handleEventDelete(row?.eventId)}
+                      onClick={() => handleEventDelete(row?.eventId, index)}
                       type="button"
                       className="text-main-grey bg-white"
-                      disabled={isSaving || isDeleting}
+                      // disabled={isSaving || isDeleting}
+                      disabled={
+                        savingRowIndex === index || deleteRowIndex === index
+                      }
                     >
-                      {isDeleting ? (
+                      {deleteRowIndex === index ? (
                         <Loader2 className="animate-spin" size={24} />
                       ) : (
                         "Delete"

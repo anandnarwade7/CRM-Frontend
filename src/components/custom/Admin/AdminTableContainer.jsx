@@ -7,14 +7,16 @@ import { useGetAdmins } from "../../../hooks/Admin/useGetAdmins";
 import { formatDate } from "../../../utils/utilityFunction";
 import { Pencil } from "lucide-react";
 import { useNavigate } from "react-router";
+import TablePagination from "../TablePagination/TablePagination";
 
 const AdminTableContainer = () => {
+  const [page, setPage] = useState(1);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedAction, setSelectedAction] = useState(null);
   const [selectedUserId, setSelectedUserId] = useState(null);
   const navigate = useNavigate();
 
-  const { data, isLoading, error } = useGetAdmins();
+  const { adminData, totalPages, isLoading, error } = useGetAdmins(page);
 
   const columns = [
     {
@@ -92,23 +94,24 @@ const AdminTableContainer = () => {
     );
   }
 
-  if (data?.length === 0) {
+  if (adminData?.length === 0) {
     return <p>No Data Found</p>;
   }
 
-  if (data === "No users found for the role: ADMIN") {
-    return <p>No Admin Found</p>;
-  }
+  // if (adminData === "No users found for the role: ADMIN") {
+  //   return <p>No Admin Found</p>;
+  // }
 
   return (
     <div className="my-6">
-      <Table data={data} columns={columns} />
+      <Table data={adminData} columns={columns} />
       <UpdateAdminDialog
         open={dialogOpen}
         onClose={setDialogOpen}
         selectedAction={selectedAction}
         selectedUserId={selectedUserId}
       />
+      <TablePagination totalPages={totalPages} page={page} setPage={setPage} />
     </div>
   );
 };

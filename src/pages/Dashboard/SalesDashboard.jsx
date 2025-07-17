@@ -21,6 +21,7 @@ const SalesDashboard = () => {
           data={data?.convertedLeads || "0"}
           img={DashboardSales}
           title="Converted Leads"
+          redirect={"/app/leads"}
         />
 
         {/* Target */}
@@ -40,6 +41,7 @@ const SalesDashboard = () => {
           data={data?.totalLeads || "0"}
           img={DashboardList}
           title="Total Leads"
+          redirect={"/app/leads"}
         />
       </div>
     </section>

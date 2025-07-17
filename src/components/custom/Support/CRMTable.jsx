@@ -29,7 +29,7 @@ const CRMTable = () => {
   const crmData = otherSupportData?.filter((item) => item?.role === "CRM");
 
   function handleChatClick(supportId, name) {
-    navigate("/app/chat", { state: { supportId, name } });
+    navigate("/app/chat", { state: { supportId, name, from: "/app/support" } });
   }
 
   const crmColumns = [

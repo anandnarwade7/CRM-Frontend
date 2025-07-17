@@ -27,7 +27,9 @@ const SalesTable = () => {
   const navigate = useNavigate();
 
   function handleChatClick(supportId, name) {
-    navigate("/app/chat", { state: { supportId, name } });
+    navigate("/app/chat", {
+      state: { supportId, name, from: "/app/support" },
+    });
   }
 
   const salesColumns = [

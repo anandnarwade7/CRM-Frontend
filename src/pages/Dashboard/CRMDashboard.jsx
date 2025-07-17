@@ -94,6 +94,7 @@ const CRMDashboard = () => {
             title="Total Leads"
             data={data?.totalLeads || "0"}
             img={DashboardList}
+            redirect={"/app/client"}
           />
         </div>
         <div className="flex items-center gap-4 my-4">

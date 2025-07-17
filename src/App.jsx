@@ -27,6 +27,7 @@ import {
   SupportChat,
   UpdateSqFt,
 } from "./pages";
+import AdminTable from "./components/custom/Support/AdminTable";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import "./App.css";
@@ -153,6 +154,10 @@ const router = createBrowserRouter([
             element: <UpdateSqFt />,
           },
           // Support
+          {
+            path: "/app/support-admin",
+            element: <AdminTable />,
+          },
           {
             path: "/app/support",
             element: <Support />,

@@ -62,9 +62,9 @@ const FlatDetailsDialog = ({ unit, isDialogOpen, setIsDialogOpen }) => {
       setValue("area", removeSqFt);
       setValue("flatType", (data.flatType || "").replace("sq.ft.", "").trim());
       setValue("status", data?.status);
-      if (data?.clientEmail) {
-        setValue("clientEmail", data?.clientEmail);
-      }
+      // if (data?.clientEmail) {
+      //   setValue("clientEmail", data?.clientEmail);
+      // }
       // setValue("flatInfo", data?.flatInfo == "null" ? "" : data?.flatInfo);
       // Handle flatInfo - ensure it's always a string
       const flatInfoValue =

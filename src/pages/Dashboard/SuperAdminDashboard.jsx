@@ -32,6 +32,7 @@ const SuperAdminDashboard = () => {
             title="Admins"
             data={data?.admins || "0"}
             img={DashboardUserAdmin}
+            redirect={"/app/admin"}
           />
 
           {/* CRM Manager */}
